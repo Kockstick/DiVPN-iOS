@@ -1,0 +1,87 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {
+      "config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<feature name=\"OutlinePlugin\"><param name=\"ios-package\" value=\"OutlinePlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"StatusBar\"><param name=\"ios-package\" value=\"CDVStatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<preference name=\"StatusBarOverlaysWebView\" value=\"true\" />",
+              "count": 1
+            },
+            {
+              "xml": "<preference name=\"StatusBarStyle\" value=\"lightcontent\" />",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"Clipboard\"><param name=\"ios-package\" value=\"CDVClipboard\" /></feature>",
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
+  },
+  "installed_plugins": {
+    "cordova-plugin-outline": {
+      "PACKAGE_NAME": "org.outline.android.client"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "org.outline.android.client"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "org.outline.android.client"
+    },
+    "cordova-plugin-clipboard": {
+      "PACKAGE_NAME": "org.outline.android.client"
+    },
+    "cordova-webintent": {
+      "PACKAGE_NAME": "org.outline.android.client"
+    }
+  },
+  "dependent_plugins": {},
+  "modules": [
+    {
+      "id": "cordova-plugin-statusbar.statusbar",
+      "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+      "pluginId": "cordova-plugin-statusbar",
+      "clobbers": [
+        "window.StatusBar"
+      ]
+    },
+    {
+      "id": "cordova-plugin-clipboard.Clipboard",
+      "file": "plugins/cordova-plugin-clipboard/www/clipboard.js",
+      "pluginId": "cordova-plugin-clipboard",
+      "clobbers": [
+        "cordova.plugins.clipboard"
+      ]
+    },
+    {
+      "id": "cordova-webintent.WebIntent",
+      "file": "plugins/cordova-webintent/www/webintent.js",
+      "pluginId": "cordova-webintent",
+      "clobbers": [
+        "WebIntent"
+      ]
+    }
+  ],
+  "plugin_metadata": {
+    "cordova-plugin-outline": "0.0.0",
+    "cordova-plugin-splashscreen": "6.0.2",
+    "cordova-plugin-statusbar": "2.4.3",
+    "cordova-plugin-clipboard": "2.0.0",
+    "cordova-webintent": "2.0.0"
+  }
+}

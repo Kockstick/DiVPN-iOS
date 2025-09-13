@@ -1,0 +1,104 @@
+//
+//  DiStorage.swift
+//  Outline
+//
+//  Created by Diesperov Konstantin on 14.08.2025.
+//
+
+import Foundation
+
+internal class DiStorage{
+    private static let USER_KEY = "save_user_key"
+    private static let TARIFF_KEY = "save_tariff_key"
+    private static let TOKEN_KEY = "save_token_key"
+    private static let SS_KEY = "shadowsocks_key"
+    
+    private static let LOG_TAG: String = "DiStorage"
+    private static let logger = DiLogger.shared
+    
+    internal static func saveUser(user: User) {
+        if let data = try? JSONEncoder().encode(user) {
+            UserDefaults.standard.set(data, forKey: USER_KEY)
+            logger.i("User saved to storage", tag: LOG_TAG)
+        } else {
+            logger.e("Failed to encode User", tag: LOG_TAG)
+        }
+    }
+    
+    internal static func loadUser() -> User? {
+        if let data = UserDefaults.standard.data(forKey: USER_KEY),
+           let user = try? JSONDecoder().decode(User.self, from: data) {
+            logger.i("User loaded from storage", tag: LOG_TAG)
+            return user
+        }
+        logger.w("User not found in storage", tag: LOG_TAG)
+        return nil
+    }
+    
+    internal static func clearUser() {
+        UserDefaults.standard.removeObject(forKey: USER_KEY)
+        logger.i("User cleared from storage", tag: LOG_TAG)
+    }
+    
+    internal static func saveTariff(tariff: CurrentTariffModel) {
+        if let data = try? JSONEncoder().encode(tariff) {
+            UserDefaults.standard.set(data, forKey: TARIFF_KEY)
+            logger.i("Tariff saved to storage", tag: LOG_TAG)
+        } else {
+            logger.e("Failed to encode Tariff", tag: LOG_TAG)
+        }
+    }
+    
+    internal static func loadTariff() -> CurrentTariffModel? {
+        if let data = UserDefaults.standard.data(forKey: TARIFF_KEY),
+           let tariff = try? JSONDecoder().decode(CurrentTariffModel.self, from: data) {
+            logger.i("Tariff loaded from storage", tag: LOG_TAG)
+            return tariff
+        }
+        logger.w("Tariff not found in storage", tag: LOG_TAG)
+        return nil
+    }
+    
+    internal static func clearTariff() {
+        UserDefaults.standard.removeObject(forKey: TARIFF_KEY)
+        logger.i("Tariff cleared from storage", tag: LOG_TAG)
+    }
+    
+    internal static func saveToken(token: String) {
+        UserDefaults.standard.set(token, forKey: TOKEN_KEY)
+        logger.i("Token saved to storage", tag: LOG_TAG)
+    }
+    
+    internal static func loadToken() -> String? {
+        if let token = UserDefaults.standard.string(forKey: TOKEN_KEY) {
+            logger.i("Token loaded from storage", tag: LOG_TAG)
+            return token
+        }
+        logger.w("Token not found in storage", tag: LOG_TAG)
+        return nil
+    }
+    
+    internal static func clearToken() {
+        UserDefaults.standard.removeObject(forKey: TOKEN_KEY)
+        logger.i("Token cleared from storage", tag: LOG_TAG)
+    }
+    
+    internal static func saveSsKey(key: String) {
+        UserDefaults.standard.set(key, forKey: SS_KEY)
+        logger.i("Shadowsocks key saved to storage", tag: LOG_TAG)
+    }
+    
+    internal static func loadSsKey() -> String? {
+        if let key = UserDefaults.standard.string(forKey: SS_KEY) {
+            logger.i("Shadowsocks key loaded from storage", tag: LOG_TAG)
+            return key
+        }
+        logger.w("Shadowsocks key not found in storage", tag: LOG_TAG)
+        return nil
+    }
+    
+    internal static func clearSsKey() {
+        UserDefaults.standard.removeObject(forKey: SS_KEY)
+        logger.i("Shadowsocks key cleared from storage", tag: LOG_TAG)
+    }
+}
