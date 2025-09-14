@@ -270,6 +270,9 @@
         }
       }
     },
+    "DiVPN" : {
+
+    },
     "DiVPN.Service@gmail.com" : {
 
     },
@@ -366,7 +369,13 @@
         }
       }
     },
+    "Invite" : {
+
+    },
     "Invite friends and get free subscription months" : {
+
+    },
+    "Invite friends to DiVPN" : {
 
     },
     "Learn more" : {
@@ -581,9 +590,6 @@
         }
       }
     },
-    "vpn" : {
-
-    },
     "Waiting for server response" : {
       "localizations" : {
         "ru" : {
@@ -617,6 +623,9 @@
         }
       }
     },
+    "You get 1 month of subscription" : {
+
+    },
     "Your email" : {
       "localizations" : {
         "ru" : {
@@ -626,6 +635,12 @@
           }
         }
       }
+    },
+    "Your friend gets 1 months of subscription" : {
+
+    },
+    "Your friend uses your referral code" : {
+
     }
   },
   "version" : "1.0"

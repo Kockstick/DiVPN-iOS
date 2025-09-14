@@ -76,6 +76,9 @@ struct MainView: View {
             .sheet(isPresented: $referralModel.showReferralPromo) {
                 ReferralPromoView()
             }
+            .sheet(isPresented: $referralModel.showReferralInvite){
+                ReferralInviteView()
+            }
             
             DiNotificationBanner(show: showUpdateBanner)
         }
@@ -92,7 +95,7 @@ struct MainView: View {
                 DispatchQueue.main.async {
                     switch result{
                     case .success(let tariff):
-                        referralModel.showReferralPromo = tariffManager.daysToEntTariff == 0 || !referralModel.isReferralPromoShowed
+                        referralModel.showReferralPromo = tariffManager.daysToEntTariff == 9 || !referralModel.isReferralPromoShowed
                         print("Current tariff: \(tariff.name)")
                         break
                     case .failure(let error):

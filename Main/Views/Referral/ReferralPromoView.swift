@@ -33,7 +33,7 @@ struct ReferralPromoView: View {
                 Spacer()
                 
                 Button(action: {
-                    //open referral view
+                    ReferralManager.shared.showReferralInvite = true
                     DispatchQueue.main.async {
                         dismiss()
                     }
@@ -72,7 +72,7 @@ struct ReferralPromoView: View {
                         .foregroundColor(Color("TextPrimary"))
                         .frame(width: 16, height: 16)
                         .contentShape(Circle())
-                    Text("vpn")
+                    Text("DiVPN")
                         .font(.system(size: 16))
                         .foregroundColor(Color("TextPrimary"))
                 }

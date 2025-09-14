@@ -13,6 +13,7 @@ class ReferralManager: ObservableObject{
     private let key = "isReferralPromoShowed"
     
     @Published var showReferralPromo: Bool = false
+    @Published var showReferralInvite: Bool = false
     
     var isReferralPromoShowed: Bool {
         get {

@@ -138,6 +138,7 @@ class AuthApi {
                     let verifResult: VerificationResult = try DiDecoder.getJson2VerificationResultDecoder().decode(VerificationResult.self, from: data)
                     
                     DiStorage.saveToken(token: verifResult.token!)
+                    DiStorage.saveRefCode(code: verifResult.referralCode!)
                     self.logger.i("Verification success, token saved", tag: self.LOG_TAG)
                     
                     if http.statusCode == 200{
