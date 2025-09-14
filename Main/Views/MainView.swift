@@ -13,6 +13,7 @@ struct MainView: View {
     
     @StateObject var viewModel = MainViewModel()
     @StateObject var statusModel = DiStatus.shared
+    @StateObject var referralModel = ReferralManager.shared
     
     @State private var selection = 1
     @State private var greenBackground: Bool = true
@@ -72,6 +73,9 @@ struct MainView: View {
                 .frame(height: DiNotification.shared.showRow ? nil : 0)
                 .zIndex(-1)
             }
+            .sheet(isPresented: $referralModel.showReferralPromo) {
+                ReferralPromoView()
+            }
             
             DiNotificationBanner(show: showUpdateBanner)
         }
@@ -88,6 +92,7 @@ struct MainView: View {
                 DispatchQueue.main.async {
                     switch result{
                     case .success(let tariff):
+                        referralModel.showReferralPromo = tariffManager.daysToEntTariff == 0 || !referralModel.isReferralPromoShowed
                         print("Current tariff: \(tariff.name)")
                         break
                     case .failure(let error):

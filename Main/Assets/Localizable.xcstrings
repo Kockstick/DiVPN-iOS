@@ -366,6 +366,12 @@
         }
       }
     },
+    "Invite friends and get free subscription months" : {
+
+    },
+    "Learn more" : {
+
+    },
     "Like - 678239" : {
       "localizations" : {
         "ru" : {
@@ -574,6 +580,9 @@
           }
         }
       }
+    },
+    "vpn" : {
+
     },
     "Waiting for server response" : {
       "localizations" : {
