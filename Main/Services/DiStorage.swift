@@ -103,9 +103,9 @@ internal class DiStorage{
         logger.i("Shadowsocks key cleared from storage", tag: LOG_TAG)
     }
     
-    internal static func saveRefCode(code: String) {
+    static func saveRefCode(code: String?) {
+        guard let code, !code.isEmpty else { return }
         UserDefaults.standard.set(code, forKey: REFERRAL_CODE_KEY)
-        logger.i("Referral code saved to storage", tag: LOG_TAG)
     }
     
     internal static func loadRefCode() -> String? {

@@ -11,6 +11,7 @@ import SwiftUI
 class ReferralManager: ObservableObject{
     static var shared = ReferralManager()
     private let key = "isReferralPromoShowed"
+    private let IS_USE_KEY = "isReferralPromoShowed"
     
     @Published var showReferralPromo: Bool = false
     @Published var showReferralInvite: Bool = false
@@ -24,4 +25,12 @@ class ReferralManager: ObservableObject{
         }
     }
     
+    var isReferralUsed: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: IS_USE_KEY)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: IS_USE_KEY)
+        }
+    }
 }

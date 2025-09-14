@@ -95,7 +95,7 @@ struct MainView: View {
                 DispatchQueue.main.async {
                     switch result{
                     case .success(let tariff):
-                        referralModel.showReferralPromo = tariffManager.daysToEntTariff == 9 || !referralModel.isReferralPromoShowed
+                        referralModel.showReferralPromo = tariffManager.daysToEntTariff == 10 || !referralModel.isReferralPromoShowed
                         print("Current tariff: \(tariff.name)")
                         break
                     case .failure(let error):

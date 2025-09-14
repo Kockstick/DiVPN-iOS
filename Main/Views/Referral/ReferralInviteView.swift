@@ -13,15 +13,16 @@ struct ReferralInviteView: View {
     @State private var isShareSheetPresented = false
     
     private var inviteMessage: String {
-            """
+        let code = (DiStorage.loadRefCode() ?? "").unquoted
+        return """
             Привет! Попробуй DiVPN 🚀
             Скачай приложение, используй мой реферальный код и получи месяц подписки бесссплатно!
             
-            Код: \(String(describing: DiStorage.loadRefCode()))
+            Код: \(code)
             
             Ссылка на сайт с переадресацией в соответствующий платформе сервис
             """
-        }
+    }
     
     var body: some View {
         ZStack{
@@ -117,8 +118,8 @@ struct ReferralInviteView: View {
                 )
                 .compositingGroup()
                 .sheet(isPresented: $isShareSheetPresented) {
-                                ActivityViewController(activityItems: [inviteMessage])
-                            }
+                    ActivityViewController(activityItems: [inviteMessage])
+                }
             }
             .padding(40)
             .padding(.bottom, 10)
