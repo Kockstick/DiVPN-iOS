@@ -12,6 +12,7 @@ class TariffManager: ObservableObject {
     static var shared = TariffManager()
     
     @Published private(set) var tariff: CurrentTariffModel?
+    @Published private(set) var isFreeTrial: Bool = true
     
     private let LOG_TAG = "TariffManager"
     private let logger = DiLogger.shared
@@ -38,11 +39,21 @@ class TariffManager: ObservableObject {
         return "\(daysLeft)"
     }
     
+    var tariffName: String {
+        guard let tariff = tariff else { return "Subscription" }
+        return tariff.name
+    }
+    
+    var tariffLoading: Bool {
+        return tariff == nil
+    }
+    
     func loadTariff(completion: @escaping (Result<CurrentTariffModel, Error>) -> Void){
         logger.i("loadTariff called", tag: LOG_TAG)
         
         if let tariff = DiStorage.loadTariff() {
             self.tariff = tariff
+            isFreeTrial = tariff.name == "Trial"
             logger.i("Tariff loaded from storage", tag: LOG_TAG)
             self.notifyTariffEnd(self.daysToEntTariff)
             completion(.success(tariff))
@@ -55,6 +66,7 @@ class TariffManager: ObservableObject {
                 switch result{
                 case .success(let tariff):
                     self.tariff = tariff
+                    self.isFreeTrial = tariff.name == "Trial"
                     DiStorage.saveTariff(tariff: tariff)
                     self.logger.i("Tariff loaded from API and saved", tag: self.LOG_TAG)
                     completion(.success(tariff))
@@ -92,5 +104,4 @@ class TariffManager: ObservableObject {
             logger.i("Tariff active", tag: LOG_TAG)
         }
     }
-
 }

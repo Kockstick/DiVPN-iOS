@@ -4,6 +4,16 @@
     "" : {
 
     },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
     "99₽" : {
 
     },
@@ -266,6 +276,9 @@
     "DiVPN.Support@gmail.com" : {
 
     },
+    "Do not renew" : {
+
+    },
     "email" : {
 
     },
@@ -435,6 +448,9 @@
         }
       }
     },
+    "Renew" : {
+
+    },
     "renew_subscription_notice" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -512,6 +528,9 @@
         }
       }
     },
+    "Subscribtions renews in %@ days" : {
+
+    },
     "Support" : {
       "localizations" : {
         "ru" : {
@@ -542,6 +561,9 @@
           }
         }
       }
+    },
+    "To keep using the VPN, please renew your subscription" : {
+
     },
     "Unlimited internet access with data protection" : {
       "localizations" : {

@@ -31,7 +31,7 @@ struct MainView: View {
                         .tag(0)
                     HomeView(selectedTab: $selection)
                         .tag(1)
-                    ShopView()
+                    SubscribeView()
                         .tag(2)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: isKeyboardShown ? .never : .always))
