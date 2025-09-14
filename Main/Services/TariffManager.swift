@@ -5,6 +5,7 @@
 //  Created by Diesperov Konstantin on 20.08.2025.
 //
 
+
 import SwiftUI
 
 class TariffManager: ObservableObject {
