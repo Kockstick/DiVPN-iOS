@@ -3,3 +3,7 @@
 *.pbxuser
 .DS_Store
 build/
+
+# Xcode user data
+*.xcuserstate
+*.xcuserdata/
