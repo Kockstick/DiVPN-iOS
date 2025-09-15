@@ -9,4 +9,5 @@ import Foundation
 struct User: Codable {
     let email: String
     let salt: String
+    let dateRegister: Date
 }

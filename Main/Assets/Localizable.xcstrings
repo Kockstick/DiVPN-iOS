@@ -14,6 +14,9 @@
         }
       }
     },
+    "7YJPC5" : {
+
+    },
     "99₽" : {
 
     },
@@ -53,6 +56,9 @@
           }
         }
       }
+    },
+    "back" : {
+
     },
     "Bug report" : {
       "localizations" : {
@@ -282,7 +288,13 @@
     "Do not renew" : {
 
     },
+    "Do you have a referral code?" : {
+
+    },
     "email" : {
+
+    },
+    "Email for support:" : {
 
     },
     "EmailView" : {
@@ -312,6 +324,7 @@
       }
     },
     "For support:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -463,6 +476,9 @@
         }
       }
     },
+    "ReferralView" : {
+
+    },
     "Renew" : {
 
     },
@@ -532,6 +548,9 @@
           }
         }
       }
+    },
+    "Skip" : {
+
     },
     "Subscribe" : {
       "localizations" : {
@@ -611,6 +630,9 @@
       }
     },
     "We’d love to hear from you! Leave a review and we’ll thank you with 1 month of subscription for free." : {
+
+    },
+    "What is it?" : {
 
     },
     "You can request a new code now" : {

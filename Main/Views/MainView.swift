@@ -10,10 +10,10 @@ import SwiftUI
 struct MainView: View {
     @EnvironmentObject var auth: AuthState
     @EnvironmentObject var tariffManager: TariffManager
+    @EnvironmentObject var referralModel: ReferralManager
     
     @StateObject var viewModel = MainViewModel()
     @StateObject var statusModel = DiStatus.shared
-    @StateObject var referralModel = ReferralManager.shared
     
     @State private var selection = 1
     @State private var greenBackground: Bool = true
@@ -76,9 +76,6 @@ struct MainView: View {
             .sheet(isPresented: $referralModel.showReferralPromo) {
                 ReferralPromoView()
             }
-            .sheet(isPresented: $referralModel.showReferralInvite){
-                ReferralInviteView()
-            }
             
             DiNotificationBanner(show: showUpdateBanner)
         }
@@ -95,7 +92,7 @@ struct MainView: View {
                 DispatchQueue.main.async {
                     switch result{
                     case .success(let tariff):
-                        referralModel.showReferralPromo = tariffManager.daysToEntTariff == 10 || !referralModel.isReferralPromoShowed
+                        referralModel.showReferralPromo = tariffManager.daysToEntTariff == 9 || !referralModel.isReferralPromoShowed
                         print("Current tariff: \(tariff.name)")
                         break
                     case .failure(let error):
@@ -115,6 +112,9 @@ struct MainView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
             isKeyboardShown = false
+        }
+        .sheet(isPresented: $referralModel.showReferralInviteInMain){
+            ReferralInviteView()
         }
     }
 }

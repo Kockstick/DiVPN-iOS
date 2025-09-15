@@ -11,15 +11,18 @@ import SwiftUI
 struct OutlineApp: App {
     @StateObject private var auth = AuthState()
     @StateObject private var tariffManager = TariffManager.shared
+    @StateObject var referralModel = ReferralManager.shared
     
     var body: some Scene {
         WindowGroup {
             MainView()
                 .environmentObject(auth)
                 .environmentObject(tariffManager)
+                .environmentObject(referralModel)
                 .fullScreenCover(isPresented: .constant(!auth.isAuthorized)) {
                     AuthView()
                         .environmentObject(auth)
+                        .environmentObject(referralModel)
                 }
         }
     }

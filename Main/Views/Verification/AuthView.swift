@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AuthView: View{
     @EnvironmentObject var auth: AuthState
+    @EnvironmentObject var referralModel: ReferralManager
     @State private var path: [AuthRoute] = [.email]
     
     var body: some View{
@@ -25,14 +26,32 @@ struct AuthView: View{
                         
                     case .code:
                         CodeView {
+                            if let user = DiStorage.loadUser() {
+                                let now = Date()
+                                let oneDayAgo = now.addingTimeInterval(-244 * 60 * 60)
+                                
+                                if user.dateRegister <= oneDayAgo {
+                                    auth.isAuthorized = true
+                                    return
+                                }
+                            }
+                            path.append(.referral)
+                        }
+                        .navigationBarHidden(true)
+                        
+                    case .referral:
+                        ReferralView{
                             auth.isAuthorized = true
                         }
+                        .navigationBarBackButtonHidden(true)
                         .navigationBarHidden(true)
                     }
                 }
         }
-        // Важно: в корне cover нет крестика/свайпа, пользователь не "убежит" в Main
         .interactiveDismissDisabled(true)
+        .sheet(isPresented: $referralModel.showReferralInviteInAuth){
+            ReferralInviteView()
+        }
     }
 }
 
@@ -45,4 +64,5 @@ final class AuthState: ObservableObject {
 enum AuthRoute: Hashable {
     case email
     case code
+    case referral
 }

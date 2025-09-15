@@ -133,13 +133,13 @@ struct ReferralInviteView: View {
             Button(action: {
                 dismiss()
             }) {
-                HStack (spacing: 4){
+                HStack (spacing: 0){
                     Image(systemName: "chevron.left")
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(Color("TextPrimary"))
                         .frame(width: 16, height: 16)
                         .contentShape(Circle())
-                    Text("DiVPN")
+                    Text("back")
                         .font(.system(size: 16))
                         .foregroundColor(Color("TextPrimary"))
                 }
