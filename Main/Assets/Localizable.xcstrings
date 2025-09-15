@@ -294,9 +294,6 @@
     "email" : {
 
     },
-    "Email for support:" : {
-
-    },
     "EmailView" : {
 
     },
@@ -324,7 +321,6 @@
       }
     },
     "For support:" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -467,6 +463,7 @@
       }
     },
     "Rate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -475,6 +472,9 @@
           }
         }
       }
+    },
+    "Referral" : {
+
     },
     "ReferralView" : {
 

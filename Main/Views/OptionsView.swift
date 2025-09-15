@@ -11,10 +11,10 @@ struct OptionsView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var auth: AuthState
+    @EnvironmentObject var referralModel: ReferralManager
     
     @State private var showConfirmLogout = false
     @State private var showBugReport = false
-    @State private var showRateView = false
     @State private var showSupportView = false
     @State private var bugReportSent = false
     
@@ -49,14 +49,14 @@ struct OptionsView: View {
                     
                     HStack{
                         Button (action: {
-                            showRateView = true
+                            referralModel.showReferralInviteInMain = true
                         }) {
                             VStack{
-                                Image("star_rate")
-                                    .font(.system(size: 100, weight: .thin))
+                                Image("diversity")
+                                    .font(.system(size: 80, weight: .thin))
                                     .frame(width: 80, height: 80)
                                     .foregroundColor(Color("TextPrimary"))
-                                Text("Rate")
+                                Text("Referral")
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(Color("TextPrimary"))
                                     .frame(maxWidth: .infinity)
@@ -72,9 +72,6 @@ struct OptionsView: View {
                             .frame(maxWidth: .infinity)
                         }
                         .frame(maxWidth: .infinity)
-                        .sheet(isPresented: $showRateView) {
-                            RateView()
-                        }
                         
                         Button (action:  {
                             showSupportView = true
