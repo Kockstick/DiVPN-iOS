@@ -17,28 +17,36 @@ struct SupportView: View {
                     .frame(maxHeight: 50)
                 
                 Image("support")
-                    .font(.system(size: 180, weight: .thin))
+                    .font(.system(size: 230, weight: .thin))
                     .foregroundColor(Color("TextPrimary"))
                 
                 Spacer()
                     .frame(maxHeight: 30)
                 
-                Text("For support:")
+                Rectangle()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 2)
+                    .foregroundColor(Color("TextSecondary"))
+                
+                Spacer()
+                    .frame(maxHeight: 30)
+                
+                Text("Email for support:")
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(Color("TextPrimary"))
-                    .frame(maxWidth: .infinity)
-                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .multilineTextAlignment(.leading)
                     .lineSpacing(8)
                 
                 Spacer()
-                    .frame(maxHeight: 30)
+                    .frame(maxHeight: 20)
                 
                 Text("DiVPN.Service@gmail.com")
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(Color("TextPrimary"))
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .textSelection(.enabled)
-                    .multilineTextAlignment(.center)
+                    .multilineTextAlignment(.leading)
                     .lineSpacing(8)
                 
                 Spacer()
