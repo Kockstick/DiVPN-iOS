@@ -8,7 +8,6 @@
 struct VerificationResult: Codable {
     let token: String?
     let error: VerificationError?
-    let referralCode: String?
 }
 
 enum VerificationError: Int, Codable{

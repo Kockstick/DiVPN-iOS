@@ -10,4 +10,6 @@ struct User: Codable {
     let email: String
     let salt: String
     let dateRegister: Date
+    let referralCode: String
+    var isUsedReferral: Bool
 }
