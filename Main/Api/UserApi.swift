@@ -212,7 +212,7 @@ class UserApi {
                 if http.statusCode == 200{
                     ReferralManager.shared.isReferralUsed = true
                     self.logger.i("Referral success", tag: self.LOG_TAG)
-                    TariffManager.shared.loadTariff(completion: { _ in })
+                    TariffManager.shared.updateTariff()
                     completion(.success(true))
                     return
                 }

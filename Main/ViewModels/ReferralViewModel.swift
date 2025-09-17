@@ -17,35 +17,18 @@ class ReferralViewModel: ObservableObject{
         logger.i("Use referral colled", tag: LOG_TAG)
         loading = true
         
-        guard let code = DiStorage.loadRefCode() else{
-            logger.e("Referral code not found in storage", tag: LOG_TAG)
-            return
-        }
-        
         var userApi = UserApi()
         userApi.useReferral(code: code) { result in
             switch result{
             case .success(let response):
                 if response{
-                    TariffManager.shared.loadTariff { result in
-                        DispatchQueue.main.async {
-                            switch result{
-                            case .success(let tariff):
-                                print("Current tariff: \(tariff.name)")
-                                break
-                            case .failure(let error):
-                                print("Loading tariff error: \(error)")
-                                break
-                            }
-                        }
-                    }
-                    
                     if var user = DiStorage.loadUser(){
                         user.isUsedReferral = true
                         DiStorage.saveUser(user: user)
                     }
-                    
                     completion(true)
+                } else{
+                    completion(false)
                 }
                 break
             case .failure(let error):

@@ -14,7 +14,8 @@ struct ReferralView: View {
     
     @StateObject private var viewModel = ReferralViewModel()
     @FocusState private var isFocused: Bool
-    @State private var code: String = ""
+    
+    @State var code: String = ""
     
     var body: some View {
         ZStack{
@@ -54,7 +55,12 @@ struct ReferralView: View {
                             } else if newValue.count == 6 {
                                 viewModel.useReferral(code: code){ result in
                                     if result {
-                                        onSuccess()
+                                        DispatchQueue.main.async{
+                                            onSuccess()
+                                        }
+                                    }
+                                    else{
+                                        print("code not valid")
                                     }
                                 }
                             }

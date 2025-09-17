@@ -30,7 +30,7 @@ struct AuthView: View{
                                 let now = Date()
                                 let oneDayAgo = now.addingTimeInterval(-244 * 60 * 60)
                                 
-                                if user.dateRegister <= oneDayAgo {
+                                if user.dateRegister <= oneDayAgo || user.isUsedReferral {
                                     auth.isAuthorized = true
                                     return
                                 }

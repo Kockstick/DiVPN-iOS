@@ -80,6 +80,11 @@ class TariffManager: ObservableObject {
         }
     }
     
+    func updateTariff(){
+        DiStorage.clearTariff()
+        loadTariff { _ in }
+    }
+    
     private func notifyTariffEnd(_ days: Int?){
         if days == nil{
             logger.w("Tariff end date not found", tag: LOG_TAG)
