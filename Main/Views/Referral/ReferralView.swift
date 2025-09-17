@@ -16,6 +16,7 @@ struct ReferralView: View {
     @FocusState private var isFocused: Bool
     
     @State var code: String = ""
+    @State var showError: Bool = false
     
     var body: some View {
         ZStack{
@@ -50,6 +51,7 @@ struct ReferralView: View {
                         .multilineTextAlignment(.center)
                         .trackingIfAvailable(value: 3)
                         .onChange(of: code) { newValue in
+                            showError = false
                             if newValue.count > 6 {
                                 code = String(newValue.prefix(6))
                             } else if newValue.count == 6 {
@@ -60,7 +62,7 @@ struct ReferralView: View {
                                         }
                                     }
                                     else{
-                                        print("code not valid")
+                                        showError = true
                                     }
                                 }
                             }
@@ -69,6 +71,15 @@ struct ReferralView: View {
                 .onTapGesture {
                     isFocused = true
                 }
+                
+                HStack(spacing: 1){
+                    Image("error")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(Color("Error"))
+                    Text("Invalid code or not found")
+                        .font(.system(size: 12))
+                }
+                .opacity(showError ? 1 : 0)
                 
                 Spacer()
                 
@@ -122,6 +133,7 @@ struct ReferralView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("Background"))
         .animation(.easeInOut(duration: 0.2), value: isFocused)
+        .animation(.easeInOut(duration: 0.2), value: showError)
         .navigationTitle("ReferralView")
     }
 }

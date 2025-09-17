@@ -361,6 +361,9 @@
         }
       }
     },
+    "Invalid code or not found" : {
+
+    },
     "invalid_verification_code" : {
       "extractionState" : "manual",
       "localizations" : {
