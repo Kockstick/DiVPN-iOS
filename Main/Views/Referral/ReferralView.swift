@@ -18,6 +18,9 @@ struct ReferralView: View {
     @State var code: String = ""
     @State var showError: Bool = false
     
+    private let LOG_TAG = "ReferralView"
+    private let logger = DiLogger.shared
+    
     var body: some View {
         ZStack{
             VStack{
@@ -52,16 +55,29 @@ struct ReferralView: View {
                         .trackingIfAvailable(value: 3)
                         .onChange(of: code) { newValue in
                             showError = false
+                            
+                            if newValue.count == 0 {
+                                logger.i("Input cleared", tag: LOG_TAG)
+                            } else if newValue.count <= 6 {
+                                logger.i("Input changed: \(newValue)", tag: LOG_TAG)
+                            }
+                            
                             if newValue.count > 6 {
-                                code = String(newValue.prefix(6))
+                                let trimmed = String(newValue.prefix(6))
+                                logger.w("Input longer than 6, trimming to \(trimmed)", tag: LOG_TAG)
+                                code = trimmed
                             } else if newValue.count == 6 {
+                                logger.i("Code complete, calling useReferral(\(newValue))", tag: LOG_TAG)
                                 viewModel.useReferral(code: code){ result in
                                     if result {
+                                        logger.i("useReferral success", tag: LOG_TAG)
                                         DispatchQueue.main.async{
+                                            logger.i("onSuccess dispatched", tag: LOG_TAG)
                                             onSuccess()
                                         }
                                     }
                                     else{
+                                        logger.w("useReferral failed, showing error", tag: LOG_TAG)
                                         showError = true
                                     }
                                 }
@@ -69,6 +85,7 @@ struct ReferralView: View {
                         }
                 }
                 .onTapGesture {
+                    logger.i("TextField tapped, focusing", tag: LOG_TAG)
                     isFocused = true
                 }
                 
@@ -84,6 +101,7 @@ struct ReferralView: View {
                 Spacer()
                 
                 Button(action: {
+                    logger.i("Skip tapped", tag: LOG_TAG)
                     onSuccess()
                 }) {
                     Text("Skip")
@@ -106,6 +124,7 @@ struct ReferralView: View {
                     .frame(maxHeight: 10)
                 
                 Button(action: {
+                    logger.i("What is it? tapped", tag: LOG_TAG)
                     referralModel.showReferralInviteInAuth = true
                 }) {
                     Text("What is it?")

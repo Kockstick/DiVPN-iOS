@@ -12,11 +12,18 @@ class ReportViewModel: ObservableObject{
     
     private let api = AppApi()
     
+    private let LOG_TAG = "ReportViewModel"
+    private let logger = DiLogger.shared
+    
     func sendBugReport() async -> Bool {
+        logger.i("sendBugReport started with text length: \(text.count)", tag: LOG_TAG)
+        
         do{
             let s = try await api.sendBugReportAsync(text: text)
+            logger.i("sendBugReport success", tag: LOG_TAG)
             return true
         } catch {
+            logger.e("sendBugReport failed: \(error.localizedDescription)", tag: LOG_TAG)
             return false
         }
     }

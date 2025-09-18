@@ -17,6 +17,9 @@ struct ReferralInviteView: View {
         return String(format: NSLocalizedString("referral_message", comment: ""), code)
     }
     
+    private let LOG_TAG = "ReferralInviteView"
+    private let logger = DiLogger.shared
+    
     var body: some View {
         ZStack{
             VStack{
@@ -94,6 +97,7 @@ struct ReferralInviteView: View {
                 Spacer()
                 
                 Button(action: {
+                    logger.i("Invite tapped → open share sheet", tag: LOG_TAG)
                     isShareSheetPresented = true
                 }) {
                     Text("Invite")
@@ -124,6 +128,7 @@ struct ReferralInviteView: View {
         })
         .overlay(alignment: .topLeading) {
             Button(action: {
+                logger.i("Back tapped → dismiss()", tag: LOG_TAG)
                 dismiss()
             }) {
                 HStack (spacing: 0){

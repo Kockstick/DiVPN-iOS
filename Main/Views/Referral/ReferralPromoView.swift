@@ -10,6 +10,9 @@ import SwiftUI
 struct ReferralPromoView: View {
     @Environment(\.dismiss) private var dismiss
     
+    private let LOG_TAG = "ReferralPromoView"
+    private let logger = DiLogger.shared
+    
     var body: some View {
         ZStack{
             VStack{
@@ -33,8 +36,10 @@ struct ReferralPromoView: View {
                 Spacer()
                 
                 Button(action: {
+                    logger.i("Learn more tapped", tag: LOG_TAG)
                     ReferralManager.shared.showReferralInviteInMain = true
                     DispatchQueue.main.async {
+                        logger.i("Dismissing ReferralPromoView after Learn more", tag: LOG_TAG)
                         dismiss()
                     }
                 }) {
@@ -61,9 +66,11 @@ struct ReferralPromoView: View {
         .background(Color("Background"))
         .onAppear(perform: {
             ReferralManager.shared.isReferralPromoShowed = true
+            logger.i("ReferralPromoView appeared", tag: LOG_TAG)
         })
         .overlay(alignment: .topLeading) {
             Button(action: {
+                logger.i("Back tapped → dismiss()", tag: LOG_TAG)
                 dismiss()
             }) {
                 HStack (spacing: 0){

@@ -22,16 +22,21 @@ class ReferralViewModel: ObservableObject{
             switch result{
             case .success(let response):
                 if response{
+                    self.logger.i("useReferral success, updating user", tag: self.LOG_TAG)
                     if var user = DiStorage.loadUser(){
                         user.isUsedReferral = true
                         DiStorage.saveUser(user: user)
+                    } else {
+                        self.logger.w("User not found in storage when trying to mark referral", tag: self.LOG_TAG)
                     }
                     completion(true)
                 } else{
+                    self.logger.w("useReferral returned false response", tag: self.LOG_TAG)
                     completion(false)
                 }
                 break
             case .failure(let error):
+                self.logger.e("useReferral failed: \(error.localizedDescription)", tag: self.LOG_TAG)
                 completion(false)
                 break
             }
