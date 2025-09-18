@@ -28,7 +28,7 @@ struct AuthView: View{
                         CodeView {
                             if let user = DiStorage.loadUser() {
                                 let now = Date()
-                                let oneDayAgo = now.addingTimeInterval(-244 * 60 * 60)
+                                let oneDayAgo = now.addingTimeInterval(-24 * 60 * 60)
                                 
                                 if user.dateRegister <= oneDayAgo || user.isUsedReferral {
                                     auth.isAuthorized = true
