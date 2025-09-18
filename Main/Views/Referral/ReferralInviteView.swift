@@ -14,14 +14,7 @@ struct ReferralInviteView: View {
     
     private var inviteMessage: String {
         let code = (DiStorage.loadRefCode() ?? "").unquoted
-        return """
-            Привет! Попробуй DiVPN 🚀
-            Скачай приложение, используй мой реферальный код и получи месяц подписки бесссплатно!
-            
-            Код: \(code)
-            
-            Ссылка на сайт с переадресацией в соответствующий платформе сервис
-            """
+        return String(format: NSLocalizedString("referral_message", comment: ""), code)
     }
     
     var body: some View {

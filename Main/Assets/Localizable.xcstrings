@@ -58,7 +58,14 @@
       }
     },
     "back" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "назад"
+          }
+        }
+      }
     },
     "Bug report" : {
       "localizations" : {
@@ -276,9 +283,6 @@
         }
       }
     },
-    "DiVPN" : {
-
-    },
     "DiVPN.Service@gmail.com" : {
 
     },
@@ -286,13 +290,44 @@
 
     },
     "Do not renew" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отменить подписку"
+          }
+        }
+      }
     },
     "Do you have a referral code?" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У тебя есть код приглашения?"
+          }
+        }
+      }
     },
     "email" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "почта"
+          }
+        }
+      }
+    },
+    "Email for support:" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Почта для поддержки:"
+          }
+        }
+      }
     },
     "EmailView" : {
 
@@ -308,7 +343,14 @@
       }
     },
     "Feedback" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отзыв"
+          }
+        }
+      }
     },
     "for 1 month" : {
       "localizations" : {
@@ -321,6 +363,7 @@
       }
     },
     "For support:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -362,7 +405,14 @@
       }
     },
     "Invalid code or not found" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неверный или недопустимый код"
+          }
+        }
+      }
     },
     "invalid_verification_code" : {
       "extractionState" : "manual",
@@ -382,16 +432,44 @@
       }
     },
     "Invite" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пригласить"
+          }
+        }
+      }
     },
     "Invite friends and get free subscription months" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приглашай друзей и получай бесплатные месяцы подписки"
+          }
+        }
+      }
     },
     "Invite friends to DiVPN" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приглашай друзей в DiVPN"
+          }
+        }
+      }
     },
     "Learn more" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Узнать больше"
+          }
+        }
+      }
     },
     "Like - 678239" : {
       "localizations" : {
@@ -437,7 +515,14 @@
       }
     },
     "Ok" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ок"
+          }
+        }
+      }
     },
     "Open App Store" : {
       "localizations" : {
@@ -477,13 +562,44 @@
       }
     },
     "Referral" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пригласить"
+          }
+        }
+      }
+    },
+    "referral_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hey! Try DiVPN 🚀\nDownload the app, use my referral code and get 1 month of subscription for free!\n\n👉 %@ 👈\n\nLink to the website will redirect you to the right store"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Привет! Попробуй DiVPN 🚀\nСкачай приложение, используй мой реферальный код и получи месяц подписки бесплатно!\n\n👉 %@ 👈\n\nСсылка на сайт с переадресацией в соответствующий платформе сервис"
+          }
+        }
+      }
     },
     "ReferralView" : {
 
     },
     "Renew" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписаться"
+          }
+        }
+      }
     },
     "renew_subscription_notice" : {
       "extractionState" : "manual",
@@ -553,7 +669,14 @@
       }
     },
     "Skip" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пропустить"
+          }
+        }
+      }
     },
     "Subscribe" : {
       "localizations" : {
@@ -566,7 +689,14 @@
       }
     },
     "Subscribtions renews in %@ days" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продление подписки через %@ дней"
+          }
+        }
+      }
     },
     "Support" : {
       "localizations" : {
@@ -600,7 +730,14 @@
       }
     },
     "To keep using the VPN, please renew your subscription" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продлите подписку, чтобы и дальше пользоваться VPN"
+          }
+        }
+      }
     },
     "Unlimited internet access with data protection" : {
       "localizations" : {
@@ -633,10 +770,24 @@
       }
     },
     "We’d love to hear from you! Leave a review and we’ll thank you with 1 month of subscription for free." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нам очень важно ваше мнение! Оставьте отзыв, и мы подарим вам 1 месяц подписки бесплатно."
+          }
+        }
+      }
     },
     "What is it?" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что это?"
+          }
+        }
+      }
     },
     "You can request a new code now" : {
       "localizations" : {
@@ -649,7 +800,14 @@
       }
     },
     "You get 1 month of subscription" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ты получаешь 1 месяц подписки бесплатно"
+          }
+        }
+      }
     },
     "Your email" : {
       "localizations" : {
@@ -662,10 +820,24 @@
       }
     },
     "Your friend gets 1 months of subscription" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Твой друг тоже получает 1 месяц подписки"
+          }
+        }
+      }
     },
     "Your friend uses your referral code" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Друг вводит реферальный код"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
