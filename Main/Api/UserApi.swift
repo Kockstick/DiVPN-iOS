@@ -160,4 +160,71 @@ class UserApi {
             }
         }.resume()
     }
+    
+    public func useReferral(code: String, completion: @escaping (Result<Bool, Error>) -> Void){
+        logger.i("Use referral started", tag: LOG_TAG)
+        
+        guard let url = URL(string: "\(baseUrl)/UseReferral") else {
+            logger.e("Invalid URL in use referral", tag: LOG_TAG)
+            completion(.failure(NSError(domain: "InvalidURL", code: -1))); return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.timeoutInterval = 20
+        
+        if var token = DiStorage.loadToken(), !token.isEmpty {
+            token = token.unquoted
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            logger.i("Token attached for useReferral", tag: LOG_TAG)
+        } else {
+            logger.w("No token available for useReferral", tag: LOG_TAG)
+        }
+        
+        let payload = ReferralCodeModel(code: code)
+        do {
+            request.httpBody = try JSONEncoder().encode(payload)
+        } catch {
+            logger.e("Encoding payload failed in use referral", tag: LOG_TAG)
+            completion(.failure(error)); return
+        }
+        
+        session.dataTask(with: request){ data, response, error in
+            if let error = error {
+                self.logger.e("Use referral error: \(error.localizedDescription)", tag: self.LOG_TAG)
+                completion(.failure(error));
+                return
+            }
+            
+            guard let http = response as? HTTPURLResponse else {
+                self.logger.e("UseReferral: No HTTP response", tag: self.LOG_TAG)
+                completion(.failure(NSError(domain: "NoHTTPResponse", code: -3)))
+                return
+            }
+            
+            self.logger.i("Use referral response code: \(http.statusCode)", tag: self.LOG_TAG)
+            
+            let bodyString = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
+            
+            if let data = data {
+                if http.statusCode == 200{
+                    ReferralManager.shared.isReferralUsed = true
+                    self.logger.i("Referral success", tag: self.LOG_TAG)
+                    TariffManager.shared.updateTariff()
+                    completion(.success(true))
+                    return
+                }
+                
+                completion(.success(false))
+                return
+            }
+            else{
+                self.logger.e("Referral empty body", tag: self.LOG_TAG)
+                completion(.failure(NSError(domain: "ParseError", code: -4,
+                                            userInfo: [NSLocalizedDescriptionKey: "Empty body, no referral header"])))
+            }
+        }.resume()
+    }
 }

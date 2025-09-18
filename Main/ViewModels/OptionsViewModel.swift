@@ -33,6 +33,9 @@ class OptionsViewModel: ObservableObject {
 
         DiStorage.clearTariff()
         logger.i("Tariff cleared", tag: LOG_TAG)
+        
+        DiStorage.clearRefCode()
+        logger.i("Referral code cleared", tag: LOG_TAG)
 
         completion(true)
         logger.i("logout completed", tag: LOG_TAG)

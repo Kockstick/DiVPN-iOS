@@ -55,9 +55,6 @@ class TariffManager: ObservableObject {
             self.tariff = tariff
             isFreeTrial = tariff.name == "Trial"
             logger.i("Tariff loaded from storage", tag: LOG_TAG)
-            self.notifyTariffEnd(self.daysToEntTariff)
-            completion(.success(tariff))
-            return
         }
         
         let userApi = UserApi()
@@ -68,6 +65,7 @@ class TariffManager: ObservableObject {
                     self.tariff = tariff
                     self.isFreeTrial = tariff.name == "Trial"
                     DiStorage.saveTariff(tariff: tariff)
+                    self.notifyTariffEnd(self.daysToEntTariff)
                     self.logger.i("Tariff loaded from API and saved", tag: self.LOG_TAG)
                     completion(.success(tariff))
                     break
@@ -78,6 +76,11 @@ class TariffManager: ObservableObject {
                 }
             }
         }
+    }
+    
+    func updateTariff(){
+        DiStorage.clearTariff()
+        loadTariff { _ in }
     }
     
     private func notifyTariffEnd(_ days: Int?){

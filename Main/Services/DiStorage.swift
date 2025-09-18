@@ -12,6 +12,7 @@ internal class DiStorage{
     private static let TARIFF_KEY = "save_tariff_key"
     private static let TOKEN_KEY = "save_token_key"
     private static let SS_KEY = "shadowsocks_key"
+    private static let REFERRAL_CODE_KEY = "ref_code_key"
     
     private static let LOG_TAG: String = "DiStorage"
     private static let logger = DiLogger.shared
@@ -100,5 +101,24 @@ internal class DiStorage{
     internal static func clearSsKey() {
         UserDefaults.standard.removeObject(forKey: SS_KEY)
         logger.i("Shadowsocks key cleared from storage", tag: LOG_TAG)
+    }
+    
+    static func saveRefCode(code: String?) {
+        guard let code, !code.isEmpty else { return }
+        UserDefaults.standard.set(code, forKey: REFERRAL_CODE_KEY)
+    }
+    
+    internal static func loadRefCode() -> String? {
+        if let code = UserDefaults.standard.string(forKey: REFERRAL_CODE_KEY) {
+            logger.i("Referral code loaded from storage", tag: LOG_TAG)
+            return code
+        }
+        logger.w("Referral code not found in storage", tag: LOG_TAG)
+        return nil
+    }
+    
+    internal static func clearRefCode() {
+        UserDefaults.standard.removeObject(forKey: REFERRAL_CODE_KEY)
+        logger.i("Referral code cleared from storage", tag: LOG_TAG)
     }
 }

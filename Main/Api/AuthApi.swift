@@ -72,6 +72,7 @@ class AuthApi {
                     do {
                         let user: User = try DiDecoder.getJson2UserDecoder().decode(User.self, from: data)
                         DiStorage.saveUser(user: user)
+                        DiStorage.saveRefCode(code: user.referralCode)
                         self.logger.i("User saved in sendVerificationCode", tag: self.LOG_TAG)
                     } catch {
                         self.logger.w("User decode failed in sendVerificationCode", tag: self.LOG_TAG)

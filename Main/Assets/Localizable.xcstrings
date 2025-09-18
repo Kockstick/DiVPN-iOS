@@ -14,6 +14,9 @@
         }
       }
     },
+    "7YJPC5" : {
+
+    },
     "99₽" : {
 
     },
@@ -53,6 +56,9 @@
           }
         }
       }
+    },
+    "back" : {
+
     },
     "Bug report" : {
       "localizations" : {
@@ -270,6 +276,9 @@
         }
       }
     },
+    "DiVPN" : {
+
+    },
     "DiVPN.Service@gmail.com" : {
 
     },
@@ -277,6 +286,9 @@
 
     },
     "Do not renew" : {
+
+    },
+    "Do you have a referral code?" : {
 
     },
     "email" : {
@@ -349,6 +361,9 @@
         }
       }
     },
+    "Invalid code or not found" : {
+
+    },
     "invalid_verification_code" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -365,6 +380,18 @@
           }
         }
       }
+    },
+    "Invite" : {
+
+    },
+    "Invite friends and get free subscription months" : {
+
+    },
+    "Invite friends to DiVPN" : {
+
+    },
+    "Learn more" : {
+
     },
     "Like - 678239" : {
       "localizations" : {
@@ -439,6 +466,7 @@
       }
     },
     "Rate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -447,6 +475,12 @@
           }
         }
       }
+    },
+    "Referral" : {
+
+    },
+    "ReferralView" : {
+
     },
     "Renew" : {
 
@@ -517,6 +551,9 @@
           }
         }
       }
+    },
+    "Skip" : {
+
     },
     "Subscribe" : {
       "localizations" : {
@@ -598,6 +635,9 @@
     "We’d love to hear from you! Leave a review and we’ll thank you with 1 month of subscription for free." : {
 
     },
+    "What is it?" : {
+
+    },
     "You can request a new code now" : {
       "localizations" : {
         "ru" : {
@@ -608,6 +648,9 @@
         }
       }
     },
+    "You get 1 month of subscription" : {
+
+    },
     "Your email" : {
       "localizations" : {
         "ru" : {
@@ -617,6 +660,12 @@
           }
         }
       }
+    },
+    "Your friend gets 1 months of subscription" : {
+
+    },
+    "Your friend uses your referral code" : {
+
     }
   },
   "version" : "1.0"
