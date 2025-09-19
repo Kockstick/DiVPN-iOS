@@ -54,14 +54,8 @@ class DeviceApi{
         
         request.timeoutInterval = 20
         
-        guard let id = UIDevice.current.identifierForVendor?.uuidString else {
-            logger.e("Failed to get identifierForVendor", tag: LOG_TAG)
-            completion(.failure(NSError(domain: "Failed get uuid", code: -1)));
-            return
-        }
-        
         do {
-            let payload = Device(hashSerialNumber: try HashGenerator.generateHash(salt: user.salt, input: id), typeDevice: .iOS)
+            let payload = DiStorage.loadDevice()
             request.httpBody = try JSONEncoder().encode(payload)
             logger.i("loginDevice payload encoded", tag: LOG_TAG)
         } catch {

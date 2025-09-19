@@ -25,8 +25,8 @@ class OptionsViewModel: ObservableObject {
             }
         }
         
-        DiStorage.clearSsKey()
-        logger.i("SS key cleared", tag: LOG_TAG)
+        DiStorage.clearServer()
+        logger.i("Server cleared", tag: LOG_TAG)
 
         DiStorage.clearToken()
         logger.i("Token cleared", tag: LOG_TAG)

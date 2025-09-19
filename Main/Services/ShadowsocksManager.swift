@@ -19,19 +19,19 @@ class ShadowsocksManager{
     func getKey(completion: @escaping (Result<String, Error>) -> Void){
         logger.i("getKey called", tag: LOG_TAG)
         
-        guard let key = DiStorage.loadSsKey() else {
+        guard let key = DiStorage.loadServer()?.shadowsocksKey else {
             logger.w("No SS key in storage; requesting from server", tag: LOG_TAG)
             isWaitSsKey = true
             
-            let userApi = UserApi()
+            let serverApi = ServerApi()
             
-            userApi.getSsKey(){ result in
+            serverApi.getServer(){ result in
                 switch result {
                 case .success(let body):
-                    DiStorage.saveSsKey(key: body)
-                    self.logger.i("SS key received and saved", tag: self.LOG_TAG)
+                    DiStorage.saveServer(body)
+                    self.logger.i("Server received and saved", tag: self.LOG_TAG)
                     self.isWaitSsKey = false
-                    completion(.success(body))
+                    completion(.success(body.shadowsocksKey))
                     break
                     
                 case .failure(let error):
@@ -50,27 +50,27 @@ class ShadowsocksManager{
     func updateKey(){
         logger.i("updateKey called", tag: LOG_TAG)
         
-        let userApi = UserApi()
-        userApi.getSsKey(){ result in
+        let serverApi = ServerApi()
+        serverApi.getServer(){ result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):
-                    if let key = DiStorage.loadSsKey() {
-                        if key == body{
-                            self.logger.i("SS key unchanged", tag: self.LOG_TAG)
+                    if let server = DiStorage.loadServer() {
+                        if server.id == body.id{
+                            self.logger.i("Server unchanged", tag: self.LOG_TAG)
                             self.isWaitSsKey = false
                             return
                         }
                     }
                     
-                    DiStorage.saveSsKey(key: body)
-                    self.logger.i("SS key updated in storage", tag: self.LOG_TAG)
+                    DiStorage.saveServer(body)
+                    self.logger.i("Server updated in storage", tag: self.LOG_TAG)
                     
                     if(DiStatus.shared.connected){
                         self.logger.i("VPN connected; restarting with new SS key", tag: self.LOG_TAG)
                         Task{
                             do {
-                                try await DiVpnService.restartVpnAwaitable(ssKey: body)
+                                try await DiVpnService.restartVpnAwaitable(ssKey: body.shadowsocksKey)
                                 self.logger.i("VPN restarted with new SS key", tag: self.LOG_TAG)
                             } catch {
                                 DiStatus.shared.isEnabled = false

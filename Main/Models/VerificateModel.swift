@@ -8,4 +8,5 @@
 struct VerificateModel: Codable{
     let email: String
     let hashCode: String
+    let device: Device
 }

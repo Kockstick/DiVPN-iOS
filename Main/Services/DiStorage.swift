@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 internal class DiStorage{
     private static let USER_KEY = "save_user_key"
@@ -13,6 +14,8 @@ internal class DiStorage{
     private static let TOKEN_KEY = "save_token_key"
     private static let SS_KEY = "shadowsocks_key"
     private static let REFERRAL_CODE_KEY = "ref_code_key"
+    private static let SERVER_KEY = "server_model_key"
+    private static let DEVICE_KEY = "device_key"
     
     private static let LOG_TAG: String = "DiStorage"
     private static let logger = DiLogger.shared
@@ -84,26 +87,7 @@ internal class DiStorage{
         logger.i("Token cleared from storage", tag: LOG_TAG)
     }
     
-    internal static func saveSsKey(key: String) {
-        UserDefaults.standard.set(key, forKey: SS_KEY)
-        logger.i("Shadowsocks key saved to storage", tag: LOG_TAG)
-    }
-    
-    internal static func loadSsKey() -> String? {
-        if let key = UserDefaults.standard.string(forKey: SS_KEY) {
-            logger.i("Shadowsocks key loaded from storage", tag: LOG_TAG)
-            return key
-        }
-        logger.w("Shadowsocks key not found in storage", tag: LOG_TAG)
-        return nil
-    }
-    
-    internal static func clearSsKey() {
-        UserDefaults.standard.removeObject(forKey: SS_KEY)
-        logger.i("Shadowsocks key cleared from storage", tag: LOG_TAG)
-    }
-    
-    static func saveRefCode(code: String?) {
+    internal static func saveRefCode(code: String?) {
         guard let code, !code.isEmpty else { return }
         UserDefaults.standard.set(code, forKey: REFERRAL_CODE_KEY)
     }
@@ -120,5 +104,64 @@ internal class DiStorage{
     internal static func clearRefCode() {
         UserDefaults.standard.removeObject(forKey: REFERRAL_CODE_KEY)
         logger.i("Referral code cleared from storage", tag: LOG_TAG)
+    }
+    
+    internal static func saveServer(_ server: ServerModel) {
+        if let data = try? JSONEncoder().encode(server) {
+            UserDefaults.standard.set(data, forKey: SERVER_KEY)
+            logger.i("Server saved to storage", tag: LOG_TAG)
+        } else {
+            logger.e("Failed to encode ServerModel", tag: LOG_TAG)
+        }
+    }
+    
+    internal static func loadServer() -> ServerModel? {
+        if let data = UserDefaults.standard.data(forKey: SERVER_KEY),
+        let server = try? JSONDecoder().decode(ServerModel.self, from: data) {
+         logger.i("Server loaded from storage", tag: LOG_TAG)
+         return server
+     }
+     logger.w("Server not found in storage", tag: LOG_TAG)
+     return nil
+    }
+    
+    internal static func clearServer() {
+        UserDefaults.standard.removeObject(forKey: SERVER_KEY)
+        logger.i("Server model cleared from storage", tag: LOG_TAG)
+    }
+    
+    internal static func saveDevice(_ device: Device) {
+        if let data = try? JSONEncoder().encode(device) {
+            UserDefaults.standard.set(data, forKey: DEVICE_KEY)
+            logger.i("Device saved to storage", tag: LOG_TAG)
+        } else {
+            logger.e("Failed to encode Device", tag: LOG_TAG)
+        }
+    }
+    
+    internal static func loadDevice() -> Device? {
+        if let data = UserDefaults.standard.data(forKey: DEVICE_KEY),
+           let tariff = try? JSONDecoder().decode(Device.self, from: data) {
+            logger.i("Device loaded from storage", tag: LOG_TAG)
+            return tariff
+        }
+        else{
+            guard let id = UIDevice.current.identifierForVendor?.uuidString else {
+                logger.e("Failed to get identifierForVendor", tag: LOG_TAG)
+                return nil
+            }
+            
+            let user = DiStorage.loadUser()!
+            let device = try? Device(hashSerialNumber: try HashGenerator.generateHash(salt: user.salt, input: id), typeDevice: .iOS)
+            saveDevice(device!)
+            return device
+        }
+        logger.w("Device not found in storage", tag: LOG_TAG)
+        return nil
+    }
+    
+    internal static func clearDevice() {
+        UserDefaults.standard.removeObject(forKey: DEVICE_KEY)
+        logger.i("Device cleared from storage", tag: LOG_TAG)
     }
 }

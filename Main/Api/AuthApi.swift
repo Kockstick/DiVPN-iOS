@@ -109,7 +109,8 @@ class AuthApi {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.timeoutInterval = 20
         
-        let payload = VerificateModel(email: email, hashCode: hashCode)
+        let device = DiStorage.loadDevice()
+        let payload = VerificateModel(email: email, hashCode: hashCode, device: device!)
         do {
             request.httpBody = try JSONEncoder().encode(payload)
         } catch {
@@ -181,7 +182,7 @@ class AuthApi {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = "POST"
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         
@@ -191,6 +192,14 @@ class AuthApi {
             logger.i("Token attached in checkAuth", tag: LOG_TAG)
         } else {
             logger.w("No token found in checkAuth", tag: LOG_TAG)
+        }
+        
+        let payload = DiStorage.loadDevice()
+        do {
+            request.httpBody = try JSONEncoder().encode(payload)
+        } catch {
+            logger.e("Encoding payload failed in checkAuth", tag: LOG_TAG)
+            completion(.failure(error)); return
         }
         
         request.timeoutInterval = 20
