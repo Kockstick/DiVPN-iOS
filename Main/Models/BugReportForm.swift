@@ -11,6 +11,8 @@ import UniformTypeIdentifiers
 struct BugReportForm {
     let text: String
     let fileURL: URL
+    let hashDevice: String
+    let serverId: Int
     
     func buildMultipartBody(boundary: String) throws -> Data {
         var body = Data()
