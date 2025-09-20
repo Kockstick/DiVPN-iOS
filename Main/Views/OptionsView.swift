@@ -41,122 +41,121 @@ struct OptionsView: View {
                     
                     Rectangle()
                         .frame(maxWidth: .infinity)
-                        .frame(height: 2)
+                        .frame(height: 1)
                         .foregroundColor(Color("TextSecondary"))
+                        .opacity(0.2)
                     
-                    Spacer()
-                        .frame(maxHeight: 40)
-                    
-                    HStack{
-                        Button (action: {
-                            referralModel.showReferralInviteInMain = true
-                        }) {
-                            VStack{
-                                Image("diversity")
-                                    .font(.system(size: 80, weight: .thin))
-                                    .frame(width: 80, height: 80)
-                                    .foregroundColor(Color("TextPrimary"))
-                                Text("Referral")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(Color("TextPrimary"))
-                                    .frame(maxWidth: .infinity)
-                            }
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 15)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10).fill(Color("Surface"))
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10).stroke(Color("Border"), lineWidth: 2)
-                            )
-                            .frame(maxWidth: .infinity)
+                    Button (action: {
+                        referralModel.showReferralInviteInMain = true
+                    }) {
+                        HStack(spacing: 20){
+                            Image("diversity")
+                                .font(.system(size: 55, weight: .thin))
+                                .frame(width: 55, height: 35)
+                                .foregroundColor(Color("TextPrimary"))
+                            Text("Referral")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(Color("TextPrimary"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 15)
                         .frame(maxWidth: .infinity)
-                        
-                        Button (action:  {
-                            showSupportView = true
-                        }) {
-                            VStack{
-                                Image("support")
-                                    .font(.system(size: 80, weight: .thin))
-                                    .frame(width: 80, height: 80)
-                                    .foregroundColor(Color("TextPrimary"))
-                                Text("Support")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(Color("TextPrimary"))
-                                    .frame(maxWidth: .infinity)
-                            }
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 15)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10).fill(Color("Surface"))
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10).stroke(Color("Border"), lineWidth: 2)
-                            )
-                            .frame(maxWidth: .infinity)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .sheet(isPresented: $showSupportView) {
-                            SupportView()
-                        }
                     }
+                    .frame(maxWidth: .infinity)
+                    
+                    Rectangle()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                        .foregroundColor(Color("TextSecondary"))
+                        .opacity(0.2)
+                    
+                    Button (action:  {
+                        showSupportView = true
+                    }) {
+                        HStack(spacing: 20){
+                            Image("support")
+                                .font(.system(size: 55, weight: .thin))
+                                .frame(width: 55, height: 35)
+                                .foregroundColor(Color("TextPrimary"))
+                            Text("Support")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(Color("TextPrimary"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 15)
+                        .frame(maxWidth: .infinity)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .sheet(isPresented: $showSupportView) {
+                        SupportView()
+                    }
+                    
+                    Rectangle()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                        .foregroundColor(Color("TextSecondary"))
+                        .opacity(0.2)
                     
                     Button(action: {
                         showBugReport = true
                     }) {
-                        HStack(spacing: 2){
+                        HStack(spacing: 20){
                             if bugReportSent{
                                 Image("check")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(Color("Active"))
+                                    .font(.system(size: 55, weight: .thin))
+                                    .frame(width: 55, height: 35)
+                                    .foregroundColor(Color("TextPrimary"))
                                 Text("Report sent successfully")
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(Color("TextPrimary"))
-                                    .frame(maxHeight: 55)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                             } else {
+                                Image("bug")
+                                    .font(.system(size: 55, weight: .thin))
+                                    .frame(width: 55, height: 35)
+                                    .foregroundColor(Color("TextPrimary"))
                                 Text("Report a problem")
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(Color("TextPrimary"))
-                                    .frame(maxHeight: 55)
-                                Image("bug")
-                                    .font(.system(size: 35, weight: .light))
-                                    .foregroundColor(Color("TextPrimary"))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 15)
                         .frame(maxWidth: .infinity)
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 10).fill(Color("Surface"))
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10).stroke(Color("Border"), lineWidth: 2)
-                    )
+                    .frame(maxWidth: .infinity)
                     .sheet(isPresented: $showBugReport) {
                         ReportView(bugReportSent: $bugReportSent)
                     }
                     .disabled(bugReportSent)
-                    .compositingGroup()
                     
-                    Spacer()
+                    Rectangle()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                        .foregroundColor(Color("TextSecondary"))
+                        .opacity(0.2)
                     
-                    Button(action: {
+                    Button (action:  {
                         showConfirmLogout = true
                     }) {
-                        Text("Logout")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(Color("TextPrimaryFixed"))
-                            .frame(maxWidth: .infinity, maxHeight: 55)
+                        HStack(spacing: 20){
+                            Image("logout")
+                                .font(.system(size: 55, weight: .thin))
+                                .frame(width: 55, height: 35)
+                                .foregroundColor(Color("TextPrimary"))
+                            Text("Logout")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(Color("TextPrimary"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 15)
+                        .frame(maxWidth: .infinity)
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color("Error"))
-                            .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color("Border"), lineWidth: 2)
-                    )
+                    .frame(maxWidth: .infinity)
                     .confirmationDialog("Are you shure?", isPresented: $showConfirmLogout) {
                         Button("Logout", role: .destructive) {
                             vm.logout() { result in
@@ -165,7 +164,12 @@ struct OptionsView: View {
                         }
                         Button("Cansel", role: .cancel) {}
                     }
-                    .compositingGroup()
+                    
+                    Rectangle()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                        .foregroundColor(Color("TextSecondary"))
+                        .opacity(0.2)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
