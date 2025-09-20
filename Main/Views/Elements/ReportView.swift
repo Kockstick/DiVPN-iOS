@@ -30,7 +30,6 @@ struct ReportView: View{
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(Color("TextPrimary"))
                     .frame(maxWidth: .infinity)
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
                 
                 Spacer()
                     .frame(maxHeight: 10)
@@ -63,70 +62,60 @@ struct ReportView: View{
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(isFocused ? Color("Active") : Color("Border"), lineWidth: 2)
                 )
-                .animation(.easeInOut(duration: 0.18), value: isFocused)
                 
                 Spacer()
                     .frame(maxHeight: 10)
                 
-                if !isFocused {
-                    HStack{
-                        Image("file")
-                            .font(.system(size: 80, weight: .thin))
-                            .frame(width: 80, height: 80)
+                HStack{
+                    Image("file")
+                        .font(.system(size: 80, weight: .thin))
+                        .frame(width: 80, height: 80)
+                        .foregroundColor(Color("TextPrimary"))
+                    VStack{
+                        Text("Log file")
+                            .font(.system(size: 24, weight: .bold))
                             .foregroundColor(Color("TextPrimary"))
-                        VStack{
-                            Text("Log file")
-                                .font(.system(size: 24, weight: .bold))
-                                .foregroundColor(Color("TextPrimary"))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            Text("A log file will be attached to the message to help diagnose the issue more effectively.")
-                                .font(.system(size: 16))
-                                .foregroundColor(Color("TextSecondary"))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Text("A log file will be attached to the message to help diagnose the issue more effectively.")
+                            .font(.system(size: 16))
+                            .foregroundColor(Color("TextSecondary"))
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
                 }
                 
                 Spacer()
                     .frame(maxHeight: 30)
                 
-                if !isFocused {
-                    Button(action: {
-                        Task{
-                            await viewModel.sendBugReport()
-                        }
-                        logger.i("Send tapped; textLength=\(viewModel.text.count)", tag: LOG_TAG)
-                        isFocused = false
-                        DispatchQueue.main.async {
-                            UINotificationFeedbackGenerator().notificationOccurred(.success)
-                            bugReportSent = true
-                            dismiss()
-                        }
-                    }) {
-                        Text("Send")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(Color("TextPrimaryFixed"))
-                            .frame(maxWidth: .infinity, maxHeight: 55)
+                Button(action: {
+                    Task{
+                        await viewModel.sendBugReport()
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color("Accent"))
-                            .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12).stroke(Color("Border"), lineWidth: 2)
-                    )
-                    .compositingGroup()
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    .disabled(viewModel.text.isEmpty)
-                    .opacity(viewModel.text.isEmpty ? 0.5 : 1)
+                    logger.i("Send tapped; textLength=\(viewModel.text.count)", tag: LOG_TAG)
+                    isFocused = false
+                    DispatchQueue.main.async {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        bugReportSent = true
+                        dismiss()
+                    }
+                }) {
+                    Text("Send")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(Color("TextPrimaryFixed"))
+                        .frame(maxWidth: .infinity, maxHeight: 55)
                 }
-                
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color("Accent"))
+                        .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12).stroke(Color("Border"), lineWidth: 2)
+                )
+                .disabled(viewModel.text.isEmpty)
+                .opacity(viewModel.text.isEmpty ? 0.5 : 1)
             }
             .padding(.horizontal, 40)
             .padding(.top, 40)
-            .padding(.bottom, isFocused ? -10 : 50)
         }
         .background((Color("Background")))
         .overlay(alignment: .topLeading) {

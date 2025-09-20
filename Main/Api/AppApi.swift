@@ -114,8 +114,17 @@ class AppApi {
             return
         }
         
+        let hashDevice = (DiStorage.loadDevice()?.hashSerialNumber ?? "").unquoted
+        let serverId = DiStorage.loadServer()?.id ?? 0
+        if hashDevice.isEmpty { logger.w("hashDevice is empty in sendBugReport", tag: LOG_TAG) }
+        logger.i("sendBugReport context: serverId=\(serverId)", tag: LOG_TAG)
+        
+        let boundary = "Boundary-\(UUID().uuidString)"
+        let form = BugReportForm(text: text, fileURL: fileURL, hashDevice: hashDevice, serverId: serverId)
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         if var token = DiStorage.loadToken(), !token.isEmpty {
             token = token.unquoted
@@ -124,47 +133,16 @@ class AppApi {
         } else {
             logger.w("No token available for sendBugReport", tag: LOG_TAG)
         }
-        
-        let boundary = "Boundary-\(UUID().uuidString)"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        var body = Data()
-        func append(_ string: String) {
-            body.append(string.data(using: .utf8)!)
-        }
-        
-        append("--\(boundary)\r\n")
-        append("Content-Disposition: form-data; name=\"Text\"\r\n\r\n")
-        append("\(text)\r\n")
-        
-        let filename = fileURL.lastPathComponent
-        let ext = fileURL.pathExtension.lowercased()
-        let mime: String
-        switch ext {
-        case "log", "txt":
-            mime = "text/plain"
-        case "zip":
-            mime = "application/zip"
-        default:
-            mime = "application/octet-stream"
-        }
-        
-        if let fileData = try? Data(contentsOf: fileURL) {
-            append("--\(boundary)\r\n")
-            append("Content-Disposition: form-data; name=\"File\"; filename=\"\(filename)\"\r\n")
-            append("Content-Type: \(mime)\r\n\r\n")
-            body.append(fileData)
-            append("\r\n")
-        } else {
-            logger.e("Failed to load file at \(fileURL.path)", tag: LOG_TAG)
-            completion(.failure(NSError(domain: "FileReadError", code: -2)))
+
+        do {
+            let body = try form.buildMultipartBody(boundary: boundary)
+            request.httpBody = body
+            request.setValue(String(body.count), forHTTPHeaderField: "Content-Length")
+        } catch {
+            logger.e("Failed to build multipart body in sendBugReport: \(error.localizedDescription)", tag: LOG_TAG)
+            completion(.failure(error))
             return
         }
-        
-        append("--\(boundary)--\r\n")
-        
-        request.httpBody = body
-        request.setValue(String(body.count), forHTTPHeaderField: "Content-Length")
         
         let started = Date()
         session.dataTask(with: request) { data, response, error in

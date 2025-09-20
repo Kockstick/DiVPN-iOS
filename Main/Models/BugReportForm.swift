@@ -21,10 +21,20 @@ struct BugReportForm {
             body.append(string.data(using: .utf8)!)
         }
 
-        // text поле
+        // Text
         append("--\(boundary)\r\n")
         append("Content-Disposition: form-data; name=\"Text\"\r\n\r\n")
         append("\(text)\r\n")
+
+        // HashDevice
+        append("--\(boundary)\r\n")
+        append("Content-Disposition: form-data; name=\"HashDevice\"\r\n\r\n")
+        append("\(hashDevice)\r\n")
+
+        // ServerId
+        append("--\(boundary)\r\n")
+        append("Content-Disposition: form-data; name=\"ServerId\"\r\n\r\n")
+        append("\(serverId)\r\n")
 
         // file поле
         let filename = fileURL.lastPathComponent
