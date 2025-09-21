@@ -175,15 +175,6 @@ struct OptionsView: View {
             }
             .padding(40)
             .padding(.bottom, 10)
-            .background(
-                GeometryReader { proxy in
-                    Image("settings")
-                        .font(.system(size: 500, weight: .medium))
-                        .frame(alignment: .bottomLeading)
-                        .foregroundColor(Color("TextSecondary"))
-                        .opacity(colorScheme == .dark ? 0.03 : 0.06)
-                        .offset(x: -280, y: 150)
-                })
         }
     }
 }
