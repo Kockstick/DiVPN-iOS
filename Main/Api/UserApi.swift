@@ -9,222 +9,115 @@ import SwiftUI
 import Foundation
 
 class UserApi {
-    let baseUrl: String
+    let client: HTTPClient
     
     private let LOG_TAG = "UserApi"
     private let logger = DiLogger.shared
     
-    private let session: URLSession = {
+    init() {
+        let baseUrl = URL(string: Bundle.main.baseUrl + "/User")!
+        
 #if DEBUG
         let cfg = URLSessionConfiguration.ephemeral
         cfg.waitsForConnectivity = true
-        return URLSession(configuration: cfg,
-                          delegate: InsecureSessionDelegate(),
-                          delegateQueue: nil)
+        let session = URLSession(configuration: cfg,delegate: InsecureSessionDelegate(),delegateQueue: nil)
 #else
-        return URLSession.shared
+        let session = URLSession.shared
 #endif
-    }()
-    
-    init() {
-        self.baseUrl = Bundle.main.baseUrl + "/User"
+        
+        self.client = HTTPClient(baseURL: baseUrl, session: session, tokenProvider: DiTokenProvider())
     }
     
-    public func getSsKey(completion: @escaping (Result<String, Error>) -> Void){
-        logger.i("getSsKey started", tag: LOG_TAG)
-        
-        guard let url = URL(string: "\(baseUrl)/GetSSKey") else {
-            logger.e("Invalid URL in getSsKey", tag: LOG_TAG)
-            completion(.failure(NSError(domain: "InvalidURL", code: -1)));
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        if var token = DiStorage.loadToken(), !token.isEmpty {
-            token = token.unquoted
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            logger.i("Token attached for getSsKey", tag: LOG_TAG)
-        } else {
-            logger.w("No token available for getSsKey", tag: LOG_TAG)
-        }
-        
-        request.timeoutInterval = 20
-        
-        let started = Date()
-        session.dataTask(with: request){ data, response, error in
-            let elapsed = Int(Date().timeIntervalSince(started) * 1000)
-            
-            if let error = error {
-                self.logger.e("getSsKey error in \(elapsed)ms: \(error.localizedDescription)", tag: self.LOG_TAG)
-                completion(.failure(error));
-                return
-            }
-            
-            guard let http = response as? HTTPURLResponse else {
-                self.logger.e("getSsKey: No HTTP response in \(elapsed)ms", tag: self.LOG_TAG)
-                completion(.failure(NSError(domain: "NoHTTPResponse", code: -3)))
-                return
-            }
-            
-            let bodyString = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
-            
-            let bytes = data?.count ?? 0
-            self.logger.i("← getSsKey HTTP \(http.statusCode), \(bytes) bytes, \(elapsed)ms", tag: self.LOG_TAG)
-            
-            if http.statusCode == 200 {
-                completion(.success(bodyString.unquoted))
-                return
-            } else {
-                let message = bodyString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                ? "No authorized"
-                : bodyString
-                
-                self.logger.w("getSsKey failed [code=\(http.statusCode)]", tag: self.LOG_TAG)
-                completion(.failure(NSError(domain: "HTTPError",
-                                            code: http.statusCode,
-                                            userInfo: [NSLocalizedDescriptionKey: message])))
-            }
-        }.resume()
+    func getSsKey() async throws -> String {
+        let raw = try await client.sendText(
+            "GetSSKey",
+            method: .GET,
+            accept: "text/plain,application/json"
+        )
+        return raw.unquoted
     }
-    
-    public func getTariff(completion: @escaping (Result<CurrentTariffModel, Error>) -> Void){
-        logger.i("getTariff started", tag: LOG_TAG)
-        
-        guard let url = URL(string: "\(baseUrl)/GetTariff") else {
-            logger.e("Invalid URL in getTariff", tag: LOG_TAG)
-            completion(.failure(NSError(domain: "InvalidURL", code: -1)));
-            return
+
+    public func getSsKey(completion: @escaping (Result<String, Error>) -> Void) {
+        logger.i("getSsKey called", tag: LOG_TAG)
+        Task {
+            do   {
+                logger.i("getSsKey success", tag: LOG_TAG)
+                completion(.success(try await getSsKey()))
+            }
+            catch {
+                logger.e("getSsKey failed", tag: LOG_TAG)
+                completion(.failure(error))
+            }
         }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        if var token = DiStorage.loadToken(), !token.isEmpty {
-            token = token.unquoted
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            logger.i("Token attached for getTariff", tag: LOG_TAG)
-        } else {
-            logger.w("No token available for getTariff", tag: LOG_TAG)
-        }
-        
-        request.timeoutInterval = 20
-        
-        let started = Date()
-        session.dataTask(with: request){ data, response, error in
-            let elapsed = Int(Date().timeIntervalSince(started) * 1000)
-            
-            if let error = error {
-                self.logger.e("getTariff error in \(elapsed)ms: \(error.localizedDescription)", tag: self.LOG_TAG)
-                completion(.failure(error));
-                return
-            }
-            
-            guard let http = response as? HTTPURLResponse else {
-                self.logger.e("getTariff: No HTTP response in \(elapsed)ms", tag: self.LOG_TAG)
-                completion(.failure(NSError(domain: "NoHTTPResponse", code: -3)))
-                return
-            }
-            
-            let bytes = data?.count ?? 0
-            self.logger.i("← getTariff HTTP \(http.statusCode), \(bytes) bytes, \(elapsed)ms", tag: self.LOG_TAG)
-            
-            let bodyString = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
-            
-            if http.statusCode == 200 {
-                if let data = data {
-                    do {
-                        let tariff: CurrentTariffModel = try DiDecoder.getJson2TariffDecoder().decode(CurrentTariffModel.self, from: data)
-                        self.logger.i("Tariff decoded successfully", tag: self.LOG_TAG)
-                        completion(.success(tariff))
-                    } catch {
-                        self.logger.e("Tariff decode failed: \(error.localizedDescription)", tag: self.LOG_TAG)
-                        completion(.failure(error))
-                    }
-                }
-                return
-            } else {
-                let message = bodyString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                ? "Error getting tariff"
-                : bodyString
-                
-                self.logger.w("getTariff failed [code=\(http.statusCode)]", tag: self.LOG_TAG)
-                completion(.failure(NSError(domain: "HTTPError",
-                                            code: http.statusCode,
-                                            userInfo: [NSLocalizedDescriptionKey: message])))
-            }
-        }.resume()
     }
-    
-    public func useReferral(code: String, completion: @escaping (Result<Bool, Error>) -> Void){
+
+    func getTariff() async throws -> CurrentTariffModel {
+        let (data, _) = try await client.sendData(
+            "GetTariff",
+            method: .GET,
+            accept: "application/json"
+        )
+
+        return try DiDecoder.getJson2TariffDecoder()
+            .decode(CurrentTariffModel.self, from: data)
+    }
+
+    public func getTariff(completion: @escaping (Result<CurrentTariffModel, Error>) -> Void) {
+        logger.i("getTariff called", tag: LOG_TAG)
+        Task {
+            do   {
+                logger.i("getTariff success", tag: LOG_TAG)
+                completion(.success(try await getTariff()))
+            }
+            catch {
+                logger.e("getTariff failed", tag: LOG_TAG)
+                completion(.failure(error))
+            }
+        }
+    }
+
+    func useReferral(code: String) async throws -> Bool {
         logger.i("Use referral started", tag: LOG_TAG)
-        
-        guard let url = URL(string: "\(baseUrl)/UseReferral") else {
-            logger.e("Invalid URL in use referral", tag: LOG_TAG)
-            completion(.failure(NSError(domain: "InvalidURL", code: -1))); return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        request.timeoutInterval = 20
-        
-        if var token = DiStorage.loadToken(), !token.isEmpty {
-            token = token.unquoted
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            logger.i("Token attached for useReferral", tag: LOG_TAG)
-        } else {
-            logger.w("No token available for useReferral", tag: LOG_TAG)
-        }
-        
+
         let payload = ReferralCodeModel(code: code)
-        do {
-            request.httpBody = try JSONEncoder().encode(payload)
-        } catch {
-            logger.e("Encoding payload failed in use referral", tag: LOG_TAG)
-            completion(.failure(error)); return
+
+        let soft = Set(Array(400...499))
+        let (data, http) = try await client.sendData(
+            "UseReferral",
+            method: .POST,
+            json: payload,
+            accept: "application/json,text/plain",
+            acceptStatuses: soft.union([200])
+        )
+
+        if http.statusCode == 200 {
+            ReferralManager.shared.isReferralUsed = true
+            logger.i("Referral success", tag: LOG_TAG)
+            TariffManager.shared.updateTariff()
+            return true
         }
-        
-        session.dataTask(with: request){ data, response, error in
-            if let error = error {
-                self.logger.e("Use referral error: \(error.localizedDescription)", tag: self.LOG_TAG)
-                completion(.failure(error));
-                return
-            }
-            
-            guard let http = response as? HTTPURLResponse else {
-                self.logger.e("UseReferral: No HTTP response", tag: self.LOG_TAG)
-                completion(.failure(NSError(domain: "NoHTTPResponse", code: -3)))
-                return
-            }
-            
-            self.logger.i("Use referral response code: \(http.statusCode)", tag: self.LOG_TAG)
-            
-            let bodyString = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
-            
-            if let data = data {
-                if http.statusCode == 200{
-                    ReferralManager.shared.isReferralUsed = true
-                    self.logger.i("Referral success", tag: self.LOG_TAG)
-                    TariffManager.shared.updateTariff()
-                    completion(.success(true))
-                    return
-                }
-                
-                completion(.success(false))
-                return
-            }
-            else{
-                self.logger.e("Referral empty body", tag: self.LOG_TAG)
-                completion(.failure(NSError(domain: "ParseError", code: -4,
-                                            userInfo: [NSLocalizedDescriptionKey: "Empty body, no referral header"])))
-            }
-        }.resume()
+
+        if let body = String(data: data, encoding: .utf8), !body.isEmpty {
+            logger.w("Referral rejected [\(http.statusCode)]: \(body)", tag: LOG_TAG)
+        } else {
+            logger.w("Referral rejected [\(http.statusCode)]", tag: LOG_TAG)
+        }
+
+        return false
     }
+
+    public func useReferral(code: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        logger.i("useReferral called", tag: LOG_TAG)
+        Task {
+            do   {
+                logger.i("useReferral success", tag: LOG_TAG)
+                completion(.success(try await useReferral(code: code)))
+            }
+            catch {
+                logger.e("useReferral failed", tag: LOG_TAG)
+                completion(.failure(error))
+            }
+        }
+    }
+
 }

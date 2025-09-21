@@ -19,7 +19,7 @@ class ReportViewModel: ObservableObject{
         logger.i("sendBugReport started with text length: \(text.count)", tag: LOG_TAG)
         
         do{
-            let s = try await api.sendBugReportAsync(text: text)
+            let s = try await api.sendBugReport(text: text)
             logger.i("sendBugReport success", tag: LOG_TAG)
             return true
         } catch {

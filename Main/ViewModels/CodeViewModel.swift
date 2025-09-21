@@ -128,7 +128,7 @@ class CodeViewModel: ObservableObject {
         timeToNewCode = -1;
         
         let authApi = AuthApi()
-        authApi.sendVerificationCode(email: user.email){ result in
+        authApi.sendVerificationCode(user.email){ result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):

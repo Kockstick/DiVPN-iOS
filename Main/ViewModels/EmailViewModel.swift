@@ -30,7 +30,7 @@ class EmailViewModel: ObservableObject {
         loading = true
         logger.i("Requesting verification code", tag: LOG_TAG)
         let authApi = AuthApi()
-        authApi.sendVerificationCode(email: email){ result in
+        authApi.sendVerificationCode(email){ result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):
