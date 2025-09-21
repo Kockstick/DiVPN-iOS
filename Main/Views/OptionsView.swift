@@ -106,7 +106,7 @@ struct OptionsView: View {
                                 Image("check")
                                     .font(.system(size: 55, weight: .thin))
                                     .frame(width: 55, height: 35)
-                                    .foregroundColor(Color("TextPrimary"))
+                                    .foregroundColor(Color("Active"))
                                 Text("Report sent successfully")
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(Color("TextPrimary"))
