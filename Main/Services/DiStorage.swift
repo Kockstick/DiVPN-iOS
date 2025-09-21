@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 internal class DiStorage{
     private static let USER_KEY = "save_user_key"
@@ -141,19 +140,8 @@ internal class DiStorage{
     
     internal static func loadDevice() -> Device? {
         if let data = UserDefaults.standard.data(forKey: DEVICE_KEY),
-           let tariff = try? JSONDecoder().decode(Device.self, from: data) {
+           let device = try? JSONDecoder().decode(Device.self, from: data) {
             logger.i("Device loaded from storage", tag: LOG_TAG)
-            return tariff
-        }
-        else{
-            guard let id = UIDevice.current.identifierForVendor?.uuidString else {
-                logger.e("Failed to get identifierForVendor", tag: LOG_TAG)
-                return nil
-            }
-            
-            let user = DiStorage.loadUser()!
-            let device = try? Device(hashSerialNumber: try HashGenerator.generateHash(salt: user.salt, input: id), typeDevice: .iOS)
-            saveDevice(device!)
             return device
         }
         logger.w("Device not found in storage", tag: LOG_TAG)

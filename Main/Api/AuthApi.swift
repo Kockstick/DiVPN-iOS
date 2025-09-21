@@ -109,7 +109,7 @@ class AuthApi {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.timeoutInterval = 20
         
-        let device = DiStorage.loadDevice()
+        let device = DeviceManager.GetDevice()
         let payload = VerificateModel(email: email, hashCode: hashCode, device: device!)
         do {
             request.httpBody = try JSONEncoder().encode(payload)
@@ -194,7 +194,7 @@ class AuthApi {
             logger.w("No token found in checkAuth", tag: LOG_TAG)
         }
         
-        let payload = DiStorage.loadDevice()
+        let payload = DeviceManager.GetDevice()
         do {
             request.httpBody = try JSONEncoder().encode(payload)
         } catch {

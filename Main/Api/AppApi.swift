@@ -114,7 +114,7 @@ class AppApi {
             return
         }
         
-        let hashDevice = (DiStorage.loadDevice()?.hashSerialNumber ?? "").unquoted
+        let hashDevice = (DeviceManager.GetHash()).unquoted
         let serverId = DiStorage.loadServer()?.id ?? 0
         if hashDevice.isEmpty { logger.w("hashDevice is empty in sendBugReport", tag: LOG_TAG) }
         logger.i("sendBugReport context: serverId=\(serverId)", tag: LOG_TAG)
