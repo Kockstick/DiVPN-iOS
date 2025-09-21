@@ -139,10 +139,10 @@ class AuthApi {
                 do {
                     let verifResult: VerificationResult = try DiDecoder.getJson2VerificationResultDecoder().decode(VerificationResult.self, from: data)
                     
-                    DiStorage.saveToken(token: verifResult.token!)
-                    self.logger.i("Verification success, token saved", tag: self.LOG_TAG)
-                    
                     if http.statusCode == 200{
+                        DiStorage.saveToken(token: verifResult.token!)
+                        self.logger.i("Verification success, token saved", tag: self.LOG_TAG)
+                        
                         if !bodyString.isEmpty {
                             TariffManager.shared.loadTariff { result in
                                 DispatchQueue.main.async {
