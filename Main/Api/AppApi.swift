@@ -35,7 +35,7 @@ class AppApi {
 #else
         let session = URLSession.shared
 #endif
-        self.client = HTTPClient(baseURL: base, session: session, tokenProvider: DiTokenProvider())
+        self.client = HTTPClient(baseURL: base, session: session, tokenProvider: DiTokenProvider.shared)
     }
     
     func checkUpdate(_ appVersion: AppVersionModel) async throws -> String {

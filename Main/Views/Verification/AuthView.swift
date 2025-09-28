@@ -57,6 +57,7 @@ struct AuthView: View{
 
 // 1) Состояние авторизации
 final class AuthState: ObservableObject {
+    static let shared = AuthState()
     @Published var isAuthorized = true
 }
 

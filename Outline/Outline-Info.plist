@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BaseUrl</key>
-	<string>https://192.168.0.107:5242/api</string>
+	<string>https://dev.divpn.ru/api</string>
 	<key>ServerName</key>
 	<string>DiVPN Server</string>
 	<key>TunnelId</key>

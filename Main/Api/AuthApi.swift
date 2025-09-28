@@ -14,6 +14,8 @@ class AuthApi {
     private let LOG_TAG = "AuthApi"
     private let logger = DiLogger.shared
     
+    private static var isRefreshingToken: Bool = false
+    
     
     init() {
         let baseUrl = URL(string: Bundle.main.baseUrl + "/Auth")!
@@ -85,11 +87,11 @@ class AuthApi {
         let resp = try DiDecoder.getJson2VerificationResultDecoder().decode(VerificationResult.self, from: data)
         
         if http.statusCode == 200 {
-            if let access = resp.token {
-                DiStorage.saveToken(token: access)
-                logger.i("Verification success, token saved", tag: LOG_TAG)
+            if let tokenResult = resp.tokenResult {
+                DiStorage.saveToken(token: tokenResult)
+                logger.i("Verification success, tokens saved", tag: LOG_TAG)
             } else {
-                logger.w("200 but no access token in response", tag: LOG_TAG)
+                logger.w("200 but no tokens in response", tag: LOG_TAG)
             }
 
             TariffManager.shared.loadTariff { result in
@@ -125,16 +127,82 @@ class AuthApi {
         }
     }
     
+    func refresh(_ refresh: String) async throws -> TokenResult?{
+        if(Self.isRefreshingToken){
+            logger.i("Token is refreshing", tag: LOG_TAG)
+            return nil
+        }
+        
+        logger.i("Refresh token started", tag: LOG_TAG)
+        Self.isRefreshingToken = true
+        
+        let payload = RefreshTokenModel(refreshToken: refresh)
+        
+        let (data, http) = try await client.sendData(
+                "Refresh",
+                method: .POST,
+                json: payload,
+                accept: "application/json"
+            )
+        
+        let resp = try? DiDecoder.getJson2TokenDecoder().decode(TokenResult.self, from: data)
+        
+        if http.statusCode == 200 {
+            if let tokenResult = resp  {
+                DiStorage.saveToken(token: tokenResult)
+                logger.i("Refresh token success, tokens saved", tag: LOG_TAG)
+            } else {
+                logger.w("200 but no tokens in response", tag: LOG_TAG)
+            }
+            Self.isRefreshingToken = false
+            return resp
+        } else if http.statusCode == 460{
+            logger.i("Token alrady is refreshing", tag: LOG_TAG)
+            return resp
+        } else{
+            Self.isRefreshingToken = false
+            DiStorage.clearAll();
+            AuthState.shared.isAuthorized = false
+        }
+        
+        Self.isRefreshingToken = false
+        throw APIError.http(http.statusCode, message: nil, url: nil, body: String(data: data, encoding: .utf8))
+    }
+    
+    func refresh(_ refresh: String, completion: @escaping (Result<TokenResult?, Error>) -> Void){
+        logger.i("refresh called", tag: LOG_TAG)
+        Task {
+            do {
+                logger.i("refresh success", tag: LOG_TAG)
+                completion(.success(try await self.refresh(refresh)))
+            }
+            catch {
+                logger.e("refresh failed", tag: LOG_TAG)
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func checkAuth() async throws -> String {
+        guard let token = try? await DiTokenProvider.shared.GetAccessToken() else {
+            throw APIError.encoding(NSError(domain: "Token",
+                                            code: -10,
+                                            userInfo: [NSLocalizedDescriptionKey: "No token"]))
+        }
+        
         guard let device = DeviceManager.GetDevice() else {
             throw APIError.encoding(NSError(domain: "Device",
                                             code: -10,
                                             userInfo: [NSLocalizedDescriptionKey: "No device info"]))
         }
+        
+        var headers: [String: String] = [:]
+        headers["Authorization"] = "Bearer \(token)"
 
         return try await client.sendText(
             "CheckAuth",
             method: .POST,
+            headers: headers,
             json: device,
             accept: "text/plain,application/json"
         )

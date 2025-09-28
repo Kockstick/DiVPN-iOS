@@ -10,12 +10,12 @@ import Foundation
 final class HTTPClient{
     private let baseURL: URL
     private let session: URLSession
-    private let tokenProvider: TokenProvider?
+    private var tokenProvider: DiTokenProvider?
     
     private let logger = DiLogger.shared
     private let LOG_TAG = "HTTPClient"
     
-    init(baseURL: URL, session: URLSession, tokenProvider: TokenProvider? = nil) {
+    init(baseURL: URL, session: URLSession, tokenProvider: DiTokenProvider? = nil) {
         self.baseURL = baseURL
         self.session = session
         self.tokenProvider = tokenProvider
@@ -37,7 +37,7 @@ final class HTTPClient{
     }
     
     func sendMultipart(_ path: String, method: HTTPMethod = .POST, headers: [String: String] = [:], body: Data, contentType: String)
-                async throws -> String {
+    async throws -> String {
         var h = headers
         h["Content-Type"] = contentType
         let (data, _) = try await raw(path, method: method, headers: h, body: body, accept: "text/plain,application/json")
@@ -73,7 +73,7 @@ final class HTTPClient{
                 h["Content-Type"] = "application/json; charset=utf-8"
             } catch { throw APIError.encoding(error) }
         } else { bodyData = nil }
-
+        
         return try await raw(path, method: method, query: query, headers: h, body: bodyData, accept: accept, acceptStatuses: acceptStatuses)
     }
     
@@ -84,33 +84,34 @@ final class HTTPClient{
         headers: [String: String] = [:],
         body: Data?,
         accept: String,
-        acceptStatuses: Set<Int> = []
+        acceptStatuses: Set<Int> = [],
+        refreshed: Bool = false
     ) async throws -> (Data, HTTPURLResponse) {
         var url = baseURL
         let clean = path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         url.appendPathComponent(clean)
-
+        
         if query.isEmpty == false {
             var comps = URLComponents(url: url, resolvingAgainstBaseURL: true)!
             comps.queryItems = query.compactMap { k, v in v.map { URLQueryItem(name: k, value: $0) } }
             url = comps.url!
         }
-
+        
         var req = URLRequest(url: url)
         req.httpMethod = method.rawValue
         req.timeoutInterval = 20
         req.setValue(accept, forHTTPHeaderField: "Accept")
         headers.forEach { req.setValue($0.value, forHTTPHeaderField: $0.key) }
         if let body { req.httpBody = body }
-
-        if var token = DiStorage.loadToken(), !token.isEmpty {
+        
+        if var token = try? await self.tokenProvider?.GetAccessToken(), !token.isEmpty {
             token = token.unquoted
             req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             logger.i("Bearer attached \(clean)", tag: LOG_TAG)
         } else {
             logger.w("No token available for \(clean)", tag: LOG_TAG)
         }
-
+        
         logger.i("→ \(method.rawValue) \(path)", tag: LOG_TAG)
         let started = Date()
         do {
@@ -118,7 +119,7 @@ final class HTTPClient{
             let ms = Int(Date().timeIntervalSince(started) * 1000)
             guard let http = resp as? HTTPURLResponse else { throw APIError.noHTTPResponse() }
             logger.i("← \(method.rawValue) \(clean) HTTP \(http.statusCode), \(data.count) bytes, \(ms)ms", tag: LOG_TAG)
-
+            
             if (200..<300).contains(http.statusCode) || acceptStatuses.contains(http.statusCode) {
                 return (data, http)
             } else {

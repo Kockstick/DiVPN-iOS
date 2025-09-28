@@ -25,17 +25,8 @@ class OptionsViewModel: ObservableObject {
             }
         }
         
-        DiStorage.clearServer()
-        logger.i("Server cleared", tag: LOG_TAG)
-
-        DiStorage.clearToken()
-        logger.i("Token cleared", tag: LOG_TAG)
-
-        DiStorage.clearTariff()
-        logger.i("Tariff cleared", tag: LOG_TAG)
-        
-        DiStorage.clearRefCode()
-        logger.i("Referral code cleared", tag: LOG_TAG)
+        DiStorage.clearAll()
+        logger.i("All is cleared", tag: LOG_TAG)
 
         completion(true)
         logger.i("logout completed", tag: LOG_TAG)

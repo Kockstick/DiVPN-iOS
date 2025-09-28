@@ -25,7 +25,7 @@ class ServerApi {
         let session = URLSession.shared
 #endif
         
-        self.client = HTTPClient(baseURL: baseUrl, session: session, tokenProvider: DiTokenProvider())
+        self.client = HTTPClient(baseURL: baseUrl, session: session, tokenProvider: DiTokenProvider.shared)
     }
     
     func getServer() async throws -> ServerModel {

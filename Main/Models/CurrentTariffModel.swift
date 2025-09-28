@@ -12,7 +12,7 @@ struct CurrentTariffModel: Codable {
     let description: String
     let days: Int
     let price: Int?
-    let discount: Int?
+    let currency: String?
     let dateStart: Date
     let dateEnd: Date
 }

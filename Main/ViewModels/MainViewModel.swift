@@ -44,7 +44,7 @@ class MainViewModel: ObservableObject {
     
     func checkVerification(completion: @escaping (Bool) -> Void){
         logger.i("checkVerification called", tag: LOG_TAG)
-        if DiStorage.loadToken() != nil {
+        if DiStorage.loadToken()?.access != nil {
             let authApi = AuthApi()
             authApi.checkAuth(){ result in
                 DispatchQueue.main.async {

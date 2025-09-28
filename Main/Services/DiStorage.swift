@@ -10,7 +10,7 @@ import Foundation
 internal class DiStorage{
     private static let USER_KEY = "save_user_key"
     private static let TARIFF_KEY = "save_tariff_key"
-    private static let TOKEN_KEY = "save_token_key"
+    private static let TOKEN_KEY = "jwt_token_key"
     private static let SS_KEY = "shadowsocks_key"
     private static let REFERRAL_CODE_KEY = "ref_code_key"
     private static let SERVER_KEY = "server_model_key"
@@ -18,6 +18,13 @@ internal class DiStorage{
     
     private static let LOG_TAG: String = "DiStorage"
     private static let logger = DiLogger.shared
+    
+    internal static func clearAll(){
+        clearServer()
+        clearToken()
+        clearTariff()
+        clearRefCode()
+    }
     
     internal static func saveUser(user: User) {
         if let data = try? JSONEncoder().encode(user) {
@@ -65,25 +72,6 @@ internal class DiStorage{
     internal static func clearTariff() {
         UserDefaults.standard.removeObject(forKey: TARIFF_KEY)
         logger.i("Tariff cleared from storage", tag: LOG_TAG)
-    }
-    
-    internal static func saveToken(token: String) {
-        UserDefaults.standard.set(token, forKey: TOKEN_KEY)
-        logger.i("Token saved to storage", tag: LOG_TAG)
-    }
-    
-    internal static func loadToken() -> String? {
-        if let token = UserDefaults.standard.string(forKey: TOKEN_KEY) {
-            logger.i("Token loaded from storage", tag: LOG_TAG)
-            return token
-        }
-        logger.w("Token not found in storage", tag: LOG_TAG)
-        return nil
-    }
-    
-    internal static func clearToken() {
-        UserDefaults.standard.removeObject(forKey: TOKEN_KEY)
-        logger.i("Token cleared from storage", tag: LOG_TAG)
     }
     
     internal static func saveRefCode(code: String?) {
@@ -152,4 +140,29 @@ internal class DiStorage{
         UserDefaults.standard.removeObject(forKey: DEVICE_KEY)
         logger.i("Device cleared from storage", tag: LOG_TAG)
     }
+    
+    internal static func saveToken(token: TokenResult) {
+        if let data = try? JSONEncoder().encode(token) {
+            UserDefaults.standard.set(data, forKey: TOKEN_KEY)
+            logger.i("Token saved to storage", tag: LOG_TAG)
+        } else {
+            logger.e("Failed to encode Token", tag: LOG_TAG)
+        }
+    }
+
+    internal static func loadToken() -> TokenResult? {
+        if let data = UserDefaults.standard.data(forKey: TOKEN_KEY),
+           let token = try? JSONDecoder().decode(TokenResult.self, from: data) {
+            logger.i("Token loaded from storage", tag: LOG_TAG)
+            return token
+        }
+        logger.w("Token not found in storage", tag: LOG_TAG)
+        return nil
+    }
+
+    internal static func clearToken() {
+        UserDefaults.standard.removeObject(forKey: TOKEN_KEY)
+        logger.i("Token cleared from storage", tag: LOG_TAG)
+    }
+
 }

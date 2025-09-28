@@ -6,7 +6,7 @@
 //
 
 struct VerificationResult: Codable {
-    let token: String?
+    let tokenResult: TokenResult?
     let error: VerificationError?
 }
 
