@@ -19,14 +19,7 @@ class AuthApi {
     
     init() {
         let baseUrl = URL(string: Bundle.main.baseUrl + "/Auth")!
-        
-#if DEBUG
-        let cfg = URLSessionConfiguration.ephemeral
-        cfg.waitsForConnectivity = true
-        let session = URLSession(configuration: cfg,delegate: InsecureSessionDelegate(),delegateQueue: nil)
-#else
         let session = URLSession.shared
-#endif
         
         self.client = HTTPClient(baseURL: baseUrl, session: session)
     }

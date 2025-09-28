@@ -16,14 +16,7 @@ class ServerApi {
     
     init() {
         let baseUrl = URL(string: Bundle.main.baseUrl + "/Server")!
-        
-#if DEBUG
-        let cfg = URLSessionConfiguration.ephemeral
-        cfg.waitsForConnectivity = true
-        let session = URLSession(configuration: cfg,delegate: InsecureSessionDelegate(),delegateQueue: nil)
-#else
         let session = URLSession.shared
-#endif
         
         self.client = HTTPClient(baseURL: baseUrl, session: session, tokenProvider: DiTokenProvider.shared)
     }

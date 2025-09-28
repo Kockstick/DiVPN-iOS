@@ -14,27 +14,11 @@ class AppApi {
     private let LOG_TAG: String = "AppApi"
     private let logger = DiLogger.shared
     
-    private let session: URLSession = {
-#if DEBUG
-        let cfg = URLSessionConfiguration.ephemeral
-        cfg.waitsForConnectivity = true
-        return URLSession(configuration: cfg,
-                          delegate: InsecureSessionDelegate(),
-                          delegateQueue: nil)
-#else
-        return URLSession.shared
-#endif
-    }()
+    private let session = URLSession.shared
     
     init() {
         let base = URL(string: Bundle.main.baseUrl + "/App")!
-#if DEBUG
-        let cfg = URLSessionConfiguration.ephemeral
-        cfg.waitsForConnectivity = true
-        let session = URLSession(configuration: cfg, delegate: InsecureSessionDelegate(), delegateQueue: nil)
-#else
         let session = URLSession.shared
-#endif
         self.client = HTTPClient(baseURL: base, session: session, tokenProvider: DiTokenProvider.shared)
     }
     
