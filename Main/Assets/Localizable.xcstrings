@@ -17,9 +17,6 @@
     "7YJPC5" : {
 
     },
-    "99₽" : {
-
-    },
     "A log file will be attached to the message to help diagnose the issue more effectively." : {
       "localizations" : {
         "ru" : {
@@ -304,7 +301,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "У тебя есть код приглашения?"
+            "value" : "У вас есть пригласительный код?"
           }
         }
       }
@@ -403,6 +400,20 @@
           }
         }
       }
+    },
+    "I agree to reccuring charges and the offer terms" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я даю согласие на регулярные списания и принимаю условия публичной оферты"
+          }
+        }
+      }
+    },
+    "I agree to the" : {
+
     },
     "Invalid code or not found" : {
       "localizations" : {
@@ -514,6 +525,9 @@
         }
       }
     },
+    "Off" : {
+
+    },
     "Ok" : {
       "localizations" : {
         "ru" : {
@@ -523,6 +537,9 @@
           }
         }
       }
+    },
+    "On" : {
+
     },
     "Open App Store" : {
       "localizations" : {
@@ -538,6 +555,9 @@
 
     },
     "Options" : {
+
+    },
+    "Privacy Policy" : {
 
     },
     "Purchase subscription" : {

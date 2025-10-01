@@ -30,6 +30,7 @@ struct ReferralView: View {
                 Text("Do you have a referral code?")
                     .font(.system(size: 36, weight: .bold))
                     .foregroundColor(Color("TextPrimary"))
+                    .multilineTextAlignment(.center)
                 
                 Spacer()
                 

@@ -14,23 +14,11 @@ final class DiStatus: ObservableObject {
     private let LOG_TAG: String = "DiStatus"
     private let logger = DiLogger.shared
     
-    @Published var isEnabled: Bool = false {
-        didSet {
-            logger.i("isEnabled changed: \(oldValue) → \(isEnabled)", tag: LOG_TAG)
-        }
-    }
+    @Published var isEnabled: Bool = false
     
-    @Published var connected: Bool = false {
-        didSet {
-            logger.i("connected changed: \(oldValue) → \(connected)", tag: LOG_TAG)
-        }
-    }
+    @Published var connected: Bool = false
     
-    @Published public var loading: Bool = false {
-        didSet {
-            logger.i("loading changed: \(oldValue) → \(loading)", tag: LOG_TAG)
-        }
-    }
+    @Published public var loading: Bool = false
     
     public var statusText: String {
         if connected {
