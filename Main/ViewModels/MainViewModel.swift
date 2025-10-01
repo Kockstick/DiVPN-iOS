@@ -50,15 +50,19 @@ class MainViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let body):
-                        self.logger.i("checkVerification: authorized", tag: self.LOG_TAG)
-                        self.logDevice()
-                        completion(true)
+                        if body{
+                            self.logger.i("checkVerification: authorized", tag: self.LOG_TAG)
+                            self.logDevice()
+                        } else{
+                            self.logger.w("checkVerification: not authorized", tag: self.LOG_TAG)
+                            DiStorage.clearToken()
+                            DiStorage.clearServer()
+                        }
+                        completion(body)
                         return
                     case .failure(let error):
-                        self.logger.w("checkVerification: not authorized (\(error.localizedDescription))", tag: self.LOG_TAG)
-                        DiStorage.clearToken()
-                        DiStorage.clearServer()
-                        completion(false)
+                        self.logger.w("checkVerification failed: (\(error.localizedDescription))", tag: self.LOG_TAG)
+                        completion(true)
                         return
                     }
                 }

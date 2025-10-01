@@ -58,8 +58,6 @@ struct DiTokenProvider {
             return tokenResult?.access
         } catch{
             logger.i("Failed refresh token: \(error)", tag: LOG_TAG)
-            DiStorage.clearAll()
-            AuthState.shared.isAuthorized = false
         }
         
         return nil

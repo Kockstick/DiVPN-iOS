@@ -13,6 +13,7 @@ class TariffManager: ObservableObject {
     
     @Published private(set) var tariff: CurrentTariffModel?
     @Published private(set) var isFreeTrial: Bool = true
+    @Published private(set) var subscribtionPrice: Int?
     
     private let LOG_TAG = "TariffManager"
     private let logger = DiLogger.shared
@@ -39,6 +40,11 @@ class TariffManager: ObservableObject {
         return "\(daysLeft)"
     }
     
+    var subscribtionPriceText: String {
+        guard let subscribtionPrice = subscribtionPrice else { return "...₽" }
+        return "\(subscribtionPrice)₽"
+    }
+    
     var tariffName: String {
         guard let tariff = tariff else { return "Subscription" }
         return tariff.name
@@ -49,6 +55,7 @@ class TariffManager: ObservableObject {
     }
     
     func loadTariff(completion: @escaping (Result<CurrentTariffModel, Error>) -> Void){
+        loadSubscribtionPrice()
         logger.i("loadTariff called", tag: LOG_TAG)
         
         if let tariff = DiStorage.loadTariff() {
@@ -90,8 +97,8 @@ class TariffManager: ObservableObject {
         }
         
         if(tariff?.name == "Trial"){
-             if days! <= 0 {
-                 logger.i("Trial ended -> show continue notice", tag: LOG_TAG)
+            if days! <= 0 {
+                logger.i("Trial ended -> show continue notice", tag: LOG_TAG)
                 DiNotification.shared.showRow(NSLocalizedString("continue_requires_subscription", comment: ""))
                 return
             } else {
@@ -105,6 +112,25 @@ class TariffManager: ObservableObject {
             return
         } else {
             logger.i("Tariff active", tag: LOG_TAG)
+        }
+    }
+    
+    private func loadSubscribtionPrice(){
+        let invoiceApi = InvoiceApi()
+        invoiceApi.getSubscribtionPrice { result in
+            switch result{
+            case .success(let priceModel):
+                DispatchQueue.main.async {
+                    self.subscribtionPrice = priceModel.price
+                    self.logger.i("Subscribtion price: \(self.subscribtionPrice)", tag: self.LOG_TAG)
+                }
+                break
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.logger.e("Subscribtion price load failed: \(error.localizedDescription)", tag: self.LOG_TAG)
+                }
+                break
+            }
         }
     }
 }

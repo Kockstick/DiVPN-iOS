@@ -10,9 +10,18 @@ import SwiftUI
 struct ShopView : View {
     @StateObject var viewModel = ShopViewModel()
     @StateObject var statusModel = DiStatus.shared
+    @StateObject var agreementManager = AgreementManager.shared
     @EnvironmentObject var tariffManager: TariffManager
     
     @Environment(\.colorScheme) var colorScheme
+    
+    @State var showSafariView: Bool = false
+    @State var showPublicOffer: Bool = false
+    @State var openPaymentPage: Bool = false
+    @State private var paymentUrl: URL?
+    
+    private let LOG_TAG = "ShopView"
+    private let logger = DiLogger.shared
     
     var body: some View {
         VStack(spacing: 0){
@@ -22,10 +31,10 @@ struct ShopView : View {
                     .foregroundColor(Color("TextPrimary"))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 HStack{
-                    Text("99\u{20BD}")
+                    Text(tariffManager.subscribtionPriceText)
                         .font(.system(size: 48, weight: .bold))
-                        .foregroundColor(Color("TextPrimary"))
                         .frame(alignment: .leading)
+                        .shimmer(tariffManager.subscribtionPrice == nil)
                     Text("for 1 month")
                         .font(.system(size: 32, weight: .bold))
                         .foregroundColor(Color("TextPrimary"))
@@ -72,16 +81,48 @@ struct ShopView : View {
             Text(tariffManager.daysToEntTariff ?? 1 > 0 ?
                  "Free trial ends in \(tariffManager.daysToEntTariffText) days" :
                     "Free trial has ended")
-                .font(.system(size: 24, weight: .bold))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .lineSpacing(6)
-                .shimmer(tariffManager.tariff == nil)
+            .font(.system(size: 24, weight: .bold))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .lineSpacing(6)
+            .shimmer(tariffManager.tariff == nil)
             
             Spacer()
             
+            Text(attributedText)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(Color("TextSecondary"))
+                .multilineTextAlignment(.leading)
+                .onTapGesture {
+                    if let range = attributedText.range(of: "offer terms") {
+                        // Клик сработает только если попали в диапазон,
+                        // но так как Text не даёт хит-тест по подстроке —
+                        // проще сразу реагировать на весь тап:
+                        showPublicOffer = true
+                    }
+                }
+                .sheet(isPresented: $showPublicOffer) {
+                    SafariView(url: URL(string: Bundle.main.privacyPolicyUrl)!)
+                }
+            
+            Spacer()
+                .frame(maxHeight: 15)
+            
             Button(action: {
-                
-                
+                agreementManager.isPublicOfferAgreed = true
+                openPaymentPage = true
+                Task {
+                    do {
+                        let urlString = try await viewModel.getInvoiceUrl()
+                        guard let url = URL(string: urlString) else {
+                            logger.w("Incorrect invoice url: \(urlString)", tag: "ShopView")
+                            return
+                        }
+                        await MainActor.run { paymentUrl = url }
+                    } catch {
+                        logger.e("Error get invoice url: \(error)", tag: "ShopView")
+                    }
+                }
             }) {
                 Text("Purchase subscription")
                     .font(.system(size: 16, weight: .bold))
@@ -102,5 +143,24 @@ struct ShopView : View {
         .padding(.horizontal, 40)
         .padding(.top, 70)
         .padding(.bottom, 50)
+        .sheet(item: $paymentUrl) { url in
+            SafariView(url: url)
+                .onDisappear {
+                    openPaymentPage = false
+                }
+        }
     }
+}
+
+extension URL: Identifiable {
+    public var id: String { absoluteString }
+}
+
+private var attributedText: AttributedString {
+    var result = AttributedString("By making a purchase, you agree to reccuring charges ang the offer terms")
+    if let range = result.range(of: "offer terms") {
+        result[range].foregroundColor = .blue
+        result[range].underlineStyle = .single
+    }
+    return result
 }

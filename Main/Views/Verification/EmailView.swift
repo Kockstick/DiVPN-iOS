@@ -11,7 +11,9 @@ struct EmailView: View {
     var onNext: () -> Void
     
     @StateObject var viewModel = EmailViewModel()
+    @StateObject var agreementManager = AgreementManager.shared
     @State var isValid: Bool = false
+    @State var showPrivacyPolicy: Bool = false
     
     @FocusState private var isFocused: Bool
     @Environment(\.colorScheme) var colorScheme
@@ -69,6 +71,36 @@ struct EmailView: View {
                 
                 Spacer()
                 
+                HStack{
+                    Toggle(isOn: $agreementManager.isPrivacyPolicyAccept) {
+                        EmptyView()
+                    }
+                    .toggleStyle(CheckboxToggleStyle())
+                    .frame(width: 25, height: 25)
+                    .disabled(viewModel.loading)
+                    
+                    Text("I agree to the")
+                        .foregroundColor(Color("TextPrimary"))
+                        .font(.system(size: 16))
+                    
+                    Button(action: {
+                        showPrivacyPolicy = true
+                    }){
+                        HStack{
+                            Text("Privacy Policy")
+                                .font(.system(size: 16))
+                        }
+                    }
+                    .sheet(isPresented: $showPrivacyPolicy) {
+                        SafariView(url: URL(string: Bundle.main.privacyPolicyUrl)!)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 15)
+                
+                Spacer()
+                    .frame(maxHeight: 15)
+                
                 Button(action: {
                     viewModel.onButtonClick(){ success in
                         if success {
@@ -91,10 +123,10 @@ struct EmailView: View {
                     .frame(maxWidth: .infinity, maxHeight: 55)
                     .disabled(viewModel.loading || !isValid)
                     .background(
-                        Color(!viewModel.loading ? viewModel.errMessage == nil ? "Accent" : "Error" : "Surface")
+                        Color(!viewModel.loading && agreementManager.isPrivacyPolicyAccept ? viewModel.errMessage == nil ? "Accent" : "Error" : "Surface")
                             .cornerRadius(12)
                             .shadow(  // Переносим тень в background
-                                color: .black.opacity(viewModel.loading ? 0 : isValid ? 0.15 : 0),
+                                color: .black.opacity(viewModel.loading || !agreementManager.isPrivacyPolicyAccept ? 0 : isValid ? 0.15 : 0),
                                 radius: 5,
                                 x: 0,
                                 y: 5
@@ -105,7 +137,7 @@ struct EmailView: View {
                             .stroke(Color("Border"), lineWidth: 2)
                     )
                 }
-                .disabled(viewModel.loading || !isValid || viewModel.errMessage != nil)
+                .disabled(viewModel.loading || !isValid || viewModel.errMessage != nil || !agreementManager.isPrivacyPolicyAccept)
                 .contentShape(Rectangle())
                 .animation(.easeInOut(duration: 0.2), value: isFocused)
             }
