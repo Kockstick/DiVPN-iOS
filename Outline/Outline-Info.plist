@@ -4,6 +4,8 @@
 <dict>
 	<key>BaseUrl</key>
 	<string>https://dev.divpn.ru/api</string>
+	<key>PrivacyPolicyUrl</key>
+	<string>https://dev.divpn.ru/Docs/PrivacyPolicy</string>
 	<key>ServerName</key>
 	<string>DiVPN Server</string>
 	<key>TunnelId</key>

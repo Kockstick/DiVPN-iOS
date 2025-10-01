@@ -25,7 +25,12 @@ class AuthApi {
     }
     
     func sendVerificationCode(_ email: String) async throws -> String {
-        let payload = EmailModel(email: email)
+        if(!AgreementManager.shared.isPrivacyPolicyAccept){
+            throw APIError.encoding(NSError(domain: "AuthApi", code: -10, userInfo: [NSLocalizedDescriptionKey : "Error: Privacy policy not accept"]))
+        }
+        var agreement = AgreementModel(typeDevice: TypeDevice.iOS, typeAgreement: TypeAgreement.PrivacyPolicy)
+        var getVerifCodeModel = GetVerifCodeModel(emailModel: EmailModel(email: email), agreementModel: agreement)
+        let payload = getVerifCodeModel
 
         let (data, http) = try await client.sendData(
             "GetVerifCode",
@@ -67,6 +72,7 @@ class AuthApi {
                throw APIError.encoding(NSError(domain: "Device", code: -10,
                                                userInfo: [NSLocalizedDescriptionKey: "No device info"]))
            }
+        
         let payload = VerificateModel(email: email, hashCode: hashCode, device: device)
         
         let (data, http) = try await client.sendData(
@@ -154,8 +160,7 @@ class AuthApi {
             return resp
         } else{
             Self.isRefreshingToken = false
-            DiStorage.clearAll();
-            AuthState.shared.isAuthorized = false
+            return nil
         }
         
         Self.isRefreshingToken = false
@@ -176,7 +181,7 @@ class AuthApi {
         }
     }
     
-    func checkAuth() async throws -> String {
+    func checkAuth() async throws -> Bool {
         guard let token = try? await DiTokenProvider.shared.GetAccessToken() else {
             throw APIError.encoding(NSError(domain: "Token",
                                             code: -10,
@@ -192,16 +197,22 @@ class AuthApi {
         var headers: [String: String] = [:]
         headers["Authorization"] = "Bearer \(token)"
 
-        return try await client.sendText(
+        let (data, http) = try await client.sendData(
             "CheckAuth",
             method: .POST,
             headers: headers,
             json: device,
             accept: "text/plain,application/json"
         )
+        
+        if http.statusCode == 401 {
+            return false
+        }
+        
+        return true
     }
 
-    public func checkAuth(completion: @escaping (Result<String, Error>) -> Void) {
+    public func checkAuth(completion: @escaping (Result<Bool, Error>) -> Void) {
         logger.i("checkAuth called", tag: LOG_TAG)
         Task {
             do{
