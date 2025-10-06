@@ -18,6 +18,8 @@ struct EmailView: View {
     @FocusState private var isFocused: Bool
     @Environment(\.colorScheme) var colorScheme
     
+    private let exampleEmail: String = "example@gmail.com"
+    
     var body: some View {
         ZStack{
             VStack{
@@ -25,7 +27,7 @@ struct EmailView: View {
                     .frame(alignment: .top)
                 Spacer()
                 ZStack{
-                    TextField("", text: $viewModel.email, prompt: Text("Your email").foregroundColor(Color("TextSecondary")))
+                    TextField("", text: $viewModel.email, prompt: Text(exampleEmail).foregroundColor(Color("TextSecondary")))
                         .frame(height: 55)
                         .padding(.horizontal, 16)
                         .cornerRadius(10)
@@ -79,24 +81,21 @@ struct EmailView: View {
                     .frame(width: 25, height: 25)
                     .disabled(viewModel.loading)
                     
-                    Text("I agree to the")
-                        .foregroundColor(Color("TextPrimary"))
-                        .font(.system(size: 16))
-                    
-                    Button(action: {
-                        showPrivacyPolicy = true
-                    }){
-                        HStack{
-                            Text("Privacy Policy")
-                                .font(.system(size: 16))
+                    Text(attributedText)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(Color("TextSecondary"))
+                        .multilineTextAlignment(.leading)
+                        .onTapGesture {
+                            if let range = attributedText.range(of: NSLocalizedString("privacy_policy", comment: "")) {
+                                showPrivacyPolicy = true
+                            }
                         }
-                    }
-                    .sheet(isPresented: $showPrivacyPolicy) {
-                        SafariView(url: URL(string: Bundle.main.privacyPolicyUrl)!)
-                    }
+                        .sheet(isPresented: $showPrivacyPolicy) {
+                            SafariView(url: URL(string: Bundle.main.privacyPolicyUrl)!)
+                        }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 15)
                 
                 Spacer()
                     .frame(maxHeight: 15)
@@ -157,3 +156,11 @@ struct EmailView: View {
     }
 }
 
+private var attributedText: AttributedString {
+    var result = AttributedString(NSLocalizedString("agree_privacy_policy", comment: ""))
+    if let range = result.range(of: NSLocalizedString("privacy_policy", comment: "")) {
+        result[range].foregroundColor = .blue
+        result[range].underlineStyle = .single
+    }
+    return result
+}

@@ -41,7 +41,7 @@ class InvoiceApi{
     }
     
     public func getSubscribtionStatus() async throws -> StatusSubscribtion{
-        let (data, http) = try await client.sendData("GetAgreementStatus", method: .GET, accept: "application/json")
+        let (data, http) = try await client.sendData("GetSubscribtionStatus", method: .GET, accept: "application/json")
         let resp = try JSONDecoder().decode(SubscribtionStatusModel.self, from: data)
         return resp.status
     }
@@ -80,6 +80,62 @@ class InvoiceApi{
             catch {
                 DispatchQueue.main.async {
                     self.logger.e("getSubscribtionPrice failed", tag: self.LOG_TAG)
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    func canselSubscribtion(_ reason: ReasonUnsubscribe) async throws -> String {
+        let model = ReasonUnsubscribeModel(reason: reason)
+        return try await client.send(
+            "CanselSubscribtion",
+            method: .POST,
+            json: model,
+            accept: "application/json"
+        ) as String
+    }
+    
+    public func canselSubscribtion(_ reason: ReasonUnsubscribe, completion: @escaping (Result<String, Error>) -> Void){
+        logger.i("canselSubscribtion called", tag: LOG_TAG)
+        Task {
+            do {
+                let res = try await canselSubscribtion(reason)
+                logger.i("canselSubscribtion success", tag: LOG_TAG)
+                DispatchQueue.main.async {
+                    completion(.success(res))
+                }
+            }
+            catch {
+                DispatchQueue.main.async {
+                    self.logger.e("canselSubscribtion failed", tag: self.LOG_TAG)
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    func resumeSubscribtion() async throws -> String {
+        return try await client.send(
+            "ResumeSubscribtion",
+            method: .POST,
+            accept: "application/json"
+        ) as String
+    }
+    
+    public func resumeSubscribtion(completion: @escaping (Result<String, Error>) -> Void){
+        logger.i("resumeSubscribtion called", tag: LOG_TAG)
+        Task {
+            do {
+                let res = try await resumeSubscribtion()
+                logger.i("resumeSubscribtion success", tag: LOG_TAG)
+                DispatchQueue.main.async {
+                    completion(.success(res))
+                }
+            }
+            catch {
+                DispatchQueue.main.async {
+                    self.logger.e("resumeSubscribtion failed", tag: self.LOG_TAG)
                     completion(.failure(error))
                 }
             }

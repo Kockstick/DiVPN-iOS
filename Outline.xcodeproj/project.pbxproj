@@ -692,6 +692,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 0.0.1;
+				DEVELOPMENT_TEAM = 24UW464AUL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"Outline/Plugins/cordova-plugin-outline",
@@ -741,6 +742,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 0.0.1;
+				DEVELOPMENT_TEAM = 24UW464AUL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"Outline/Plugins/cordova-plugin-outline",

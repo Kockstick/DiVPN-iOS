@@ -15,6 +15,7 @@ internal class DiStorage{
     private static let REFERRAL_CODE_KEY = "ref_code_key"
     private static let SERVER_KEY = "server_model_key"
     private static let DEVICE_KEY = "device_key"
+    private static let APNS_TOKEN_KEY = "applucation_push_notification_token_key"
     
     private static let LOG_TAG: String = "DiStorage"
     private static let logger = DiLogger.shared
@@ -165,4 +166,23 @@ internal class DiStorage{
         logger.i("Token cleared from storage", tag: LOG_TAG)
     }
 
+    internal static func saveApnsToken(_ token: String?) {
+        guard let token, !token.isEmpty else { return }
+        UserDefaults.standard.set(token, forKey: APNS_TOKEN_KEY)
+        logger.i("Apns token saved to storage", tag: LOG_TAG)
+    }
+    
+    internal static func loadApnsToken() -> String? {
+        if let token = UserDefaults.standard.string(forKey: APNS_TOKEN_KEY) {
+            logger.i("Apns token loaded from storage", tag: LOG_TAG)
+            return token
+        }
+        logger.w("Apns token not found in storage", tag: LOG_TAG)
+        return nil
+    }
+    
+    internal static func clearApnsToken() {
+        UserDefaults.standard.removeObject(forKey: APNS_TOKEN_KEY)
+        logger.i("Apns token cleared from storage", tag: LOG_TAG)
+    }
 }

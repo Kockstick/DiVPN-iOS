@@ -9,9 +9,18 @@ import SwiftUI
 
 struct SubscribeView: View {
     @StateObject var tariffManager = TariffManager.shared
+    @StateObject var statusModel = DiStatus.shared
+    @StateObject var agreementManager = AgreementManager.shared
+    
+    private let haptic = UINotificationFeedbackGenerator()
+    
+    private let invoiceApi = InvoiceApi()
+    
+    @State var showUnsubscribeView = false
+    @State var loading: Bool = false
     
     var body: some View {
-        if tariffManager.isFreeTrial {
+        if tariffManager.isFreeTrial || !tariffManager.isActiveTariff {
             ShopView()
         } else {
             ZStack{
@@ -20,20 +29,20 @@ struct SubscribeView: View {
                         Spacer()
                             .frame(maxHeight: 20)
                         
-                        Image(tariffManager.isActiveTariff ? "check" : "error")
-                            .font(.system(size: 180, weight: .thin))
+                        Image("check")
+                            .font(.system(size: 180, weight: .light))
                             .foregroundColor(Color("TextPrimary"))
                         
                         Spacer()
                             .frame(maxHeight: 10)
                         
-                        Text("\(String(describing: tariffManager.tariffName)) \(tariffManager.isActiveTariff ? "is active" : "is inactive")")
+                        Text("\(String(describing: tariffManager.tariffName)) is active")
                             .font(.system(size: 36, weight: .bold))
                             .multilineTextAlignment(.center)
                             .foregroundColor(Color("TextPrimary"))
                         
                         Spacer()
-                            .frame(maxHeight: 40)
+                            .frame(maxHeight: 30)
                         
                         Rectangle()
                             .frame(maxWidth: .infinity)
@@ -41,26 +50,56 @@ struct SubscribeView: View {
                             .foregroundColor(Color("TextSecondary"))
                         
                         Spacer()
-                            .frame(maxHeight: 40)
+                            .frame(maxHeight: 30)
                         
-                        Text(tariffManager.isActiveTariff ? "Subscribtions renews in \(tariffManager.daysToEntTariffText) days" : "To keep using the VPN, please renew your subscription")
-                            .font(.system(size: 24, weight: .bold))
-                            .frame(maxWidth: .infinity, alignment: tariffManager.isActiveTariff ? .center : .leading)
-                            .multilineTextAlignment(tariffManager.isActiveTariff ? .center : .leading)
-                            .lineSpacing(12)
-                            .shimmer(tariffManager.tariff == nil, color: Color("TextSecondary"))
+                        if tariffManager.subscribtionStatus == StatusSubscribtion.cancelled{
+                            HStack{
+                                Text(tariffManager.subscribtionPriceText)
+                                    .font(.system(size: 48, weight: .bold))
+                                    .frame(alignment: .leading)
+                                    .shimmer(tariffManager.subscribtionPrice == nil)
+                                Text("for 1 month")
+                                    .font(.system(size: 32, weight: .bold))
+                                    .foregroundColor(Color("TextPrimary"))
+                                    .frame(alignment: .leading)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.bottom, 10)
+                            HStack{
+                                Image("error")
+                                    .font(.system(size: 40, weight: .medium))
+                                    .foregroundColor(Color("Error"))
+                                Text("Your subscription ends in \(tariffManager.daysToEntTariffText) days.")
+                                    .font(.system(size: 24, weight: .bold))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .multilineTextAlignment(.leading)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .shimmer(tariffManager.tariff == nil, color: Color("TextPrimary"))
+                            }
+                        } else {
+                            Text("Subscribtions renews in \(tariffManager.daysToEntTariffText) days")
+                                .font(.system(size: 24, weight: .bold))
+                                .frame(maxWidth: .infinity, alignment: tariffManager.isActiveTariff ? .center : .leading)
+                                .multilineTextAlignment(tariffManager.isActiveTariff ? .center : .leading)
+                                .lineSpacing(12)
+                                .shimmer(tariffManager.tariff == nil, color: Color("TextSecondary"))
+                        }
                         
                         Spacer()
                         
-                        if tariffManager.isActiveTariff {
+                        if tariffManager.subscribtionStatus == StatusSubscribtion.active {
                             Button(action: {
-                                
-                                
+                                showUnsubscribeView = true;
                             }) {
-                                Text("Do not renew")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(Color("TextPrimary"))
-                                    .frame(maxWidth: .infinity, maxHeight: 55)
+                                if loading{
+                                    CircleLoader()
+                                        .frame(maxWidth: .infinity, maxHeight: 55)
+                                } else {
+                                    Text("Do not renew")
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(Color("TextPrimary"))
+                                        .frame(maxWidth: .infinity, maxHeight: 55)
+                                }
                             }
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
@@ -71,16 +110,30 @@ struct SubscribeView: View {
                                 RoundedRectangle(cornerRadius: 12)
                                     .stroke(Color("Border"), lineWidth: 2)
                             )
-                            .compositingGroup()
-                        } else {
+                            .sheet(isPresented: $showUnsubscribeView){
+                                UnsubscribeView(loading: $loading)
+                            }
+                        } else if tariffManager.subscribtionStatus == StatusSubscribtion.trial {
+                            PurchasePanel(showPrice: true)
+                        } else{
                             Button(action: {
-                                
-                                
+                                loading = true
+                                invoiceApi.resumeSubscribtion() { res in
+                                    TariffManager.shared.loadTariff() {_ in
+                                        loading = false
+                                    }
+                                }
+                                haptic.notificationOccurred(.warning)
                             }) {
-                                Text("Renew")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(Color("TextPrimaryFixed"))
-                                    .frame(maxWidth: .infinity, maxHeight: 55)
+                                if loading{
+                                    CircleLoader()
+                                        .frame(maxWidth: .infinity, maxHeight: 55)
+                                } else {
+                                    Text("Resume subscription")
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(Color("TextPrimaryFixed"))
+                                        .frame(maxWidth: .infinity, maxHeight: 55)
+                                }
                             }
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
@@ -91,7 +144,6 @@ struct SubscribeView: View {
                                 RoundedRectangle(cornerRadius: 12)
                                     .stroke(Color("Border"), lineWidth: 2)
                             )
-                            .compositingGroup()
                         }
                     }
                 }
@@ -99,6 +151,7 @@ struct SubscribeView: View {
             .padding(.horizontal, 40)
             .padding(.top, 70)
             .padding(.bottom, 50)
+            .onAppear { haptic.prepare() }
         }
     }
 }

@@ -12,6 +12,7 @@ enum PlistKey {
     static let serverName = "ServerName"
     static let baseUrl = "BaseUrl"
     static let privacyPolicyUrl = "PrivacyPolicyUrl"
+    static let publicOfferUrl = "PublicOfferUrl"
 }
 
 extension Bundle {
@@ -26,5 +27,8 @@ extension Bundle {
     }
     var privacyPolicyUrl: String{
         return object(forInfoDictionaryKey: PlistKey.privacyPolicyUrl) as? String ?? "divpn.ru"
+    }
+    var publicOfferUrl: String{
+        return object(forInfoDictionaryKey: PlistKey.publicOfferUrl) as? String ?? "divpn.ru"
     }
 }

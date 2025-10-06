@@ -43,7 +43,37 @@ class ServerApi {
         }
     }
     
-    func logConnection(_ model: LogConnectionModel) async throws -> Bool {
+    func changeServer(_ lastServer: ServerModel) async throws -> ServerModel {
+        return try await client.send(
+            "ChangeServer",
+            method: .POST,
+            json: lastServer,
+            accept: "application/json"
+        ) as ServerModel
+    }
+    
+    public func changeServer(_ lastServer: ServerModel, completion: @escaping (Result<ServerModel, Error>) -> Void) {
+        logger.i("changeServer called", tag: LOG_TAG)
+        Task {
+            do   {
+                logger.i("changeServer success", tag: LOG_TAG)
+                completion(.success(try await changeServer(lastServer)))
+            }
+            catch {
+                logger.e("changeServer failed", tag: LOG_TAG)
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func logConnection(_ timeConnection: Float, message: String? = nil) async throws -> Bool {
+        guard let server = DiStorage.loadServer() else {
+            logger.e("Log connection error: no server")
+            return true
+        }
+        
+        let model = LogConnectionModel(serverId: server.id, timeConnection: timeConnection, message: message)
+        
         let (data, _) = try await client.sendData(
             "LogConnection",
             method: .POST,
@@ -63,12 +93,12 @@ class ServerApi {
         return true
     }
     
-    public func logConnection(_ model: LogConnectionModel, completion: @escaping (Result<Bool, Error>) -> Void) {
+    public func logConnection(_ timeConnection: Float, message: String? = nil, completion: @escaping (Result<Bool, Error>) -> Void) {
         logger.i("logConnection called", tag: LOG_TAG)
         Task {
             do   {
                 logger.i("logConnection success", tag: LOG_TAG)
-                completion(.success(try await logConnection(model)))
+                completion(.success(try await logConnection(timeConnection, message: message)))
             }
             catch {
                 logger.e("logConnection failed", tag: LOG_TAG)

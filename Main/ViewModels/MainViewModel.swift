@@ -76,13 +76,8 @@ class MainViewModel: ObservableObject {
     func logDevice(){
         logger.i("logDevice called", tag: LOG_TAG)
         
-        guard var user = DiStorage.loadUser() else {
-            logger.w("logDevice: user not found in storage", tag: LOG_TAG)
-            return
-        }
-        
         let deviceApi = DeviceApi()
-        deviceApi.loginDevice(user){ result in
+        deviceApi.loginDevice(){ result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):

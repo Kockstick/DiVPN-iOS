@@ -131,7 +131,7 @@ struct ReportView: View{
                         .foregroundColor(Color("TextPrimary"))
                         .frame(width: 16, height: 16)
                         .contentShape(Circle())
-                    Text("options")
+                    Text("back")
                         .font(.system(size: 16))
                         .foregroundColor(Color("TextPrimary"))
                 }

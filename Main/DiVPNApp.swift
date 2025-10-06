@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct OutlineApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     @StateObject private var auth = AuthState()
     @StateObject private var tariffManager = TariffManager.shared
     @StateObject var referralModel = ReferralManager.shared

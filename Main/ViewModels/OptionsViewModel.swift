@@ -35,13 +35,8 @@ class OptionsViewModel: ObservableObject {
     func logoutDevice(){
         logger.i("logoutDevice called", tag: LOG_TAG)
         
-        guard var user = DiStorage.loadUser() else {
-            logger.w("logoutDevice: user not found in storage", tag: LOG_TAG)
-            return
-        }
-        
         let deviceApi = DeviceApi()
-        deviceApi.logoutDevice(user){ result in
+        deviceApi.logoutDevice(){ result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):

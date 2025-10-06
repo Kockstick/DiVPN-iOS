@@ -104,7 +104,6 @@ struct MainView: View {
             viewModel.checkUpdate() { result in
                 self.showUpdateBanner = result
             }
-            ShadowsocksManager.shared.updateKey()
         }
         .navigationTitle("MainView")
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in

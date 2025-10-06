@@ -9,6 +9,9 @@ import SwiftUI
 
 struct SupportView: View {
     @Environment(\.dismiss) private var dismiss
+    private let haptic = UINotificationFeedbackGenerator()
+    
+    private let supportEmail = "DiVPN.Support@gmail.com"
     
     var body: some View {
         ZStack{
@@ -41,7 +44,7 @@ struct SupportView: View {
                 Spacer()
                     .frame(maxHeight: 20)
                 
-                Text("DiVPN.Service@gmail.com")
+                Text(supportEmail)
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(Color("TextPrimary"))
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -60,9 +63,14 @@ struct SupportView: View {
                     .lineSpacing(8)
                 
                 Button(action: {
-                    UIPasteboard.general.string = "DiVPN.Support@gmail.com"
-                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-                    DispatchQueue.main.async {
+                    haptic.notificationOccurred(.success)
+
+                    UIPasteboard.general.setItems(
+                        [[UIPasteboard.typeAutomatic: supportEmail]],
+                        options: [.localOnly: true]
+                    )
+                    
+                    withAnimation(.easeInOut(duration: 0.2)) {
                         dismiss()
                     }
                 }) {
@@ -87,5 +95,6 @@ struct SupportView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("Background"))
+        .onAppear { haptic.prepare() }
     }
 }
