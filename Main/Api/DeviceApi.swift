@@ -21,8 +21,8 @@ class DeviceApi{
         self.client = HTTPClient(baseURL: baseUrl, session: session, tokenProvider: DiTokenProvider.shared)
     }
     
-    func loginDevice(_ user: User) async throws -> String {
-        guard let device = DiStorage.loadDevice() ?? DeviceManager.GetDevice() else {
+    func loginDevice() async throws -> String {
+        guard let device = DeviceManager.GetDevice() else {
             throw APIError.encoding(NSError(domain: "Device",
                                             code: -10,
                                             userInfo: [NSLocalizedDescriptionKey: "No device info"]))
@@ -36,12 +36,12 @@ class DeviceApi{
         )
     }
     
-    public func loginDevice(_ user: User, completion: @escaping (Result<String, Error>) -> Void) {
+    public func loginDevice(completion: @escaping (Result<String, Error>) -> Void) {
         logger.i("loginDevice called", tag: LOG_TAG)
         Task {
             do   {
                 logger.i("loginDevice success", tag: LOG_TAG)
-                completion(.success(try await loginDevice(user)))
+                completion(.success(try await loginDevice()))
             }
             catch {
                 logger.e("loginDevice failed", tag: LOG_TAG)
@@ -50,7 +50,7 @@ class DeviceApi{
         }
     }
     
-    func logoutDevice(_ user: User) async throws -> String {
+    func logoutDevice() async throws -> String {
         let payload = DeviceManager.GetDevice()
 
         let result = try await client.sendText(
@@ -63,15 +63,44 @@ class DeviceApi{
         return result
     }
 
-    public func logoutDevice(_ user: User, completion: @escaping (Result<String, Error>) -> Void) {
+    public func logoutDevice(completion: @escaping (Result<String, Error>) -> Void) {
         logger.i("logoutDevice called", tag: LOG_TAG)
         Task {
             do   {
                 logger.i("logoutDevice success", tag: LOG_TAG)
-                completion(.success(try await logoutDevice(user)))
+                completion(.success(try await logoutDevice()))
             }
             catch {
                 logger.e("logoutDevice failed", tag: LOG_TAG)
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func updateDevice() async throws -> String{
+        guard let device = DeviceManager.GetDevice() else {
+            throw APIError.encoding(NSError(domain: "Device",
+                                            code: -10,
+                                            userInfo: [NSLocalizedDescriptionKey: "No device info"]))
+        }
+
+        return try await client.sendText(
+            "UpdateDevice",
+            method: .POST,
+            json: device,
+            accept: "text/plain,application/json"
+        )
+    }
+    
+    public func updateDevice(completion: @escaping (Result<String, Error>) -> Void) {
+        logger.i("updateDevice called", tag: LOG_TAG)
+        Task {
+            do   {
+                logger.i("updateDevice success", tag: LOG_TAG)
+                completion(.success(try await updateDevice()))
+            }
+            catch {
+                logger.e("updateDevice failed", tag: LOG_TAG)
                 completion(.failure(error))
             }
         }

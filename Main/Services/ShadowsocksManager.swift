@@ -47,11 +47,16 @@ class ShadowsocksManager{
         completion(.success(key))
     }
     
-    func updateKey(){
-        logger.i("updateKey called", tag: LOG_TAG)
+    func changeKey(){
+        logger.i("changeKey called", tag: LOG_TAG)
+        
+        guard let server = DiStorage.loadServer() else {
+            logger.w("No server in storage", tag: LOG_TAG)
+            return
+        }
         
         let serverApi = ServerApi()
-        serverApi.getServer(){ result in
+        serverApi.changeServer(server){ result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):

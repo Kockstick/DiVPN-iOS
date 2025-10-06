@@ -22,19 +22,6 @@ struct OptionsView: View {
         ZStack{
             ZStack{
                 VStack{
-                    Spacer()
-                        .frame(maxHeight: 20)
-                    
-                    Image("build")
-                        .font(.system(size: 180, weight: .thin))
-                        .foregroundColor(Color("TextPrimary"))
-                    
-                    Spacer()
-                        .frame(maxHeight: 10)
-                    
-                    Text("Options")
-                        .font(.system(size: 36, weight: .bold))
-                        .foregroundColor(Color("TextPrimary"))
                     
                     Spacer()
                         .frame(maxHeight: 40)
@@ -54,6 +41,56 @@ struct OptionsView: View {
                                 .frame(width: 55, height: 35)
                                 .foregroundColor(Color("TextPrimary"))
                             Text("Referral")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(Color("TextPrimary"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 15)
+                        .frame(maxWidth: .infinity)
+                    }
+                    .frame(maxWidth: .infinity)
+                    
+                    Rectangle()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                        .foregroundColor(Color("TextSecondary"))
+                        .opacity(0.2)
+                    
+                    Button (action: {
+                        referralModel.showReferralInviteInMain = true
+                    }) {
+                        HStack(spacing: 20){
+                            Image("local_activity")
+                                .font(.system(size: 55, weight: .thin))
+                                .frame(width: 55, height: 35)
+                                .foregroundColor(Color("TextPrimary"))
+                            Text("Promocode")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(Color("TextPrimary"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 15)
+                        .frame(maxWidth: .infinity)
+                    }
+                    .frame(maxWidth: .infinity)
+                    
+                    Rectangle()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                        .foregroundColor(Color("TextSecondary"))
+                        .opacity(0.2)
+                    
+                    Button (action: {
+                        referralModel.showReferralInviteInMain = true
+                    }) {
+                        HStack(spacing: 20){
+                            Image("star")
+                                .font(.system(size: 65, weight: .thin))
+                                .frame(width: 55, height: 35)
+                                .foregroundColor(Color("TextPrimary"))
+                            Text("Rate us")
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(Color("TextPrimary"))
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -138,6 +175,31 @@ struct OptionsView: View {
                         .foregroundColor(Color("TextSecondary"))
                         .opacity(0.2)
                     
+                    Button (action: {
+                        referralModel.showReferralInviteInMain = true
+                    }) {
+                        HStack(spacing: 20){
+                            Image("swap_horiz")
+                                .font(.system(size: 55, weight: .thin))
+                                .frame(width: 55, height: 35)
+                                .foregroundColor(Color("TextPrimary"))
+                            Text("Change server")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(Color("TextPrimary"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 15)
+                        .frame(maxWidth: .infinity)
+                    }
+                    .frame(maxWidth: .infinity)
+                    
+                    Rectangle()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                        .foregroundColor(Color("TextSecondary"))
+                        .opacity(0.2)
+                    
                     Button (action:  {
                         showConfirmLogout = true
                     }) {
@@ -170,11 +232,13 @@ struct OptionsView: View {
                         .frame(height: 1)
                         .foregroundColor(Color("TextSecondary"))
                         .opacity(0.2)
+                    
+                    Spacer()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .padding(40)
-            .padding(.bottom, 10)
+            .padding(.bottom, 0)
         }
     }
 }

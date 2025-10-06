@@ -4,12 +4,6 @@
 <dict>
 	<key>BaseUrl</key>
 	<string>https://dev.divpn.ru/api</string>
-	<key>PrivacyPolicyUrl</key>
-	<string>https://dev.divpn.ru/Docs/PrivacyPolicy</string>
-	<key>ServerName</key>
-	<string>DiVPN Server</string>
-	<key>TunnelId</key>
-	<string>di_vpn_tunnel</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -63,6 +57,18 @@
 	<string></string>
 	<key>NSMainNibFile~ipad</key>
 	<string></string>
+	<key>PrivacyPolicyUrl</key>
+	<string>https://dev.divpn.ru/docs/PrivacyPolicy.pdf</string>
+	<key>PublicOfferUrl</key>
+	<string>https://dev.divpn.ru/docs/PublicOffer.pdf</string>
+	<key>ServerName</key>
+	<string>DiVPN Server</string>
+	<key>TunnelId</key>
+	<string>di_vpn_tunnel</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>CDVLaunchScreen</string>
 	<key>UIRequiresFullScreen</key>

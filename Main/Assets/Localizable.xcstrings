@@ -4,15 +4,8 @@
     "" : {
 
     },
-    "%@ %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ %2$@"
-          }
-        }
-      }
+    "%@ is active" : {
+
     },
     "7YJPC5" : {
 
@@ -23,6 +16,33 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "К сообщению будет прикреплён файл с логами для диагностики."
+          }
+        }
+      }
+    },
+    "agree_privacy_policy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I agree to the Privacy Policy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я соглашаюсь с Политикой конфиденциальности"
+          }
+        }
+      }
+    },
+    "App issues" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проблемы с приложением"
           }
         }
       }
@@ -80,6 +100,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Отменить"
+          }
+        }
+      }
+    },
+    "cansel_success_body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your subscription will remain active until %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписка будет действовать до %@"
+          }
+        }
+      }
+    },
+    "cansel_success_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscription is paused"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписка остановлена"
+          }
+        }
+      }
+    },
+    "Change server" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сменить сервер"
           }
         }
       }
@@ -147,6 +211,16 @@
     },
     "CodeView" : {
 
+    },
+    "Confirm" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подтвердить"
+          }
+        }
+      }
     },
     "connected" : {
       "extractionState" : "manual",
@@ -280,9 +354,6 @@
         }
       }
     },
-    "DiVPN.Service@gmail.com" : {
-
-    },
     "DiVPN.Support@gmail.com" : {
 
     },
@@ -330,6 +401,7 @@
 
     },
     "Fastest VPN at maximum speed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -413,7 +485,15 @@
       }
     },
     "I agree to the" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Соглашаюсь с"
+          }
+        }
+      }
     },
     "Invalid code or not found" : {
       "localizations" : {
@@ -525,8 +605,59 @@
         }
       }
     },
+    "Not using" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не пользуюсь"
+          }
+        }
+      }
+    },
     "Off" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выкл"
+          }
+        }
+      }
+    },
+    "offer_terms" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "public offer"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "публичной оферты"
+          }
+        }
+      }
+    },
+    "offer_terms_text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I agree to recurring payments and accept public offer"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Я соглашаюсь на регулярные списания и принимаю условия публичной оферты"
+          }
+        }
+      }
     },
     "Ok" : {
       "localizations" : {
@@ -539,7 +670,14 @@
       }
     },
     "On" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вкл"
+          }
+        }
+      }
     },
     "Open App Store" : {
       "localizations" : {
@@ -551,16 +689,90 @@
         }
       }
     },
-    "options" : {
-
+    "Other" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Другое"
+          }
+        }
+      }
     },
-    "Options" : {
-
+    "payment_success_body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access extended until %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Доступ к сервису продлён до %@"
+          }
+        }
+      }
+    },
+    "payment_success_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment successful"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оплата прошла успешно"
+          }
+        }
+      }
     },
     "Privacy Policy" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Политикой конфиденциальности"
+          }
+        }
+      }
+    },
+    "privacy_policy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Политикой конфиденциальности"
+          }
+        }
+      }
+    },
+    "Promocode" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Промокод"
+          }
+        }
+      }
     },
     "Purchase subscription" : {
+      "comment" : "Purchase subscription",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -577,6 +789,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Оценить"
+          }
+        }
+      }
+    },
+    "Rate us" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оценить нас"
           }
         }
       }
@@ -612,11 +834,18 @@
 
     },
     "Renew" : {
+      "extractionState" : "stale",
       "localizations" : {
-        "ru" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Подписаться"
+            "value" : "Resume subscription"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Возобновить подписку"
           }
         }
       }
@@ -668,6 +897,50 @@
         }
       }
     },
+    "Resume subscription" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Возобновить подписку"
+          }
+        }
+      }
+    },
+    "resume_success_body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It’s active until %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Действует до %@"
+          }
+        }
+      }
+    },
+    "resume_success_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your subscription has been resumed"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписка возобновлена"
+          }
+        }
+      }
+    },
     "Send" : {
       "localizations" : {
         "ru" : {
@@ -704,6 +977,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Подписка"
+          }
+        }
+      }
+    },
+    "Subscribtion has ended" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписка закончилась"
           }
         }
       }
@@ -750,6 +1033,7 @@
       }
     },
     "To keep using the VPN, please renew your subscription" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -759,12 +1043,33 @@
         }
       }
     },
+    "Too expensive" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Слишком дорого"
+          }
+        }
+      }
+    },
     "Unlimited internet access with data protection" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Безграничный интернет с максимальной защитой"
+          }
+        }
+      }
+    },
+    "Unstable connection" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нестабильное соединение"
           }
         }
       }
@@ -809,6 +1114,16 @@
         }
       }
     },
+    "Why do you want to cansel your subscription?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Почему вы хотите отменить подписку?"
+          }
+        }
+      }
+    },
     "You can request a new code now" : {
       "localizations" : {
         "ru" : {
@@ -830,6 +1145,7 @@
       }
     },
     "Your email" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -855,6 +1171,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Друг вводит реферальный код"
+          }
+        }
+      }
+    },
+    "Your subscription ends in %@ days." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписка закончится через %@ дней"
           }
         }
       }

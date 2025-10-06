@@ -10,6 +10,7 @@ import Foundation
 struct Device: Codable {
     let hashSerialNumber: String
     let typeDevice: TypeDevice
+    var aPNsToken: String?
 }
 
 enum TypeDevice: Int, Codable{

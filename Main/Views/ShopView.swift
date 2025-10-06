@@ -15,16 +15,18 @@ struct ShopView : View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    @State var showSafariView: Bool = false
-    @State var showPublicOffer: Bool = false
-    @State var openPaymentPage: Bool = false
-    @State private var paymentUrl: URL?
-    
     private let LOG_TAG = "ShopView"
     private let logger = DiLogger.shared
     
     var body: some View {
         VStack(spacing: 0){
+            Image("paid")
+                .font(.system(size: 180, weight: .light))
+                .foregroundColor(Color("TextPrimary"))
+            
+            Spacer()
+                .frame(maxHeight: 15)
+            
             VStack{
                 Text("Subscribe")
                     .font(.system(size: 32, weight: .bold))
@@ -45,42 +47,18 @@ struct ShopView : View {
             .frame(maxWidth: .infinity, alignment: .leading)
             
             Spacer()
-                .frame(maxHeight: 40)
+                .frame(maxHeight: 30)
             
             Rectangle()
                 .frame(height: 2)
                 .foregroundColor(Color("TextSecondary"))
             
             Spacer()
-                .frame(maxHeight: 40)
-            
-            VStack(spacing: 25){
-                Text("Fastest VPN at maximum speed")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Color("TextSecondary"))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .lineSpacing(6)
-                Text("Unlimited internet access with data protection")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Color("TextSecondary"))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .lineSpacing(6)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            
-            Spacer()
-                .frame(maxHeight: 40)
-            
-            Rectangle()
-                .frame(height: 2)
-                .foregroundColor(Color("TextSecondary"))
-            
-            Spacer()
-                .frame(maxHeight: 40)
+                .frame(maxHeight: 30)
             
             Text(tariffManager.daysToEntTariff ?? 1 > 0 ?
                  "Free trial ends in \(tariffManager.daysToEntTariffText) days" :
-                    "Free trial has ended")
+                    tariffManager.isFreeTrial ? "Free trial has ended" : "Subscribtion has ended")
             .font(.system(size: 24, weight: .bold))
             .frame(maxWidth: .infinity, alignment: .leading)
             .lineSpacing(6)
@@ -88,79 +66,10 @@ struct ShopView : View {
             
             Spacer()
             
-            Text(attributedText)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 16, weight: .bold))
-                .foregroundColor(Color("TextSecondary"))
-                .multilineTextAlignment(.leading)
-                .onTapGesture {
-                    if let range = attributedText.range(of: "offer terms") {
-                        // Клик сработает только если попали в диапазон,
-                        // но так как Text не даёт хит-тест по подстроке —
-                        // проще сразу реагировать на весь тап:
-                        showPublicOffer = true
-                    }
-                }
-                .sheet(isPresented: $showPublicOffer) {
-                    SafariView(url: URL(string: Bundle.main.privacyPolicyUrl)!)
-                }
-            
-            Spacer()
-                .frame(maxHeight: 15)
-            
-            Button(action: {
-                agreementManager.isPublicOfferAgreed = true
-                openPaymentPage = true
-                Task {
-                    do {
-                        let urlString = try await viewModel.getInvoiceUrl()
-                        guard let url = URL(string: urlString) else {
-                            logger.w("Incorrect invoice url: \(urlString)", tag: "ShopView")
-                            return
-                        }
-                        await MainActor.run { paymentUrl = url }
-                    } catch {
-                        logger.e("Error get invoice url: \(error)", tag: "ShopView")
-                    }
-                }
-            }) {
-                Text("Purchase subscription")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(Color("TextPrimaryFixed"))
-                    .frame(maxWidth: .infinity, maxHeight: 55)
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color("Accent"))
-                    .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color("Border"), lineWidth: 2)
-            )
-            .compositingGroup()
+            PurchasePanel(showPrice: false)
         }
         .padding(.horizontal, 40)
         .padding(.top, 70)
         .padding(.bottom, 50)
-        .sheet(item: $paymentUrl) { url in
-            SafariView(url: url)
-                .onDisappear {
-                    openPaymentPage = false
-                }
-        }
     }
-}
-
-extension URL: Identifiable {
-    public var id: String { absoluteString }
-}
-
-private var attributedText: AttributedString {
-    var result = AttributedString("By making a purchase, you agree to reccuring charges ang the offer terms")
-    if let range = result.range(of: "offer terms") {
-        result[range].foregroundColor = .blue
-        result[range].underlineStyle = .single
-    }
-    return result
 }
