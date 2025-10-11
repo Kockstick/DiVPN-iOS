@@ -112,4 +112,47 @@ class UserApi {
             }
         }
     }
+    
+    func usePromo(text: String) async throws -> Bool {
+        logger.i("Use promocode started", tag: LOG_TAG)
+
+        let payload = PromoModel(text: text)
+
+        let soft = Set(Array(400...499))
+        let (data, http) = try await client.sendData(
+            "UsePromo",
+            method: .POST,
+            json: payload,
+            accept: "application/json,text/plain",
+            acceptStatuses: soft.union([200])
+        )
+
+        if http.statusCode == 200 {
+            logger.i("Use promocode success", tag: LOG_TAG)
+            TariffManager.shared.updateTariff()
+            return true
+        }
+
+        if let body = String(data: data, encoding: .utf8), !body.isEmpty {
+            logger.w("Referral rejected [\(http.statusCode)]: \(body)", tag: LOG_TAG)
+        } else {
+            logger.w("Referral rejected [\(http.statusCode)]", tag: LOG_TAG)
+        }
+
+        return false
+    }
+    
+    public func usePromo(text: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        logger.i("usePromo called", tag: LOG_TAG)
+        Task {
+            do   {
+                logger.i("usePromo success", tag: LOG_TAG)
+                completion(.success(try await usePromo(text: text)))
+            }
+            catch {
+                logger.e("usePromo failed", tag: LOG_TAG)
+                completion(.failure(error))
+            }
+        }
+    }
 }
