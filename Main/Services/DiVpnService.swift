@@ -100,6 +100,7 @@ public class DiVpnService {
         OutlineVpn.initialize()
         
         let serverName = Bundle.main.serverName   // используй локализованное имя, если надо
+
         let ssConfig = """
         {
           "transport": "\(ssKey)"
