@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BaseUrl</key>
-	<string>https://dev.divpn.ru/api</string>
+	<string>https://divpn.ru/api</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -58,9 +58,9 @@
 	<key>NSMainNibFile~ipad</key>
 	<string></string>
 	<key>PrivacyPolicyUrl</key>
-	<string>https://dev.divpn.ru/docs/PrivacyPolicy.pdf</string>
+	<string>https://divpn.ru/docs/PrivacyPolicy.pdf</string>
 	<key>PublicOfferUrl</key>
-	<string>https://dev.divpn.ru/docs/PublicOffer.pdf</string>
+	<string>https://divpn.ru/docs/PublicOffer.pdf</string>
 	<key>ServerName</key>
 	<string>DiVPN Server</string>
 	<key>TunnelId</key>
