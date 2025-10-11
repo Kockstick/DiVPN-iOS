@@ -158,7 +158,12 @@ class AuthApi {
         } else if http.statusCode == 460{
             logger.i("Token alrady is refreshing", tag: LOG_TAG)
             return resp
-        } else{
+        } else if http.statusCode == 401{
+            logger.i("Token is incorrect, logout", tag: LOG_TAG)
+            Self.isRefreshingToken = false
+            //logout here
+        }
+        else {
             Self.isRefreshingToken = false
             return nil
         }
