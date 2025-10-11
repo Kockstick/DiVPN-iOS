@@ -92,7 +92,7 @@ struct SubscribeView: View {
                                 showUnsubscribeView = true;
                             }) {
                                 if loading{
-                                    CircleLoader()
+                                    CircleLoader(color: Color("TextPrimary"))
                                         .frame(maxWidth: .infinity, maxHeight: 55)
                                 } else {
                                     Text("Do not renew")
@@ -126,7 +126,7 @@ struct SubscribeView: View {
                                 haptic.notificationOccurred(.warning)
                             }) {
                                 if loading{
-                                    CircleLoader()
+                                    CircleLoader(color: Color("TextPrimaryFixed"))
                                         .frame(maxWidth: .infinity, maxHeight: 55)
                                 } else {
                                     Text("Resume subscription")

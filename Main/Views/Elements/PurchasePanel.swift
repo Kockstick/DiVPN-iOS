@@ -69,7 +69,7 @@ struct PurchasePanel: View {
 
             Button(action: purchaseTapped) {
                 if openPaymentPage {
-                    CircleLoader()
+                    CircleLoader(color: Color("TextPrimaryFixed"))
                         .frame(maxWidth: .infinity, maxHeight: 55)
                 } else {
                     Text("Purchase subscription")

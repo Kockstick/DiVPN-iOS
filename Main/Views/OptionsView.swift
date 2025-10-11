@@ -14,6 +14,7 @@ struct OptionsView: View {
     @EnvironmentObject var referralModel: ReferralManager
     
     @State private var showConfirmLogout = false
+    @State private var showPromoView = false
     @State private var showBugReport = false
     @State private var showSupportView = false
     @State private var bugReportSent = false
@@ -58,7 +59,7 @@ struct OptionsView: View {
                         .opacity(0.2)
                     
                     Button (action: {
-                        referralModel.showReferralInviteInMain = true
+                        showPromoView = true
                     }) {
                         HStack(spacing: 20){
                             Image("local_activity")
@@ -75,6 +76,9 @@ struct OptionsView: View {
                         .frame(maxWidth: .infinity)
                     }
                     .frame(maxWidth: .infinity)
+                    .sheet(isPresented: $showPromoView) {
+                        PromocodeView()
+                    }
                     
                     Rectangle()
                         .frame(maxWidth: .infinity)

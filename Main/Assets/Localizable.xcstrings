@@ -1053,6 +1053,9 @@
         }
       }
     },
+    "Type here..." : {
+
+    },
     "Unlimited internet access with data protection" : {
       "extractionState" : "stale",
       "localizations" : {
