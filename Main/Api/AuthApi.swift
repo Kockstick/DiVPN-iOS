@@ -31,7 +31,7 @@ class AuthApi {
         var agreement = AgreementModel(typeDevice: TypeDevice.iOS, typeAgreement: TypeAgreement.PrivacyPolicy)
         var getVerifCodeModel = GetVerifCodeModel(emailModel: EmailModel(email: email), agreementModel: agreement)
         let payload = getVerifCodeModel
-
+        
         let (data, http) = try await client.sendData(
             "GetVerifCode",
             method: .POST,
@@ -39,7 +39,7 @@ class AuthApi {
             accept: "application/json",
             acceptStatuses: [460]
         )
-
+        
         if !data.isEmpty {
             if let user = try? DiDecoder.getJson2UserDecoder().decode(User.self, from: data) {
                 DiStorage.saveUser(user: user)
@@ -47,7 +47,7 @@ class AuthApi {
                 logger.i("User saved in sendVerificationCode", tag: LOG_TAG)
             }
         }
-
+        
         return String(data: data, encoding: .utf8) ?? ""
     }
     
@@ -69,19 +69,19 @@ class AuthApi {
         logger.i("verificate started", tag: LOG_TAG)
         
         guard let device = DeviceManager.GetDevice() else {
-               throw APIError.encoding(NSError(domain: "Device", code: -10,
-                                               userInfo: [NSLocalizedDescriptionKey: "No device info"]))
-           }
+            throw APIError.encoding(NSError(domain: "Device", code: -10,
+                                            userInfo: [NSLocalizedDescriptionKey: "No device info"]))
+        }
         
         let payload = VerificateModel(email: email, hashCode: hashCode, device: device)
         
         let (data, http) = try await client.sendData(
-                "Verificate",
-                method: .POST,
-                json: payload,
-                accept: "application/json",
-                acceptStatuses: [422]
-            )
+            "Verificate",
+            method: .POST,
+            json: payload,
+            accept: "application/json",
+            acceptStatuses: [422]
+        )
         
         let resp = try DiDecoder.getJson2VerificationResultDecoder().decode(VerificationResult.self, from: data)
         
@@ -92,7 +92,7 @@ class AuthApi {
             } else {
                 logger.w("200 but no tokens in response", tag: LOG_TAG)
             }
-
+            
             TariffManager.shared.loadTariff { result in
                 DispatchQueue.main.async {
                     switch result {
@@ -101,14 +101,14 @@ class AuthApi {
                     }
                 }
             }
-
+            
             return resp
         }
-
+        
         if http.statusCode == 422 {
             return resp
         }
-
+        
         throw APIError.http(http.statusCode, message: nil, url: nil, body: String(data: data, encoding: .utf8))
     }
     
@@ -126,7 +126,7 @@ class AuthApi {
         }
     }
     
-    func refresh(_ refresh: String) async throws -> TokenResult?{
+    func refresh(_ refresh: String, retryCount: Int = 0) async throws -> TokenResult?{
         if(Self.isRefreshingToken){
             logger.i("Token is refreshing", tag: LOG_TAG)
             return nil
@@ -138,15 +138,17 @@ class AuthApi {
         let payload = RefreshTokenModel(refreshToken: refresh)
         
         let (data, http) = try await client.sendData(
-                "Refresh",
-                method: .POST,
-                json: payload,
-                accept: "application/json"
-            )
+            "Refresh",
+            method: .POST,
+            json: payload,
+            accept: "application/json"
+        )
         
         let resp = try? DiDecoder.getJson2TokenDecoder().decode(TokenResult.self, from: data)
         
-        if http.statusCode == 200 {
+        switch http.statusCode {
+            
+        case 200 ..< 300:
             if let tokenResult = resp  {
                 DiStorage.saveToken(token: tokenResult)
                 logger.i("Refresh token success, tokens saved", tag: LOG_TAG)
@@ -155,15 +157,32 @@ class AuthApi {
             }
             Self.isRefreshingToken = false
             return resp
-        } else if http.statusCode == 460{
+            
+        case 460:
             logger.i("Token alrady is refreshing", tag: LOG_TAG)
             return resp
-        } else if http.statusCode == 401{
+            
+        case 408, 429, 500..<600, 409, 423, -1001:
+            do {
+                let rCount = retryCount + 1;
+                logger.i("refresh retry - \(rCount)", tag: LOG_TAG)
+                return try await self.refresh(refresh, retryCount: rCount)
+            }
+            catch {
+                logger.e("retry refresh failed", tag: LOG_TAG)
+                throw error
+            }
+            break
+            
+        case 400, 401, 403:
             logger.i("Token is incorrect, logout", tag: LOG_TAG)
             Self.isRefreshingToken = false
-            //logout here
-        }
-        else {
+            AuthState.shared.isAuthorized = false
+            DiStorage.clearToken()
+            DiStorage.clearServer()
+            break
+            
+        default:
             Self.isRefreshingToken = false
             return nil
         }
@@ -201,7 +220,7 @@ class AuthApi {
         
         var headers: [String: String] = [:]
         headers["Authorization"] = "Bearer \(token)"
-
+        
         let (data, http) = try await client.sendData(
             "CheckAuth",
             method: .POST,
@@ -216,7 +235,7 @@ class AuthApi {
         
         return true
     }
-
+    
     public func checkAuth(completion: @escaping (Result<Bool, Error>) -> Void) {
         logger.i("checkAuth called", tag: LOG_TAG)
         Task {
@@ -233,7 +252,7 @@ class AuthApi {
     
     func getTimeToRequareNewCode(email: String) async throws -> String {
         let payload = EmailModel(email: email)
-
+        
         // сервер иногда может вернуть text/plain или json — примем оба
         return try await client.sendText(
             "GetTimeToRequareNewCode",
@@ -242,7 +261,7 @@ class AuthApi {
             accept: "text/plain,application/json"
         )
     }
-
+    
     public func getTimeToRequareNewCode(email: String, completion: @escaping (Result<String, Error>) -> Void) {
         logger.i("getTimeToRequareNewCode called", tag: LOG_TAG)
         Task {
