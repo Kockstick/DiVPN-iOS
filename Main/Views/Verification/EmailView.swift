@@ -42,13 +42,13 @@ struct EmailView: View {
                         )
                         .animation(.easeInOut(duration: 0.18), value: isFocused)
                         .foregroundColor(Color("TextPrimary"))
-                        .font(.body).bold()
+                        .font(.title3).bold()
                         .minimumScaleFactor(0.8)
                         .contentShape(Rectangle())
                         .opacity(viewModel.loading ? 0.5 : 2)
                         .onChange(of: viewModel.email) { newValue in
                             if viewModel.errMessage != nil {
-                                var isValidEmail: Bool = viewModel.validateEmail(newValue)
+                                let isValidEmail: Bool = viewModel.validateEmail(newValue)
                                 if isValidEmail {
                                     viewModel.errMessage = nil
                                 }
@@ -92,7 +92,7 @@ struct EmailView: View {
                         .foregroundColor(Color("TextSecondary"))
                         .multilineTextAlignment(.leading)
                         .onTapGesture {
-                            if let range = attributedText.range(of: NSLocalizedString("privacy_policy", comment: "")) {
+                            if attributedText.range(of: NSLocalizedString("privacy_policy", comment: "")) != nil {
                                 showPrivacyPolicy = true
                             }
                         }

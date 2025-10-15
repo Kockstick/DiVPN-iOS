@@ -50,7 +50,7 @@ struct ReferralView: View {
                         )
                         .animation(.easeInOut(duration: 0.18), value: isFocused)
                         .foregroundColor(Color("TextPrimary"))
-                        .font(.body).bold()
+                        .font(.title3).bold()
                         .contentShape(Rectangle())
                         .multilineTextAlignment(.center)
                         .trackingIfAvailable(value: 3)

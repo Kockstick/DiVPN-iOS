@@ -42,7 +42,7 @@ struct CodeView: View {
                         )
                         .animation(.easeInOut(duration: 0.18), value: isFocused)
                         .foregroundColor(Color("TextPrimary"))
-                        .font(.body).bold()
+                        .font(.title3).bold()
                         .minimumScaleFactor(0.8)
                         .contentShape(Rectangle())
                         .multilineTextAlignment(.center)

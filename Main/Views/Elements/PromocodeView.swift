@@ -48,7 +48,7 @@ struct PromocodeView: View {
                                 .stroke(isFocused ? Color(!viewModel.loading ? "Active" : "Surface") : Color("Border"), lineWidth: 2)
                         )
                         .foregroundColor(Color("TextPrimary"))
-                        .font(.body).bold()
+                        .font(.title3).bold()
                         .contentShape(Rectangle())
                         .multilineTextAlignment(.center)
                     
