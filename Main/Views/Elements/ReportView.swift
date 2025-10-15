@@ -27,7 +27,7 @@ struct ReportView: View{
                     .frame(maxHeight: 10)
                 
                 Text("Bug report")
-                    .font(.system(size: 24, weight: .bold))
+                    .font(.title2).bold()
                     .foregroundColor(Color("TextPrimary"))
                     .frame(maxWidth: .infinity)
                 
@@ -73,11 +73,11 @@ struct ReportView: View{
                         .foregroundColor(Color("TextPrimary"))
                     VStack{
                         Text("Log file")
-                            .font(.system(size: 24, weight: .bold))
+                            .font(.title3).bold()
                             .foregroundColor(Color("TextPrimary"))
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Text("A log file will be attached to the message to help diagnose the issue more effectively.")
-                            .font(.system(size: 16))
+                            .font(.footnote).bold()
                             .foregroundColor(Color("TextSecondary"))
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
@@ -99,7 +99,7 @@ struct ReportView: View{
                     }
                 }) {
                     Text("Send")
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.body).bold()
                         .foregroundColor(Color("TextPrimaryFixed"))
                         .frame(maxWidth: .infinity, maxHeight: 55)
                 }
@@ -132,7 +132,7 @@ struct ReportView: View{
                         .frame(width: 16, height: 16)
                         .contentShape(Circle())
                     Text("back")
-                        .font(.system(size: 16))
+                        .font(.body)
                         .foregroundColor(Color("TextPrimary"))
                 }
             }

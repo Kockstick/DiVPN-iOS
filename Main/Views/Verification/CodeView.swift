@@ -27,7 +27,7 @@ struct CodeView: View {
                     .frame(alignment: .top)
                 Spacer()
                 ZStack{
-                    TextField("", text: $code, prompt: Text("Like - 678239").foregroundColor(Color("TextSecondary")))
+                    TextField("", text: $code, prompt: Text("• • • • • •").foregroundColor(Color("TextSecondary")))
                         .frame(height: 55)
                         .padding(.horizontal, 16)
                         .cornerRadius(10)
@@ -42,7 +42,8 @@ struct CodeView: View {
                         )
                         .animation(.easeInOut(duration: 0.18), value: isFocused)
                         .foregroundColor(Color("TextPrimary"))
-                        .font(.system(size: 20, weight: .bold))
+                        .font(.body).bold()
+                        .minimumScaleFactor(0.8)
                         .contentShape(Rectangle())
                         .multilineTextAlignment(.center)
                         .trackingIfAvailable(value: 3)
@@ -56,6 +57,8 @@ struct CodeView: View {
                                 viewModel.verificate(code: code){ result in
                                     logger.i("Verification finished: \(result)", tag: LOG_TAG)
                                     if result {
+                                        logger.i("Preload shadowsocks server", tag: LOG_TAG)
+                                        ShadowsocksManager.shared.preloadKey()
                                         onSuccess()
                                     }
                                 }
@@ -75,7 +78,7 @@ struct CodeView: View {
                     }
                     
                     Text(viewModel.verifErrorText ?? NSLocalizedString("code_valid", comment: ""))
-                        .font(.system(size: 12))
+                        .font(.footnote)
                         .shimmer(viewModel.loading)
                 }
                 
@@ -84,16 +87,17 @@ struct CodeView: View {
                 Text(viewModel.timeToNewCode == 0 && !viewModel.loadingTimeToNewCode ? "You can request a new code now" : "Resend available in \(viewModel.timeToNewCodeText)  seconds")
                     .padding(.horizontal, 15)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.system(size: 12))
+                    .font(.footnote)
                     .shimmer(viewModel.loadingTimeToNewCode || viewModel.loading)
                 
                 Button(action: {
                     logger.i("Send new code tapped", tag: LOG_TAG)
+                    code = ""
                     viewModel.onButtonClick()
                 }) {
                     HStack(spacing: 2){
                         Text("Send new code")
-                            .font(.system(size: 16, weight: .bold))
+                            .font(.body).bold()
                             .foregroundColor(Color(colorScheme == .light ? "TextPrimaryFixed" : viewModel.loading || viewModel.timeToNewCode != 0 ? "TextSecondary" : "TextPrimaryFixed"))
                         Image("update")
                             .font(.system(size: 16, weight: .semibold))
@@ -140,12 +144,12 @@ struct CodeView: View {
             }) {
                 HStack (spacing: 0){
                     Image(systemName: "chevron.left")
-                        .font(.system(size: 16, weight: .medium))
+                        .font(.body).bold()
                         .foregroundColor(Color("TextPrimary"))
                         .frame(width: 16, height: 16)
                         .contentShape(Circle())
                     Text("email")
-                        .font(.system(size: 16))
+                        .font(.body)
                         .foregroundColor(Color("TextPrimary"))
                 }
             }

@@ -11,7 +11,7 @@ struct SupportView: View {
     @Environment(\.dismiss) private var dismiss
     private let haptic = UINotificationFeedbackGenerator()
     
-    private let supportEmail = "DiVPN.Support@gmail.com"
+    private let supportEmail = "DiVPN.Service@gmail.com"
     
     var body: some View {
         ZStack{
@@ -35,7 +35,7 @@ struct SupportView: View {
                     .frame(maxHeight: 30)
                 
                 Text("Email for support:")
-                    .font(.system(size: 24, weight: .bold))
+                    .font(.title2).bold()
                     .foregroundColor(Color("TextPrimary"))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .multilineTextAlignment(.leading)
@@ -45,7 +45,7 @@ struct SupportView: View {
                     .frame(maxHeight: 20)
                 
                 Text(supportEmail)
-                    .font(.system(size: 24, weight: .bold))
+                    .font(.title2).bold()
                     .foregroundColor(Color("TextPrimary"))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .textSelection(.enabled)
@@ -55,7 +55,7 @@ struct SupportView: View {
                 Spacer()
                 
                 Text("Maybe someone will actually reply to you.")
-                    .font(.system(size: 12, weight: .bold))
+                    .font(.footnote)
                     .padding(.horizontal, 15)
                     .foregroundColor(Color("TextSecondary"))
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -75,7 +75,7 @@ struct SupportView: View {
                     }
                 }) {
                     Text("Copy and close")
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.body).bold()
                         .foregroundColor(Color("TextPrimaryFixed"))
                         .frame(maxWidth: .infinity, maxHeight: 55)
                 }

@@ -30,7 +30,7 @@ struct DiNotificationBanner: View{
                         .frame(maxHeight: 20)
                     
                     Text("Time to update")
-                        .font(.system(size: 36, weight: .bold))
+                        .font(.largeTitle).bold()
                         .foregroundColor(Color("TextPrimary"))
                     
                     Spacer()
@@ -45,7 +45,7 @@ struct DiNotificationBanner: View{
                         .frame(maxHeight: 40)
                     
                     Text("We fixed bugs, polished the UI, and added a couple of handy extras. No magic, just an update.")
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.title2).bold()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundColor(Color("TextSecondary"))
                         .lineSpacing(12)
@@ -56,7 +56,7 @@ struct DiNotificationBanner: View{
                         logger.i("Open App Store tapped", tag: LOG_TAG)
                     }) {
                         Text("Open App Store")
-                            .font(.system(size: 16, weight: .bold))
+                            .font(.body).bold()
                             .foregroundColor(Color("TextPrimaryFixed"))
                             .frame(maxWidth: .infinity, maxHeight: 55)
                     }

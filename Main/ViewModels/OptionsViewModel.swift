@@ -8,7 +8,6 @@
 import SwiftUI
 
 class OptionsViewModel: ObservableObject {
-    
     private let LOG_TAG: String = "OptionsViewModel"
     private let logger = DiLogger.shared
     

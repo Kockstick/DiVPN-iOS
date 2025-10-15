@@ -32,7 +32,7 @@ struct ReferralInviteView: View {
                         .foregroundColor(Color("TextPrimary"))
                     
                     Text("Invite friends to DiVPN")
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.title3).bold()
                         .foregroundColor(Color("TextPrimary"))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .multilineTextAlignment(.leading)
@@ -44,7 +44,7 @@ struct ReferralInviteView: View {
                 
                 HStack{
                     Text("Your friend uses your referral code")
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.title3).bold()
                         .foregroundColor(Color("TextPrimary"))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .multilineTextAlignment(.leading)
@@ -71,7 +71,7 @@ struct ReferralInviteView: View {
                         .foregroundColor(Color("TextPrimary"))
                     
                     Text("You get 1 month of subscription")
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.title3).bold()
                         .foregroundColor(Color("TextPrimary"))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .multilineTextAlignment(.leading)
@@ -83,7 +83,7 @@ struct ReferralInviteView: View {
                 
                 HStack{
                     Text("Your friend gets 1 months of subscription")
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.title3).bold()
                         .foregroundColor(Color("TextPrimary"))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .multilineTextAlignment(.leading)
@@ -101,7 +101,7 @@ struct ReferralInviteView: View {
                     isShareSheetPresented = true
                 }) {
                     Text("Invite")
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.body).bold()
                         .foregroundColor(Color("TextPrimaryFixed"))
                         .frame(maxWidth: .infinity, maxHeight: 55)
                 }
@@ -138,7 +138,7 @@ struct ReferralInviteView: View {
                         .frame(width: 16, height: 16)
                         .contentShape(Circle())
                     Text("back")
-                        .font(.system(size: 16))
+                        .font(.body)
                         .foregroundColor(Color("TextPrimary"))
                 }
             }

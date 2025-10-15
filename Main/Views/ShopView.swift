@@ -29,7 +29,7 @@ struct ShopView : View {
             
             VStack{
                 Text("Subscribe")
-                    .font(.system(size: 32, weight: .bold))
+                    .font(.largeTitle).bold()
                     .foregroundColor(Color("TextPrimary"))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 HStack{
@@ -38,7 +38,7 @@ struct ShopView : View {
                         .frame(alignment: .leading)
                         .shimmer(tariffManager.subscribtionPrice == nil)
                     Text("for 1 month")
-                        .font(.system(size: 32, weight: .bold))
+                        .font(.largeTitle).bold()
                         .foregroundColor(Color("TextPrimary"))
                         .frame(alignment: .leading)
                 }
@@ -59,7 +59,7 @@ struct ShopView : View {
             Text(tariffManager.daysToEntTariff ?? 1 > 0 ?
                  "Free trial ends in \(tariffManager.daysToEntTariffText) days" :
                     tariffManager.isFreeTrial ? "Free trial has ended" : "Subscribtion has ended")
-            .font(.system(size: 24, weight: .bold))
+            .font(.title2).bold()
             .frame(maxWidth: .infinity, alignment: .leading)
             .lineSpacing(6)
             .shimmer(tariffManager.tariff == nil)

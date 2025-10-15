@@ -27,11 +27,12 @@ struct PromocodeView: View {
             ZStack{
                 VStack{
                     Spacer()
-                        .frame(maxHeight: 20)
+                        .frame(maxHeight: 30)
                     
-                    Text("Promocode")
-                        .font(.system(size: 36, weight: .bold))
+                    Text("Got a promo code?\nDrop it here.")
+                        .font(.title).bold()
                         .foregroundColor(Color("TextPrimary"))
+                        .multilineTextAlignment(.center)
                     
                     Spacer()
                     
@@ -40,8 +41,6 @@ struct PromocodeView: View {
                         .padding(.horizontal, 16)
                         .cornerRadius(10)
                         .autocapitalization(.none)
-                        .textContentType(.oneTimeCode)
-                        .keyboardType(.asciiCapable)
                         .disableAutocorrection(true)
                         .focused($isFocused)
                         .overlay(
@@ -49,7 +48,7 @@ struct PromocodeView: View {
                                 .stroke(isFocused ? Color(!viewModel.loading ? "Active" : "Surface") : Color("Border"), lineWidth: 2)
                         )
                         .foregroundColor(Color("TextPrimary"))
-                        .font(.system(size: 20, weight: .bold))
+                        .font(.body).bold()
                         .contentShape(Rectangle())
                         .multilineTextAlignment(.center)
                     
@@ -76,7 +75,7 @@ struct PromocodeView: View {
                         }
                     }) {
                         Text("Send")
-                            .font(.system(size: 16, weight: .bold))
+                            .font(.body).bold()
                             .foregroundColor(Color("TextPrimaryFixed"))
                             .frame(maxWidth: .infinity, maxHeight: 55)
                     }
@@ -115,7 +114,7 @@ struct PromocodeView: View {
                             .frame(width: 16, height: 16)
                             .contentShape(Circle())
                         Text("back")
-                            .font(.system(size: 16))
+                            .font(.body)
                             .foregroundColor(Color("TextPrimary"))
                     }
                 }

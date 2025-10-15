@@ -37,7 +37,7 @@ struct SubscribeView: View {
                             .frame(maxHeight: 10)
                         
                         Text("\(String(describing: tariffManager.tariffName)) is active")
-                            .font(.system(size: 36, weight: .bold))
+                            .font(.largeTitle).bold()
                             .multilineTextAlignment(.center)
                             .foregroundColor(Color("TextPrimary"))
                         
@@ -55,11 +55,11 @@ struct SubscribeView: View {
                         if tariffManager.subscribtionStatus == StatusSubscribtion.cancelled{
                             HStack{
                                 Text(tariffManager.subscribtionPriceText)
-                                    .font(.system(size: 48, weight: .bold))
+                                    .font(.largeTitle).bold()
                                     .frame(alignment: .leading)
                                     .shimmer(tariffManager.subscribtionPrice == nil)
                                 Text("for 1 month")
-                                    .font(.system(size: 32, weight: .bold))
+                                    .font(.title).bold()
                                     .foregroundColor(Color("TextPrimary"))
                                     .frame(alignment: .leading)
                             }
@@ -70,19 +70,33 @@ struct SubscribeView: View {
                                     .font(.system(size: 40, weight: .medium))
                                     .foregroundColor(Color("Error"))
                                 Text("Your subscription ends in \(tariffManager.daysToEntTariffText) days.")
-                                    .font(.system(size: 24, weight: .bold))
+                                    .font(.title2).bold()
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .multilineTextAlignment(.leading)
                                     .fixedSize(horizontal: false, vertical: true)
                                     .shimmer(tariffManager.tariff == nil, color: Color("TextPrimary"))
                             }
                         } else {
-                            Text("Subscribtions renews in \(tariffManager.daysToEntTariffText) days")
-                                .font(.system(size: 24, weight: .bold))
-                                .frame(maxWidth: .infinity, alignment: tariffManager.isActiveTariff ? .center : .leading)
-                                .multilineTextAlignment(tariffManager.isActiveTariff ? .center : .leading)
-                                .lineSpacing(12)
-                                .shimmer(tariffManager.tariff == nil, color: Color("TextSecondary"))
+                            if tariffManager.subscribtionStatus == StatusSubscribtion.active{
+                                Text("Subscribtions renews in \(tariffManager.daysToEntTariffText) days")
+                                    .font(.title2).bold()
+                                    .frame(maxWidth: .infinity, alignment: tariffManager.isActiveTariff ? .center : .leading)
+                                    .multilineTextAlignment(tariffManager.isActiveTariff ? .center : .leading)
+                                    .lineSpacing(12)
+                                    .shimmer(tariffManager.tariff == nil, color: Color("TextSecondary"))
+                            } else{
+                                HStack{
+                                    Image("error")
+                                        .font(.system(size: 40, weight: .medium))
+                                        .foregroundColor(Color("Error"))
+                                    Text("Your subscription ends in \(tariffManager.daysToEntTariffText) days.")
+                                        .font(.title2).bold()
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .multilineTextAlignment(.leading)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .shimmer(tariffManager.tariff == nil, color: Color("TextPrimary"))
+                                }
+                            }
                         }
                         
                         Spacer()
@@ -96,7 +110,7 @@ struct SubscribeView: View {
                                         .frame(maxWidth: .infinity, maxHeight: 55)
                                 } else {
                                     Text("Do not renew")
-                                        .font(.system(size: 16, weight: .bold))
+                                        .font(.body).bold()
                                         .foregroundColor(Color("TextPrimary"))
                                         .frame(maxWidth: .infinity, maxHeight: 55)
                                 }
@@ -130,7 +144,7 @@ struct SubscribeView: View {
                                         .frame(maxWidth: .infinity, maxHeight: 55)
                                 } else {
                                     Text("Resume subscription")
-                                        .font(.system(size: 16, weight: .bold))
+                                        .font(.body).bold()
                                         .foregroundColor(Color("TextPrimaryFixed"))
                                         .frame(maxWidth: .infinity, maxHeight: 55)
                                 }

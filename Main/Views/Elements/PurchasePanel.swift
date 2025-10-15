@@ -20,11 +20,11 @@ struct PurchasePanel: View {
             if(showPrice){
                 HStack{
                     Text(tariffManager.subscribtionPriceText)
-                        .font(.system(size: 32, weight: .bold))
+                        .font(.largeTitle).bold()
                         .frame(alignment: .leading)
                         .shimmer(tariffManager.subscribtionPrice == nil)
                     Text("for 1 month")
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.title2).bold()
                         .foregroundColor(Color("TextPrimary"))
                         .frame(alignment: .leading)
                 }
@@ -36,7 +36,7 @@ struct PurchasePanel: View {
                     EmptyView()
                 }
                 .toggleStyle(CheckboxToggleStyle())
-                .frame(width: 25, height: 25)
+                .frame(width: 35, height: 35)
                 .disabled(openPaymentPage)
                 .onChange(of: agreementManager.isPublicOfferAgreed) { _ in
                     showErrorLine = false
@@ -44,9 +44,11 @@ struct PurchasePanel: View {
 
                 Text(attributedText)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.system(size: 12, weight: .bold))
+                    .font(.footnote).bold()
                     .foregroundColor(Color("TextSecondary"))
                     .multilineTextAlignment(.leading)
+                    .minimumScaleFactor(0.8)
+                    .lineLimit(2)
                     .onTapGesture {
                         if let range = attributedText.range(of: NSLocalizedString("offer_terms", comment: "")) {
                             showPublicOffer = true
@@ -73,7 +75,7 @@ struct PurchasePanel: View {
                         .frame(maxWidth: .infinity, maxHeight: 55)
                 } else {
                     Text("Purchase subscription")
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.body).bold()
                         .foregroundColor(Color("TextPrimaryFixed"))
                         .frame(maxWidth: .infinity, maxHeight: 55)
                 }

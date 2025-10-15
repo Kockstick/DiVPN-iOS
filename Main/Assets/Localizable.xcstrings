@@ -7,6 +7,9 @@
     "%@ is active" : {
 
     },
+    "• • • • • •" : {
+
+    },
     "7YJPC5" : {
 
     },
@@ -32,7 +35,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Я соглашаюсь с Политикой конфиденциальности"
+            "value" : "Я соглашаюсь с\nПолитикой конфиденциальности"
           }
         }
       }
@@ -116,7 +119,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Подписка будет действовать до %@"
+            "value" : "Действует до %@"
           }
         }
       }
@@ -315,7 +318,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Опишите подробно ошибку, с которой вы столкнулись."
+            "value" : "Опишите подробно проблему, с которой вы столкнулись."
           }
         }
       }
@@ -354,9 +357,6 @@
         }
       }
     },
-    "DiVPN.Support@gmail.com" : {
-
-    },
     "Do not renew" : {
       "localizations" : {
         "ru" : {
@@ -372,7 +372,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "У вас есть пригласительный код?"
+            "value" : "У вас есть реферальный код?"
           }
         }
       }
@@ -400,17 +400,6 @@
     "EmailView" : {
 
     },
-    "Fastest VPN at maximum speed" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Скорость, достойная вашего VPN"
-          }
-        }
-      }
-    },
     "Feedback" : {
       "localizations" : {
         "ru" : {
@@ -427,28 +416,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "в месяц"
-          }
-        }
-      }
-    },
-    "For support:" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Техническая поддержка:"
-          }
-        }
-      }
-    },
-    "For technical support, you can write to:" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Для технической поддержки вы можете написать на:"
           }
         }
       }
@@ -473,24 +440,12 @@
         }
       }
     },
-    "I agree to reccuring charges and the offer terms" : {
-      "extractionState" : "stale",
+    "Got a promo code?\nDrop it here." : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Я даю согласие на регулярные списания и принимаю условия публичной оферты"
-          }
-        }
-      }
-    },
-    "I agree to the" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Соглашаюсь с"
+            "value" : "Есть промокод?\nПора им блеснуть!"
           }
         }
       }
@@ -537,7 +492,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Приглашай друзей и получай бесплатные месяцы подписки"
+            "value" : "Приглашайте друзей и получайте бесплатные месяцы подписки"
           }
         }
       }
@@ -547,7 +502,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Приглашай друзей в DiVPN"
+            "value" : "Приглашайте друзей в DiVPN"
           }
         }
       }
@@ -558,16 +513,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Узнать больше"
-          }
-        }
-      }
-    },
-    "Like - 678239" : {
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Пример - 678239"
           }
         }
       }
@@ -733,17 +678,6 @@
         }
       }
     },
-    "Privacy Policy" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Политикой конфиденциальности"
-          }
-        }
-      }
-    },
     "privacy_policy" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -778,17 +712,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Подписаться"
-          }
-        }
-      }
-    },
-    "Rate" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Оценить"
           }
         }
       }
@@ -832,23 +755,6 @@
     },
     "ReferralView" : {
 
-    },
-    "Renew" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Resume subscription"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Возобновить подписку"
-          }
-        }
-      }
     },
     "renew_subscription_notice" : {
       "extractionState" : "manual",
@@ -1011,34 +917,12 @@
         }
       }
     },
-    "The code is valid for 5 minutes" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Код действует 5 минут"
-          }
-        }
-      }
-    },
     "Time to update" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Время обновиться"
-          }
-        }
-      }
-    },
-    "To keep using the VPN, please renew your subscription" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Продлите подписку, чтобы и дальше пользоваться VPN"
           }
         }
       }
@@ -1054,15 +938,11 @@
       }
     },
     "Type here..." : {
-
-    },
-    "Unlimited internet access with data protection" : {
-      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Безграничный интернет с максимальной защитой"
+            "value" : "Вводить сюда…"
           }
         }
       }
@@ -1142,18 +1022,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ты получаешь 1 месяц подписки бесплатно"
-          }
-        }
-      }
-    },
-    "Your email" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ваш email"
+            "value" : "Вы получаете 1 месяц подписки бесплатно"
           }
         }
       }
@@ -1163,7 +1032,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Твой друг тоже получает 1 месяц бессплатно"
+            "value" : "Ваш друг получает 1 месяц подписки бессплатно"
           }
         }
       }

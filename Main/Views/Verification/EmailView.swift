@@ -42,7 +42,8 @@ struct EmailView: View {
                         )
                         .animation(.easeInOut(duration: 0.18), value: isFocused)
                         .foregroundColor(Color("TextPrimary"))
-                        .font(.system(size: 20, weight: .bold))
+                        .font(.body).bold()
+                        .minimumScaleFactor(0.8)
                         .contentShape(Rectangle())
                         .opacity(viewModel.loading ? 0.5 : 2)
                         .onChange(of: viewModel.email) { newValue in
@@ -67,7 +68,9 @@ struct EmailView: View {
                             .foregroundColor(Color("Error"))
                     }
                     Text(viewModel.errMessage == nil ? NSLocalizedString("create_account_hint", comment: "") : viewModel.errMessage!)
-                        .font(.system(size: 12))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 15)
+                        .font(.footnote)
                 }
                 .shimmer(viewModel.loading)
                 
@@ -78,12 +81,14 @@ struct EmailView: View {
                         EmptyView()
                     }
                     .toggleStyle(CheckboxToggleStyle())
-                    .frame(width: 25, height: 25)
+                    .frame(width: 35, height: 35)
                     .disabled(viewModel.loading)
                     
                     Text(attributedText)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.footnote).bold()
+                        .minimumScaleFactor(0.8)
+                        .lineLimit(2)
                         .foregroundColor(Color("TextSecondary"))
                         .multilineTextAlignment(.leading)
                         .onTapGesture {
@@ -109,7 +114,7 @@ struct EmailView: View {
                 }) {
                     HStack(spacing: 2){
                         Text(viewModel.loading ? "Waiting for server response" : "Continue")
-                            .font(.system(size: 16, weight: .bold))
+                            .font(.body).bold()
                             .foregroundColor(Color("TextPrimaryFixed"))
                         
                         if(!viewModel.loading){

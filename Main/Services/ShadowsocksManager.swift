@@ -7,14 +7,32 @@
 
 import SwiftUI
 
-class ShadowsocksManager{
+class ShadowsocksManager: ObservableObject {
     public static let shared = ShadowsocksManager()
     
     @Published var isWaitSsKey: Bool = false
+    @Published var serverLocation: String?
     private var ssKey: String = ""
     
     private let LOG_TAG = "ShadowsocksManager"
     private let logger = DiLogger.shared
+    
+    func preloadKey(){
+       getKey(){ result in
+            switch result {
+            case .success(let key):
+                self.ssKey = key
+                self.logger.i("Success preload SS key", tag: self.LOG_TAG)
+                self.logger.i("Server location - \(self.serverLocation)", tag: self.LOG_TAG)
+                break
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.logger.e("Failed to obtain SS key: \(error.localizedDescription)", tag: self.LOG_TAG)
+                }
+                break
+            }
+        }
+    }
     
     func getKey(completion: @escaping (Result<String, Error>) -> Void){
         logger.i("getKey called", tag: LOG_TAG)
@@ -29,6 +47,7 @@ class ShadowsocksManager{
                 switch result {
                 case .success(let body):
                     DiStorage.saveServer(body)
+                    ShadowsocksManager.shared.serverLocation = body.location
                     self.logger.i("Server received and saved", tag: self.LOG_TAG)
                     self.isWaitSsKey = false
                     completion(.success(body.shadowsocksKey))
@@ -43,33 +62,42 @@ class ShadowsocksManager{
             return
         }
         logger.i("SS key loaded from storage", tag: LOG_TAG)
-        isWaitSsKey = false
+        DispatchQueue.main.async {
+            ShadowsocksManager.shared.serverLocation = DiStorage.loadServer()?.location
+            self.isWaitSsKey = false
+        }
         completion(.success(key))
     }
     
-    func changeKey(){
+    func changeKey(completion: @escaping (Result<Bool, Error>) -> Void){
         logger.i("changeKey called", tag: LOG_TAG)
         
         guard let server = DiStorage.loadServer() else {
             logger.w("No server in storage", tag: LOG_TAG)
+            completion(.success(false))
             return
         }
         
+        isWaitSsKey = true
         let serverApi = ServerApi()
         serverApi.changeServer(server){ result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):
+                    self.isWaitSsKey = false
+                    
                     if let server = DiStorage.loadServer() {
                         if server.id == body.id{
                             self.logger.i("Server unchanged", tag: self.LOG_TAG)
-                            self.isWaitSsKey = false
+                            completion(.success(false))
                             return
                         }
                     }
                     
+                    ShadowsocksManager.shared.serverLocation = body.location
                     DiStorage.saveServer(body)
                     self.logger.i("Server updated in storage", tag: self.LOG_TAG)
+                    completion(.success(true))
                     
                     if(DiStatus.shared.connected){
                         self.logger.i("VPN connected; restarting with new SS key", tag: self.LOG_TAG)
@@ -85,9 +113,9 @@ class ShadowsocksManager{
                         }
                     }
                     break
-                    
                 case .failure(let error):
                     self.logger.w("Failed to refresh SS key: \(error.localizedDescription)", tag: self.LOG_TAG)
+                    completion(.failure(error))
                     break
                 }
             }

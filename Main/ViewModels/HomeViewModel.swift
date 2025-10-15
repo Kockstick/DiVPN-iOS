@@ -12,6 +12,12 @@ class HomeViewModel: ObservableObject {
     private let LOG_TAG: String = "HomeViewModel"
     private let logger = DiLogger.shared
     
+    private var ssKey: String?
+    
+    init(){
+        ShadowsocksManager.shared.preloadKey()
+    }
+    
     func startVPN(){
         logger.i("startVPN called", tag: LOG_TAG)
         
@@ -37,31 +43,31 @@ class HomeViewModel: ObservableObject {
             }
         }
     }
-    
-    func stopVPN(){
-        logger.i("stopVPN called", tag: LOG_TAG)
         
-        DiVpnService.stopVpn(){
-            success in
-            DispatchQueue.main.async {
-                if success {
-                    self.logger.i("VPN stop success", tag: self.LOG_TAG)
-                } else {
-                    self.logger.w("VPN stop failed; keeping toggle enabled", tag: self.LOG_TAG)
-                    DiStatus.shared.isEnabled = true
+        func stopVPN(){
+            logger.i("stopVPN called", tag: LOG_TAG)
+            
+            DiVpnService.stopVpn(){
+                success in
+                DispatchQueue.main.async {
+                    if success {
+                        self.logger.i("VPN stop success", tag: self.LOG_TAG)
+                    } else {
+                        self.logger.w("VPN stop failed; keeping toggle enabled", tag: self.LOG_TAG)
+                        DiStatus.shared.isEnabled = true
+                    }
+                }
+            }
+        }
+        
+        func checkConnection(){
+            logger.i("checkConnection called", tag: LOG_TAG)
+            
+            DiVpnService.checkConnection(){ result in
+                DispatchQueue.main.async{
+                    self.logger.i("checkConnection result: \(result)", tag: self.LOG_TAG)
+                    DiStatus.shared.isEnabled = result
                 }
             }
         }
     }
-    
-    func checkConnection(){
-        logger.i("checkConnection called", tag: LOG_TAG)
-        
-        DiVpnService.checkConnection(){ result in
-            DispatchQueue.main.async{
-                self.logger.i("checkConnection result: \(result)", tag: self.LOG_TAG)
-                DiStatus.shared.isEnabled = result
-            }
-        }
-    }
-}

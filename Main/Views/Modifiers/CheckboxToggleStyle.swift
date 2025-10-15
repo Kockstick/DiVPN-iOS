@@ -13,8 +13,11 @@ struct CheckboxToggleStyle: ToggleStyle {
             configuration.isOn.toggle()
         } label: {
             HStack(spacing: 12) {
+                Spacer().frame(maxWidth: 15)
                 Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square")
+                    .font(.title3)
                     .imageScale(.large)
+                Spacer().frame(maxWidth: 15)
                 configuration.label
             }
         }

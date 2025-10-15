@@ -28,7 +28,7 @@ struct ReferralView: View {
                     .frame(maxHeight: 30)
                 
                 Text("Do you have a referral code?")
-                    .font(.system(size: 36, weight: .bold))
+                    .font(.title).bold()
                     .foregroundColor(Color("TextPrimary"))
                     .multilineTextAlignment(.center)
                 
@@ -50,7 +50,7 @@ struct ReferralView: View {
                         )
                         .animation(.easeInOut(duration: 0.18), value: isFocused)
                         .foregroundColor(Color("TextPrimary"))
-                        .font(.system(size: 20, weight: .bold))
+                        .font(.body).bold()
                         .contentShape(Rectangle())
                         .multilineTextAlignment(.center)
                         .trackingIfAvailable(value: 3)
@@ -95,7 +95,7 @@ struct ReferralView: View {
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundColor(Color("Error"))
                     Text("Invalid code or not found")
-                        .font(.system(size: 12))
+                        .font(.footnote).bold()
                 }
                 .opacity(showError ? 1 : 0)
                 
@@ -106,7 +106,7 @@ struct ReferralView: View {
                     onSuccess()
                 }) {
                     Text("Skip")
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.body).bold()
                         .foregroundColor(Color("TextPrimary"))
                         .frame(maxWidth: .infinity, maxHeight: 55)
                 }
@@ -129,7 +129,7 @@ struct ReferralView: View {
                     referralModel.showReferralInviteInAuth = true
                 }) {
                     Text("What is it?")
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.body).bold()
                         .foregroundColor(Color("TextPrimaryFixed"))
                         .frame(maxWidth: .infinity, maxHeight: 55)
                 }
