@@ -22,13 +22,13 @@ struct DiTokenProvider {
                 await Task.yield()
             }
             logger.i("Token was refreshed, finish wait.", tag: LOG_TAG)
-            return DiStorage.loadToken()?.access;
+            return try? DiStorage.loadToken()?.access;
         }
         
         Self.isRefreshing = true
         defer { Self.isRefreshing = false }
         
-        guard let lastToken = DiStorage.loadToken() else {
+        guard let lastToken = try? DiStorage.loadToken() else {
             return nil
         }
         

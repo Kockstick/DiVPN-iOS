@@ -142,17 +142,45 @@ internal class DiStorage{
         logger.i("Device cleared from storage", tag: LOG_TAG)
     }
     
-    internal static func saveToken(token: TokenResult) {
+    internal static func saveToken(token: TokenResult) throws {
         if let data = try? JSONEncoder().encode(token) {
-            UserDefaults.standard.set(data, forKey: TOKEN_KEY)
-            logger.i("Token saved to storage", tag: LOG_TAG)
+            let query: [String: Any] = [
+                kSecClass as String: kSecClassGenericPassword,
+                kSecAttrAccount as String: TOKEN_KEY,
+                kSecValueData as String: data,
+                kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+                kSecAttrSynchronizable as String: kCFBooleanFalse!
+            ]
+            SecItemDelete(query as CFDictionary)
+            let status = SecItemAdd(query as CFDictionary, nil)
+            guard status == errSecSuccess else {
+                logger.e("Error save token to storage with status - \(status)", tag: LOG_TAG)
+                throw NSError(domain: NSOSStatusErrorDomain, code: Int(status))
+            }
+            logger.i("Token saved to storage with status - \(status)", tag: LOG_TAG)
         } else {
             logger.e("Failed to encode Token", tag: LOG_TAG)
         }
     }
 
-    internal static func loadToken() -> TokenResult? {
-        if let data = UserDefaults.standard.data(forKey: TOKEN_KEY),
+    internal static func loadToken() throws -> TokenResult? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: TOKEN_KEY,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        if status == errSecItemNotFound {
+            return nil
+        }
+        guard status == errSecSuccess else {
+            logger.e("Error save token to storage with status - \(status)", tag: LOG_TAG)
+            throw NSError(domain: NSOSStatusErrorDomain, code: Int(status))
+        }
+        
+        if let data = item as? Data,
            let token = try? JSONDecoder().decode(TokenResult.self, from: data) {
             logger.i("Token loaded from storage", tag: LOG_TAG)
             return token
@@ -162,7 +190,11 @@ internal class DiStorage{
     }
 
     internal static func clearToken() {
-        UserDefaults.standard.removeObject(forKey: TOKEN_KEY)
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: TOKEN_KEY
+        ]
+        SecItemDelete(query as CFDictionary)
         logger.i("Token cleared from storage", tag: LOG_TAG)
     }
 

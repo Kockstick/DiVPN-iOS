@@ -87,7 +87,7 @@ class AuthApi {
         
         if http.statusCode == 200 {
             if let tokenResult = resp.tokenResult {
-                DiStorage.saveToken(token: tokenResult)
+                try? DiStorage.saveToken(token: tokenResult)
                 logger.i("Verification success, tokens saved", tag: LOG_TAG)
             } else {
                 logger.w("200 but no tokens in response", tag: LOG_TAG)
@@ -150,7 +150,7 @@ class AuthApi {
             
         case 200 ..< 300:
             if let tokenResult = resp  {
-                DiStorage.saveToken(token: tokenResult)
+                try? DiStorage.saveToken(token: tokenResult)
                 logger.i("Refresh token success, tokens saved", tag: LOG_TAG)
             } else {
                 logger.w("200 but no tokens in response", tag: LOG_TAG)
