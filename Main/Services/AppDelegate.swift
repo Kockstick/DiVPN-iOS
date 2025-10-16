@@ -74,8 +74,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
 
         // 2) Фильтрация по типу/категории, чтобы не долбить сеть на каждую чих-норификацию
         let userInfo = notification.request.content.userInfo
-        let type = userInfo["type"] as? String
-        let category = notification.request.content.categoryIdentifier
+        _ = userInfo["type"] as? String
+        _ = notification.request.content.categoryIdentifier
         
         TariffManager.shared.loadTariff() {_ in}
     }
