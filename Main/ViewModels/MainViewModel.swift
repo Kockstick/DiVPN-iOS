@@ -44,31 +44,38 @@ class MainViewModel: ObservableObject {
     
     func checkVerification(completion: @escaping (Bool) -> Void){
         logger.i("checkVerification called", tag: LOG_TAG)
-        if ((try? DiStorage.loadToken()?.access != nil) != nil) {
-            let authApi = AuthApi()
-            authApi.checkAuth(){ result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let body):
-                        if body{
-                            self.logger.i("checkVerification: authorized", tag: self.LOG_TAG)
-                            self.logDevice()
-                        } else{
-                            self.logger.w("checkVerification: not authorized", tag: self.LOG_TAG)
-                            DiStorage.clearToken()
-                            DiStorage.clearServer()
+        do{
+            let tokenModel = try DiStorage.loadToken()
+            
+            if (tokenModel?.access != nil) {
+                let authApi = AuthApi()
+                authApi.checkAuth(){ result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let body):
+                            if body{
+                                self.logger.i("checkVerification: authorized", tag: self.LOG_TAG)
+                                self.logDevice()
+                            } else{
+                                self.logger.w("checkVerification: not authorized", tag: self.LOG_TAG)
+                                DiStorage.clearToken()
+                                DiStorage.clearServer()
+                            }
+                            completion(body)
+                            return
+                        case .failure(let error):
+                            self.logger.w("checkVerification failed: (\(error.localizedDescription))", tag: self.LOG_TAG)
+                            completion(true)
+                            return
                         }
-                        completion(body)
-                        return
-                    case .failure(let error):
-                        self.logger.w("checkVerification failed: (\(error.localizedDescription))", tag: self.LOG_TAG)
-                        completion(true)
-                        return
                     }
                 }
+            } else {
+                logger.w("checkVerification: no token in storage", tag: LOG_TAG)
+                completion(false)
             }
-        } else {
-            logger.w("checkVerification: no token in storage", tag: LOG_TAG)
+        } catch {
+            logger.e("Failed to load token: \(error.localizedDescription)")
             completion(false)
         }
     }

@@ -41,7 +41,25 @@
       }
     },
     "App issues" : {
+      "extractionState" : "stale",
       "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проблемы с приложением"
+          }
+        }
+      }
+    },
+    "app_issues" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App issues"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -551,11 +569,29 @@
       }
     },
     "Not using" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не пользуюсь"
+          }
+        }
+      }
+    },
+    "not_using" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not using"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не использую"
           }
         }
       }
@@ -634,7 +670,25 @@
         }
       }
     },
+    "other" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Другое"
+          }
+        }
+      }
+    },
     "Other" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -705,6 +759,40 @@
         }
       }
     },
+    "promocode_success_body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscription extended until %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписка продлена до %@"
+          }
+        }
+      }
+    },
+    "promocode_success_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promo code applied"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Применен промокод"
+          }
+        }
+      }
+    },
     "Purchase subscription" : {
       "comment" : "Purchase subscription",
       "localizations" : {
@@ -749,6 +837,40 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Привет! Попробуй DiVPN 🚀\nСкачай приложение, используй мой реферальный код и получи месяц подписки бесплатно!\n\n👉 %@ 👈\n\nСсылка на сайт с переадресацией в соответствующий платформе сервис"
+          }
+        }
+      }
+    },
+    "referral_success_body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your subscription has been extended until %@ thanks to referrals!"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписка продлена до %@ по реферальной программе"
+          }
+        }
+      }
+    },
+    "referral_success_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Someone used your code"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кто-то использовал ваш промокод!"
           }
         }
       }
@@ -928,7 +1050,25 @@
       }
     },
     "Too expensive" : {
+      "extractionState" : "stale",
       "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Слишком дорого"
+          }
+        }
+      }
+    },
+    "too_expensive" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Too expensive"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -948,7 +1088,25 @@
       }
     },
     "Unstable connection" : {
+      "extractionState" : "stale",
       "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нестабильное соединение"
+          }
+        }
+      }
+    },
+    "unstable_connection" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unstable connection"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",

@@ -23,10 +23,10 @@ struct UnsubscribeView: View{
             
             Text("Why do you want to cansel your subscription?")
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 24, weight: .bold))
+                .font(.title).bold()
                 .multilineTextAlignment(.leading)
                 .foregroundColor(Color("TextSecondary"))
-                .lineSpacing(12)
+                .lineSpacing(10)
             
             Spacer()
                 .frame(maxHeight: 40)
@@ -39,19 +39,27 @@ struct UnsubscribeView: View{
             Spacer()
                 .frame(maxHeight: 40)
             
-            radioRow(isSelected: selection == .NotUsing, title: "Not using") {
+            radioRow(isSelected: selection == .NotUsing, title: NSLocalizedString("not_using", comment:"")) {
                 selection = .NotUsing
             }
-            radioRow(isSelected: selection == .TooExpensive, title: "Too expensive") {
+            Spacer()
+                .frame(maxHeight: 8)
+            radioRow(isSelected: selection == .TooExpensive, title: NSLocalizedString("too_expensive", comment:"")) {
                 selection = .TooExpensive
             }
-            radioRow(isSelected: selection == .UnstableConnection, title: "Unstable connection") {
+            Spacer()
+                .frame(maxHeight: 8)
+            radioRow(isSelected: selection == .UnstableConnection, title: NSLocalizedString("unstable_connection", comment:"")) {
                 selection = .UnstableConnection
             }
-            radioRow(isSelected: selection == .AppIssues, title: "App issues") {
+            Spacer()
+                .frame(maxHeight: 8)
+            radioRow(isSelected: selection == .AppIssues, title: NSLocalizedString("app_issues", comment:"")) {
                 selection = .AppIssues
             }
-            radioRow(isSelected: selection == .Other, title: "Other") {
+            Spacer()
+                .frame(maxHeight: 8)
+            radioRow(isSelected: selection == .Other, title: NSLocalizedString("other", comment:"")) {
                 selection = .Other
             }
             
@@ -70,7 +78,7 @@ struct UnsubscribeView: View{
                 }
             }) {
                 Text("Confirm")
-                    .font(.system(size: 16, weight: .bold))
+                    .font(.body).bold()
                     .foregroundColor(Color("TextPrimaryFixed"))
                     .frame(maxWidth: .infinity, maxHeight: 55)
             }
@@ -98,7 +106,7 @@ struct UnsubscribeView: View{
                 RadioButton(isSelected: isSelected)
                 Text(title)
                     .frame(alignment: .leading)
-                    .font(.system(size: 24, weight: .bold))
+                    .font(.title3).bold()
                     .multilineTextAlignment(.leading)
                     .foregroundColor(Color("TextPrimary"))
                 Spacer(minLength: 0)
