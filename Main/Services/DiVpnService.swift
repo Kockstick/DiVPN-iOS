@@ -99,8 +99,8 @@ public class DiVpnService {
         await setLoading(true)
         OutlineVpn.initialize()
         
-        let serverName = Bundle.main.serverName   // используй локализованное имя, если надо
-
+        let serverName = Bundle.main.serverName
+        
         let ssConfig = """
         {
           "transport": "\(ssKey)"
