@@ -16,23 +16,18 @@ class MainViewModel: ObservableObject {
         let appApi = AppApi()
         
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            let version = version.replacingOccurrences(of: "-debug", with: "")
             logger.i("App version fetched", tag: LOG_TAG)
-            let appVersion = AppVersionModel(version: version)
-            appApi.checkUpdate(appVersion) { result in
+            appApi.getLastSupportVersion() { result in
                 switch result {
                 case .success(let body):
-                    print("Is actual version - \(body)")
-                    if let flag = Bool(body) {
-                        self.logger.i("checkUpdate success: isActual=\(flag)", tag: self.LOG_TAG)
-                        completion(!flag)
-                        return
-                    }
-                    self.logger.w("checkUpdate: unable to parse server body as Bool", tag: self.LOG_TAG)
-                    completion(false)
+                    self.logger.i("Last support version - \(body.version)", tag: self.LOG_TAG)
+                    self.logger.i("Current version - \(version)", tag: self.LOG_TAG)
+                    let isActual = self.checkVersion(version, body.version)
+                    completion(isActual)
                     return
                 case .failure(let error):
                     self.logger.e("checkUpdate error: \(error.localizedDescription)", tag: self.LOG_TAG)
-                    print("Error get version app: \(error)")
                     completion(false)
                     return
                 }
@@ -40,6 +35,20 @@ class MainViewModel: ObservableObject {
         } else {
             logger.w("checkUpdate: CFBundleShortVersionString not found", tag: LOG_TAG)
         }
+    }
+    
+    private func checkVersion(_ current: String, _ lastSupport: String) -> Bool{
+        let currentParts = current.split(separator: ".").map { Int($0) ?? 0 }
+        let supportParts = lastSupport.split(separator: ".").map { Int($0) ?? 0 }
+        let maxCount = max(currentParts.count, supportParts.count)
+        for i in 0..<maxCount {
+            let currentPart = i < currentParts.count ? currentParts[i] : 0
+            let supportPart = i < supportParts.count ? supportParts[i] : 0
+            if currentPart != supportPart {
+                return currentPart < supportPart ? false : true
+            }
+        }
+        return true
     }
     
     func checkVerification(completion: @escaping (Bool) -> Void){

@@ -102,7 +102,7 @@ struct MainView: View {
                 }
             }
             viewModel.checkUpdate() { result in
-                self.showUpdateBanner = result
+                self.showUpdateBanner = !result
             }
         }
         .navigationTitle("MainView")

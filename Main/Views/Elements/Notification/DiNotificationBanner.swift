@@ -20,14 +20,14 @@ struct DiNotificationBanner: View{
             ZStack{
                 VStack{
                     Spacer()
-                        .frame(maxHeight: 10)
+                        .frame(maxHeight: 25)
                     
                     Image("update")
-                        .font(.system(size: 160, weight: .thin))
+                        .font(.system(size: 180, weight: .light))
                         .foregroundColor(Color("TextPrimary"))
                     
                     Spacer()
-                        .frame(maxHeight: 20)
+                        .frame(maxHeight: 30)
                     
                     Text("Time to update")
                         .font(.largeTitle).bold()
@@ -47,6 +47,7 @@ struct DiNotificationBanner: View{
                     Text("We fixed bugs, polished the UI, and added a couple of handy extras. No magic, just an update.")
                         .font(.title2).bold()
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .multilineTextAlignment(.leading)
                         .foregroundColor(Color("TextSecondary"))
                         .lineSpacing(12)
                     

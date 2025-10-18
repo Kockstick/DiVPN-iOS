@@ -22,20 +22,26 @@ class AppApi {
         self.client = HTTPClient(baseURL: base, session: session, tokenProvider: DiTokenProvider.shared)
     }
     
-    func checkUpdate(_ appVersion: AppVersionModel) async throws -> String {
-        try await client.sendText("IsActualVersion", method: .POST, json: appVersion, accept: "application/json")
+    func getLastSupportVersion() async throws -> AppVersionModel {
+        let (data, _) = try await client.sendData(
+            "GetLastSupportVersion",
+            method: .GET,
+            accept: "application/json"
+        )
+
+        return try JSONDecoder().decode(AppVersionModel.self, from: data)
     }
     
-    public func checkUpdate(_ appVersion: AppVersionModel, completion: @escaping (Result<String, Error>) -> Void){
-        logger.i("checkUpdate called", tag: LOG_TAG)
+    public func getLastSupportVersion(completion: @escaping (Result<AppVersionModel, Error>) -> Void){
+        logger.i("getLastSupportVersion called", tag: LOG_TAG)
         Task {
             do {
-                let res = try await checkUpdate(appVersion)
-                logger.i("checkUpdate success", tag: LOG_TAG)
+                let res = try await getLastSupportVersion()
+                logger.i("getLastSupportVersion success", tag: LOG_TAG)
                 completion(.success(res))
             }
             catch {
-                logger.e("checkUpdate failed", tag: LOG_TAG)
+                logger.e("getLastSupportVersion failed", tag: LOG_TAG)
                 completion(.failure(error))
             }
         }
