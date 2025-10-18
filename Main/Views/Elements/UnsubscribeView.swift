@@ -97,6 +97,27 @@ struct UnsubscribeView: View{
         .padding(.horizontal, 40)
         .padding(.top, 70)
         .padding(.bottom, 50)
+        .overlay(alignment: .topLeading) {
+            Button(action: {
+                DispatchQueue.main.async {
+                    dismiss()
+                }
+            }) {
+                HStack (spacing: 0){
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(Color("TextPrimary"))
+                        .frame(width: 16, height: 16)
+                        .contentShape(Circle())
+                    Text("back")
+                        .font(.body)
+                        .foregroundColor(Color("TextPrimary"))
+                }
+            }
+            .padding(.top, 10)
+            .padding(.leading, 10)
+            .accessibilityLabel("Close")
+        }
     }
     
     @ViewBuilder
