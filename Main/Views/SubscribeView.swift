@@ -17,6 +17,7 @@ struct SubscribeView: View {
     private let invoiceApi = InvoiceApi()
     
     @State var showUnsubscribeView = false
+    @State var showChangeCardView = false
     @State var loading: Bool = false
     
     var body: some View {
@@ -166,6 +167,25 @@ struct SubscribeView: View {
             .padding(.top, 70)
             .padding(.bottom, 50)
             .onAppear { haptic.prepare() }
+            .overlay(alignment: .topTrailing) {
+                if tariffManager.subscribtionStatus == StatusSubscribtion.active {
+                    Button(action: {
+                        showChangeCardView = true
+                    }) {
+                        Image("payment_card")
+                            .font(.system(size: 32, weight: .medium))
+                            .foregroundColor(Color("TextSecondary"))
+                            .frame(width: 32, height: 32)
+                            .contentShape(Circle())
+                    }
+                    .padding(.top, 10)
+                    .padding(.trailing, 30)
+                    .accessibilityLabel("Change Card")
+                }
+            }
+            .sheet(isPresented: $showChangeCardView){
+                ChangeCardView()
+            }
         }
     }
 }

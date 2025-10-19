@@ -23,6 +23,16 @@
         }
       }
     },
+    "A payment of 1₽ is required to change your card." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Необходимо оплатить 1₽ для смены карты"
+          }
+        }
+      }
+    },
     "agree_privacy_policy" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -159,12 +169,66 @@
         }
       }
     },
+    "Change" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изменить"
+          }
+        }
+      }
+    },
+    "Change Card" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Смена Карты"
+          }
+        }
+      }
+    },
     "Change server" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сменить сервер"
+          }
+        }
+      }
+    },
+    "change_card_success_body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your card has been successfully changed."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш способ оплаты успешно изменен"
+          }
+        }
+      }
+    },
+    "change_card_success_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment method updated"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Способ оплаты изменен"
           }
         }
       }
@@ -327,6 +391,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Если у вас нет аккаунта, мы создадим его для вас"
+          }
+        }
+      }
+    },
+    "Date last change: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дата изменения: %@"
           }
         }
       }

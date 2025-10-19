@@ -104,7 +104,7 @@ struct PurchasePanel: View {
         let api = InvoiceApi()
         
         do{
-            let url = try await api.getInvoiceUrl()
+            let url = try await api.getPaymentUrl()
             return url.unquoted
         } catch{
             self.logger.e("Error get invoice url: \(error)", tag: self.LOG_TAG)

@@ -21,27 +21,67 @@ class InvoiceApi{
         self.client = HTTPClient(baseURL: baseUrl, session: session, tokenProvider: DiTokenProvider.shared)
     }
     
-    func getInvoiceUrl() async throws -> String {
-        try await client.sendText("GetInvoiceUrl", method: .GET, accept: "application/json")
+    func getPaymentUrl() async throws -> String {
+        try await client.sendText("GetPaymentUrl", method: .GET, accept: "application/json")
     }
     
-    public func getInvoiceUrl(completion: @escaping (Result<String, Error>) -> Void){
-        logger.i("getInvoiceUrl called", tag: LOG_TAG)
+    public func getPaymentUrl(completion: @escaping (Result<String, Error>) -> Void){
+        logger.i("getPaymentUrl called", tag: LOG_TAG)
         Task {
             do {
-                let res = try await getInvoiceUrl()
-                logger.i("getInvoiceUrl success", tag: LOG_TAG)
+                let res = try await getPaymentUrl()
+                logger.i("getPaymentUrl success", tag: LOG_TAG)
                 completion(.success(res))
             }
             catch {
-                logger.e("getInvoiceUrl failed", tag: LOG_TAG)
+                logger.e("getPaymentUrl failed", tag: LOG_TAG)
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getChangeCardUrl() async throws -> String {
+        try await client.sendText("GetChangeCardUrl", method: .GET, accept: "application/json")
+    }
+    
+    public func getChangeCardUrl(completion: @escaping (Result<String, Error>) -> Void){
+        logger.i("getChangeCardUrl called", tag: LOG_TAG)
+        Task {
+            do {
+                let res = try await getChangeCardUrl()
+                logger.i("getChangeCardUrl success", tag: LOG_TAG)
+                completion(.success(res))
+            }
+            catch {
+                logger.e("getChangeCardUrl failed", tag: LOG_TAG)
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    public func getChangeDate() async throws -> ChangePaymentDateModel {
+        let (data, _) = try await client.sendData("GetChangeCardDate", method: .GET, accept: "application/json")
+        let resp = try DiDecoder.getJson2TariffDecoder().decode(ChangePaymentDateModel.self, from: data)
+        return resp
+    }
+    
+    public func getChangeDate(completion: @escaping (Result<ChangePaymentDateModel, Error>) -> Void){
+        logger.i("getChangeDate called", tag: LOG_TAG)
+        Task {
+            do {
+                let res = try await getChangeDate()
+                logger.i("getChangeDate success", tag: LOG_TAG)
+                completion(.success(res))
+            }
+            catch {
+                logger.e("getChangeDate failed", tag: LOG_TAG)
                 completion(.failure(error))
             }
         }
     }
     
     public func getSubscribtionStatus() async throws -> StatusSubscribtion{
-        let (data, http) = try await client.sendData("GetSubscribtionStatus", method: .GET, accept: "application/json")
+        let (data, _) = try await client.sendData("GetSubscribtionStatus", method: .GET, accept: "application/json")
         let resp = try JSONDecoder().decode(SubscribtionStatusModel.self, from: data)
         return resp.status
     }
@@ -62,7 +102,7 @@ class InvoiceApi{
     }
     
     public func getSubscribtionPrice() async throws -> PriceModel{
-        let (data, http) = try await client.sendData("GetSubscribtionPrice", method: .GET, accept: "application/json")
+        let (data, _) = try await client.sendData("GetSubscribtionPrice", method: .GET, accept: "application/json")
         let resp = try JSONDecoder().decode(PriceModel.self, from: data)
         return resp
     }
