@@ -28,7 +28,7 @@ class MainViewModel: ObservableObject {
                     return
                 case .failure(let error):
                     self.logger.e("checkUpdate error: \(error.localizedDescription)", tag: self.LOG_TAG)
-                    completion(false)
+                    completion(true)
                     return
                 }
             }
