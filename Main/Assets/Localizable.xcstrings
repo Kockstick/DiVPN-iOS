@@ -4,6 +4,16 @@
     "" : {
 
     },
+    "*Information may update with a short delay" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "*Данные могут обновляться с задержкой"
+          }
+        }
+      }
+    },
     "%@ is active" : {
 
     },
@@ -28,7 +38,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Необходимо оплатить 1₽ для смены карты"
+            "value" : "Для смены карты необходимо оплатить 1₽"
           }
         }
       }
@@ -174,7 +184,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Изменить"
+            "value" : "Сменить"
           }
         }
       }

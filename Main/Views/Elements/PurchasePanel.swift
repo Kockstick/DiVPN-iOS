@@ -16,88 +16,92 @@ struct PurchasePanel: View {
     private let logger = DiLogger.shared
 
     var body: some View {
-        VStack(spacing: 0) {
-            if(showPrice){
-                HStack{
-                    Text(tariffManager.subscribtionPriceText)
-                        .font(.largeTitle).bold()
-                        .frame(alignment: .leading)
-                        .shimmer(tariffManager.subscribtionPrice == nil)
-                    Text("for 1 month")
-                        .font(.title2).bold()
-                        .foregroundColor(Color("TextPrimary"))
-                        .frame(alignment: .leading)
+            VStack(spacing: 0) {
+                if(showPrice){
+                    HStack{
+                        Text(tariffManager.subscribtionPriceText)
+                            .font(.largeTitle).bold()
+                            .frame(alignment: .leading)
+                            .shimmer(tariffManager.subscribtionPrice == nil)
+                        Text("for 1 month")
+                            .font(.title2).bold()
+                            .foregroundColor(Color("TextPrimary"))
+                            .frame(alignment: .leading)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                
+                HStack {
+                    Toggle(isOn: $agreementManager.isPublicOfferAgreed) {
+                        EmptyView()
+                    }
+                    .toggleStyle(CheckboxToggleStyle())
+                    .frame(width: 35, height: 35)
+                    .disabled(openPaymentPage)
+                    .onChange(of: agreementManager.isPublicOfferAgreed) { _ in
+                        showErrorLine = false
+                    }
+                    
+                    Text(attributedText)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.footnote).bold()
+                        .foregroundColor(Color("TextSecondary"))
+                        .multilineTextAlignment(.leading)
+                        .minimumScaleFactor(0.8)
+                        .lineLimit(2)
+                        .onTapGesture {
+                            if let range = attributedText.range(of: NSLocalizedString("offer_terms", comment: "")) {
+                                showPublicOffer = true
+                            }
+                        }
+                        .sheet(isPresented: $showPublicOffer) {
+                            SafariView(url: URL(string: Bundle.main.publicOfferUrl)!)
+                        }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 5)
+                
+                Rectangle()
+                    .frame(height: 2)
+                    .foregroundColor(Color("Error"))
+                    .opacity(showErrorLine ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.2), value: showErrorLine)
+                
+                Spacer().frame(maxHeight: 15)
+                
+                Button(action: purchaseTapped) {
+                    if openPaymentPage {
+                        CircleLoader(color: Color("TextPrimaryFixed"))
+                            .frame(maxWidth: .infinity, maxHeight: 55)
+                    } else {
+                        Text("Purchase subscription")
+                            .font(.body).bold()
+                            .foregroundColor(Color("TextPrimaryFixed"))
+                            .frame(maxWidth: .infinity, maxHeight: 55)
+                    }
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color("Accent"))
+                        .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color("Border"), lineWidth: 2)
+                )
+                .opacity(showErrorLine ? 0.4 : 1)
+                .compositingGroup()
             }
-            
-            HStack {
-                Toggle(isOn: $agreementManager.isPublicOfferAgreed) {
-                    EmptyView()
-                }
-                .toggleStyle(CheckboxToggleStyle())
-                .frame(width: 35, height: 35)
-                .disabled(openPaymentPage)
-                .onChange(of: agreementManager.isPublicOfferAgreed) { _ in
-                    showErrorLine = false
-                }
-
-                Text(attributedText)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.footnote).bold()
-                    .foregroundColor(Color("TextSecondary"))
-                    .multilineTextAlignment(.leading)
-                    .minimumScaleFactor(0.8)
-                    .lineLimit(2)
-                    .onTapGesture {
-                        if let range = attributedText.range(of: NSLocalizedString("offer_terms", comment: "")) {
-                            showPublicOffer = true
+            .sheet(item: $paymentUrl) { url in
+                SafariView(url: url)
+                    .onDisappear {
+                        openPaymentPage = false
+                        TariffManager.shared.loadTariff() {_ in}
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            TariffManager.shared.loadTariff() {_ in}
                         }
                     }
-                    .sheet(isPresented: $showPublicOffer) {
-                        SafariView(url: URL(string: Bundle.main.publicOfferUrl)!)
-                    }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, 5)
-
-            Rectangle()
-                .frame(height: 2)
-                .foregroundColor(Color("Error"))
-                .opacity(showErrorLine ? 1 : 0)
-                .animation(.easeInOut(duration: 0.2), value: showErrorLine)
-
-            Spacer().frame(maxHeight: 15)
-
-            Button(action: purchaseTapped) {
-                if openPaymentPage {
-                    CircleLoader(color: Color("TextPrimaryFixed"))
-                        .frame(maxWidth: .infinity, maxHeight: 55)
-                } else {
-                    Text("Purchase subscription")
-                        .font(.body).bold()
-                        .foregroundColor(Color("TextPrimaryFixed"))
-                        .frame(maxWidth: .infinity, maxHeight: 55)
-                }
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color("Accent"))
-                    .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color("Border"), lineWidth: 2)
-            )
-            .opacity(showErrorLine ? 0.4 : 1)
-            .compositingGroup()
-        }
-        .sheet(item: $paymentUrl) { url in
-            SafariView(url: url)
-                .onDisappear {
-                    openPaymentPage = false
-                }
-        }
     }
     
     private func getInvoiceUrl() async throws -> String {

@@ -96,7 +96,7 @@ class ShadowsocksManager: ObservableObject {
                     
                     ShadowsocksManager.shared.serverLocation = body.location
                     DiStorage.saveServer(body)
-                    self.logger.i("Server updated in storage", tag: self.LOG_TAG)
+                    self.logger.i("Server updated in storage.", tag: self.LOG_TAG)
                     completion(.success(true))
                     
                     if(DiStatus.shared.connected){

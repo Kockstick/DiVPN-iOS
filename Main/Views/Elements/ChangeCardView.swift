@@ -62,8 +62,13 @@ struct ChangeCardView: View{
                 .frame(height: 2)
                 .foregroundColor(Color("TextSecondary"))
             
+            Text("*Information may update with a short delay")
+                .foregroundColor(Color("TextSecondary"))
+                .font(.footnote)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
             Spacer()
-                .frame(maxHeight: 30)
+                .frame(maxHeight: 15)
             
             Text("Date last change: \(changePaymentDateText)")
                 .font(.title2).bold()
@@ -105,7 +110,10 @@ struct ChangeCardView: View{
                 SafariView(url: url)
                     .onDisappear {
                         openPaymentPage = false
-                        loadChangeDate()
+                        isLoadingDate = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                            loadChangeDate()
+                        }
                     }
             }
         }
@@ -166,35 +174,36 @@ struct ChangeCardView: View{
         }
     }
     
-    private func saveChangeDate(){
+    private func saveChangeDate() {
         if let date = changePaymentDate {
-            UserDefaults.standard.set(date, forKey: CHANGE_DATE_KEY)
+            UserDefaults.standard.set(date, forKey: CHANGE_DATE_KEY) // сохраняем Date
         } else {
             UserDefaults.standard.removeObject(forKey: CHANGE_DATE_KEY)
         }
     }
     
     private func loadChangeDate() {
-        isLoadingDate = true
-        if UserDefaults.standard.object(forKey: CHANGE_DATE_KEY) != nil {
-            if let data = UserDefaults.standard.data(forKey: CHANGE_DATE_KEY){
-                self.changePaymentDate = try? JSONDecoder().decode(Date.self, from: data)
-            }
+        DispatchQueue.main.async { self.isLoadingDate = true }
+
+        if let date = UserDefaults.standard.object(forKey: CHANGE_DATE_KEY) as? Date {
+            self.changePaymentDate = date
         } else {
             self.changePaymentDate = nil
         }
-        
+
         let invoiceApi = InvoiceApi()
-        invoiceApi.getChangeDate() { result in
-            switch result{
-                case .success(let date):
+        invoiceApi.getChangeDate { result in
+            switch result {
+            case .success(let date):
                 DispatchQueue.main.async {
                     self.changePaymentDate = date.dateChange
+                    self.isLoadingDate = false
                 }
             case .failure:
-                break
+                DispatchQueue.main.async {
+                    self.isLoadingDate = false
+                }
             }
-            isLoadingDate = false
         }
     }
 }
