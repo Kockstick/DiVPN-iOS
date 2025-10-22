@@ -11,7 +11,7 @@ struct SupportView: View {
     @Environment(\.dismiss) private var dismiss
     private let haptic = UINotificationFeedbackGenerator()
     
-    private let supportEmail = "DiVPN.Service@gmail.com"
+    private let supportEmail = "Support@divpn.ru"
     
     var body: some View {
         ZStack{
