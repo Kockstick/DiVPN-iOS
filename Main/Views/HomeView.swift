@@ -50,7 +50,7 @@ struct HomeView: View {
                     .scaleEffect(1.8)
                 }
                 .padding(.leading, -2)
-                .disabled(!tariffManager.isActiveTariff)
+                .disabled(!tariffManager.isActiveTariff || statusModel.loading && statusModel.connected)
                 .opacity(tariffManager.isActiveTariff ? 1 : 0.5)
                 
                 

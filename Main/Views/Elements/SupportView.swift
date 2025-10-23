@@ -42,10 +42,10 @@ struct SupportView: View {
                     .lineSpacing(8)
                 
                 Spacer()
-                    .frame(maxHeight: 20)
+                    .frame(maxHeight: 10)
                 
                 Text(supportEmail)
-                    .font(.title2).bold()
+                    .font(.title).bold()
                     .foregroundColor(Color("TextPrimary"))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .textSelection(.enabled)
