@@ -149,13 +149,14 @@ class AuthApi {
         switch http.statusCode {
             
         case 200 ..< 300:
-            if let tokenResult = resp  {
+            if let tokenResult = resp, let refresh = tokenResult.refresh  {
                 try? DiStorage.saveToken(token: tokenResult)
+                Self.isRefreshingToken = false
                 logger.i("Refresh token success, tokens saved", tag: LOG_TAG)
+                try? await completeToken(refresh)
             } else {
                 logger.w("200 but no tokens in response", tag: LOG_TAG)
             }
-            Self.isRefreshingToken = false
             return resp
             
         case 460:
@@ -203,6 +204,19 @@ class AuthApi {
                 completion(.failure(error))
             }
         }
+    }
+    
+    private func completeToken(_ refresh: String) async throws -> Void {
+        let payload = RefreshTokenModel(refreshToken: refresh)
+        
+        let (data, _) = try await client.sendData(
+            "CompleteToken",
+            method: .POST,
+            json: payload,
+            accept: "application/json"
+        )
+        
+        logger.i("CompleteToken response: \(String(data: data, encoding: .utf8) ?? "No data")", tag: LOG_TAG)
     }
     
     func checkAuth() async throws -> Bool {
