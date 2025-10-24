@@ -15,6 +15,17 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
     let LOG_TAG = "AppDelegate"
     let logger = DiLogger.shared
     
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        clearBadgeAndNotifications()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        clearBadgeAndNotifications()
+        completionHandler()
+    }
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool{
         UNUserNotificationCenter.current().delegate = self
@@ -79,5 +90,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         
         TariffManager.shared.loadTariff() {_ in}
     }
-
+    
+    private func clearBadgeAndNotifications() {
+        DispatchQueue.main.async {
+            UIApplication.shared.applicationIconBadgeNumber = 0
+            if #available(iOS 16.0, *) {
+                UNUserNotificationCenter.current().setBadgeCount(0)
+            }
+            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        }
+    }
 }
