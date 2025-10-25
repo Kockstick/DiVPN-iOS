@@ -54,6 +54,11 @@ class MainViewModel: ObservableObject {
     func checkVerification(completion: @escaping (Bool) -> Void){
         logger.i("checkVerification called", tag: LOG_TAG)
         do{
+            guard let user = DiStorage.loadUser() else {
+                completion(false)
+                return
+            }
+            
             let tokenModel = try DiStorage.loadToken()
             
             if (tokenModel?.access != nil) {
