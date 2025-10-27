@@ -378,7 +378,18 @@
         }
       }
     },
+    "Copy" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скопировать"
+          }
+        }
+      }
+    },
     "Copy and close" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -889,6 +900,7 @@
       }
     },
     "Rate us" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -914,13 +926,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hey! Try DiVPN 🚀\nDownload the app, use my referral code and get 1 month of subscription for free!\n\n👉 %@ 👈\n\nLink to the website will redirect you to the right store"
+            "value" : "Hey! Try DiVPN 🚀\nDownload the app, use my referral code and get 1 month of subscription for free!\n\n👉 %@ 👈\n\nhttps://apps.apple.com/us/app/divpn/id6754507149"
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Привет! Попробуй DiVPN 🚀\nСкачай приложение, используй мой реферальный код и получи месяц подписки бесплатно!\n\n👉 %@ 👈\n\nСсылка на сайт с переадресацией в соответствующий платформе сервис"
+            "state" : "translated",
+            "value" : "Привет! Попробуй DiVPN 🚀\nСкачай приложение, используй мой реферальный код и получи месяц подписки бесплатно!\n\n👉 %@ 👈\n\nhttps://apps.apple.com/us/app/divpn/id6754507149"
           }
         }
       }
@@ -1122,6 +1134,9 @@
           }
         }
       }
+    },
+    "Support@divpn.ru" : {
+
     },
     "Time to update" : {
       "localizations" : {

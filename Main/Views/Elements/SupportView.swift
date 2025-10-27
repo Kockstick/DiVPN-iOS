@@ -36,8 +36,9 @@ struct SupportView: View {
                 
                 Text("Email for support:")
                     .font(.title2).bold()
-                    .foregroundColor(Color("TextPrimary"))
+                    .foregroundColor(Color("TextSecondary"))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .textSelection(.enabled)
                     .multilineTextAlignment(.leading)
                     .lineSpacing(8)
                 
@@ -45,7 +46,7 @@ struct SupportView: View {
                     .frame(maxHeight: 10)
                 
                 Text(supportEmail)
-                    .font(.title).bold()
+                    .font(.title2).bold()
                     .foregroundColor(Color("TextPrimary"))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .textSelection(.enabled)
@@ -74,7 +75,7 @@ struct SupportView: View {
                         dismiss()
                     }
                 }) {
-                    Text("Copy and close")
+                    Text("Copy")
                         .font(.body).bold()
                         .foregroundColor(Color("TextPrimaryFixed"))
                         .frame(maxWidth: .infinity, maxHeight: 55)
@@ -92,6 +93,27 @@ struct SupportView: View {
             .padding(40)
             .padding(.bottom, 10)
             .padding(.top, 30)
+            .overlay(alignment: .topLeading) {
+                Button(action: {
+                    DispatchQueue.main.async {
+                        dismiss()
+                    }
+                }) {
+                    HStack (spacing: 0){
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(Color("TextPrimary"))
+                            .frame(width: 16, height: 16)
+                            .contentShape(Circle())
+                        Text("back")
+                            .font(.body)
+                            .foregroundColor(Color("TextPrimary"))
+                    }
+                }
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .accessibilityLabel("Close")
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("Background"))

@@ -25,18 +25,33 @@ struct OptionsView: View {
         ZStack{
             ZStack{
                 VStack{
+                    Spacer()
+                    
+                    HStack(spacing: 15){
+                        Rectangle()
+                            .frame(maxHeight: .infinity)
+                            .frame(width: 3)
+                            .foregroundColor(Color("TextSecondary"))
+                            
+                        VStack{
+                            Text(DiStorage.loadUser()?.email ?? "user")
+                                .foregroundColor(Color("TextSecondary"))
+                                .font(.body).bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .multilineTextAlignment(.leading)
+                            
+                            Text(ssManager.serverLocation ?? "• • • • • •")
+                                .font(.largeTitle).bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .multilineTextAlignment(.leading)
+                                .shimmer(ssManager.serverLocation == nil, color: Color("TextSecondary"))
+                        }
+                        .padding(.vertical, 5)
+                    }
+                    .fixedSize(horizontal: false, vertical: true)
                     
                     Spacer()
-                        .frame(maxHeight: 20)
-                    
-                    Text(ssManager.serverLocation ?? "• • • • • •")
-                        .font(.largeTitle).bold()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .multilineTextAlignment(.leading)
-                        .shimmer(ssManager.serverLocation == nil, color: Color("TextSecondary"))
-                        .overlay(alignment: .trailing){ }
-                    
-                    Spacer()
+                        .frame(maxHeight: 40)
                     
                     Rectangle()
                         .frame(maxWidth: .infinity)
@@ -90,31 +105,6 @@ struct OptionsView: View {
                     .sheet(isPresented: $showPromoView) {
                         PromocodeView()
                     }
-                    
-                    Rectangle()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 1)
-                        .foregroundColor(Color("TextSecondary"))
-                        .opacity(0.2)
-                    
-                    Button (action: {
-                        referralModel.showReferralInviteInMain = true
-                    }) {
-                        HStack(spacing: 20){
-                            Image("star")
-                                .font(.system(size: 55, weight: .thin))
-                                .frame(width: 45, height: 35)
-                                .foregroundColor(Color("TextPrimary"))
-                            Text("Rate us")
-                                .font(.body).bold()
-                                .foregroundColor(Color("TextPrimary"))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 15)
-                        .frame(maxWidth: .infinity)
-                    }
-                    .frame(maxWidth: .infinity)
                     
                     Rectangle()
                         .frame(maxWidth: .infinity)
