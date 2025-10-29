@@ -134,62 +134,75 @@ class AuthApi {
         
         logger.i("Refresh token started", tag: LOG_TAG)
         Self.isRefreshingToken = true
+        defer {
+            Self.isRefreshingToken = false
+        }
         
         let payload = RefreshTokenModel(refreshToken: refresh)
         
-        let (data, http) = try await client.sendData(
-            "Refresh",
-            method: .POST,
-            json: payload,
-            accept: "application/json"
-        )
-        
-        let resp = try? DiDecoder.getJson2TokenDecoder().decode(TokenResult.self, from: data)
-        
-        switch http.statusCode {
+        do{
+            let (data, http) = try await client.sendData(
+                "Refresh",
+                method: .POST,
+                json: payload,
+                accept: "application/json"
+            )
             
-        case 200 ..< 300:
-            if let tokenResult = resp, let refresh = tokenResult.refresh  {
-                try? DiStorage.saveToken(token: tokenResult)
-                Self.isRefreshingToken = false
-                logger.i("Refresh token success, tokens saved", tag: LOG_TAG)
-                try? await completeToken(refresh)
-            } else {
-                logger.w("200 but no tokens in response", tag: LOG_TAG)
+            
+            let resp = try? DiDecoder.getJson2TokenDecoder().decode(TokenResult.self, from: data)
+            
+            switch http.statusCode {
+                
+            case 200 ..< 300:
+                if let tokenResult = resp, let refresh = tokenResult.refresh  {
+                    try? DiStorage.saveToken(token: tokenResult)
+                    logger.i("Refresh token success, tokens saved", tag: LOG_TAG)
+                    try? await completeToken(refresh)
+                } else {
+                    logger.w("200 but no tokens in response", tag: LOG_TAG)
+                }
+                return resp
+                
+            case 460:
+                logger.i("Token alrady is refreshing", tag: LOG_TAG)
+                return resp
+                
+            case 400, 401, 403:
+                logger.i("Token is incorrect, logout", tag: LOG_TAG)
+                AuthState.shared.isAuthorized = false
+                DiStorage.clearToken()
+                DiStorage.clearServer()
+                break
+                
+            default:
+                logger.w("Token not refreshed. Status code: \(http.statusCode)")
             }
-            return resp
             
-        case 460:
-            logger.i("Token alrady is refreshing", tag: LOG_TAG)
-            return resp
-            
-        case 408, 429, 500..<600, 409, 423, -1001:
+            throw APIError.http(http.statusCode, message: nil, url: nil, body: String(data: data, encoding: .utf8))
+        } catch{
             do {
-                let rCount = retryCount + 1;
-                logger.i("refresh retry - \(rCount)", tag: LOG_TAG)
-                return try await self.refresh(refresh, retryCount: rCount)
+                if let urlErr = error as? URLError {
+                    switch urlErr.code {
+                    case .timedOut, .networkConnectionLost, .cannotFindHost,
+                         .cannotConnectToHost, .dnsLookupFailed, .notConnectedToInternet:
+                        
+                        if retryCount > 2 { throw error }
+                        let rCount = retryCount + 1;
+                        logger.i("refresh retry - \(rCount)", tag: LOG_TAG)
+                        return try await self.refresh(refresh, retryCount: rCount)
+                    default:
+                        logger.e("Non-retry URL error: \(urlErr)", tag: LOG_TAG)
+                    }
+                } else {
+                    logger.e("Non-URL error: \(error)", tag: LOG_TAG)
+                }
+                throw error
             }
             catch {
                 logger.e("retry refresh failed", tag: LOG_TAG)
                 throw error
             }
-            break
-            
-        case 400, 401, 403:
-            logger.i("Token is incorrect, logout", tag: LOG_TAG)
-            Self.isRefreshingToken = false
-            AuthState.shared.isAuthorized = false
-            DiStorage.clearToken()
-            DiStorage.clearServer()
-            break
-            
-        default:
-            Self.isRefreshingToken = false
-            return nil
         }
-        
-        Self.isRefreshingToken = false
-        throw APIError.http(http.statusCode, message: nil, url: nil, body: String(data: data, encoding: .utf8))
     }
     
     func refresh(_ refresh: String, completion: @escaping (Result<TokenResult?, Error>) -> Void){

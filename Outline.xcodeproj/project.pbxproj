@@ -694,7 +694,7 @@
 				CODE_SIGN_ENTITLEMENTS = Outline/Outline.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.0.1;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 24UW464AUL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -713,6 +713,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "Outline/Outline-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = DiVPN;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
@@ -747,7 +748,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.0.1;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 24UW464AUL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -764,6 +765,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "Outline/Outline-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = DiVPN;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
