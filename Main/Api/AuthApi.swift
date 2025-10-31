@@ -89,6 +89,9 @@ class AuthApi {
             if let tokenResult = resp.tokenResult {
                 try? DiStorage.saveToken(token: tokenResult)
                 logger.i("Verification success, tokens saved", tag: LOG_TAG)
+                if let refresh = tokenResult.refresh {
+                    try? await completeToken(refresh)
+                }
             } else {
                 logger.w("200 but no tokens in response", tag: LOG_TAG)
             }
