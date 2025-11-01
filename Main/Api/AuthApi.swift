@@ -86,11 +86,13 @@ class AuthApi {
         let resp = try DiDecoder.getJson2VerificationResultDecoder().decode(VerificationResult.self, from: data)
         
         if http.statusCode == 200 {
-            if let tokenResult = resp.tokenResult {
-                try? DiStorage.saveToken(token: tokenResult)
-                logger.i("Verification success, tokens saved", tag: LOG_TAG)
-                if let refresh = tokenResult.refresh {
-                    try? await completeToken(refresh)
+            if let tokenResult = resp.tokenResult, let refresh = tokenResult.refresh {
+                do{
+                    try DiStorage.saveToken(token: tokenResult)
+                    logger.i("Verification success, tokens saved", tag: LOG_TAG)
+                    try await completeToken(refresh)
+                } catch{
+                    logger.e("Verificate error: \(error)", tag: LOG_TAG)
                 }
             } else {
                 logger.w("200 but no tokens in response", tag: LOG_TAG)
@@ -174,6 +176,7 @@ class AuthApi {
                 logger.i("Token is incorrect, logout", tag: LOG_TAG)
                 AuthState.shared.isAuthorized = false
                 DiStorage.clearToken()
+                DiStorage.clearUser()
                 DiStorage.clearServer()
                 break
                 
@@ -187,7 +190,7 @@ class AuthApi {
                 if let urlErr = error as? URLError {
                     switch urlErr.code {
                     case .timedOut, .networkConnectionLost, .cannotFindHost,
-                         .cannotConnectToHost, .dnsLookupFailed, .notConnectedToInternet:
+                            .cannotConnectToHost, .dnsLookupFailed, .notConnectedToInternet:
                         
                         if retryCount > 2 { throw error }
                         let rCount = retryCount + 1;
