@@ -186,6 +186,15 @@ struct SubscribeView: View {
             .sheet(isPresented: $showChangeCardView){
                 ChangeCardView()
             }
+            .background {
+                Image("Background")
+                    .resizable()
+                    .scaledToFill()
+                    .foregroundStyle(
+                        Color("Background")
+                    )
+                    .ignoresSafeArea()
+            }
         }
     }
 }

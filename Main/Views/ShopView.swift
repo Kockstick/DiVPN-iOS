@@ -71,5 +71,14 @@ struct ShopView : View {
         .padding(.horizontal, 40)
         .padding(.top, 70)
         .padding(.bottom, 50)
+        .background {
+            Image("Background")
+                .resizable()
+                .scaledToFill()
+                .foregroundStyle(
+                    Color("Background")
+                )
+                .ignoresSafeArea()
+        }
     }
 }

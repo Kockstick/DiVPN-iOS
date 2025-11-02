@@ -17,26 +17,38 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             VStack{
-                DiHeader(title: "DiVPN",
-                         subtitle: tariffManager.tariff?.name ?? "...",
-                         isAnimated: statusModel.loading || tariffManager.tariff == nil)
-                .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        selectedTab = 2
-                    }
+                Spacer()
+                    .frame(maxHeight: 30)
+                ZStack{
+                    Image("ClickHere")
+                        .resizable()
+                        .frame(maxWidth: 230, maxHeight: 230)
+                        .foregroundStyle(
+                            Color("TextSecondary")
+                        )
+                        .opacity(DiStatus.shared.connected ? 0 : 1)
                     
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    Image("YouAreProtected")
+                        .resizable()
+                        .frame(maxWidth: 180, maxHeight: 180)
+                        .foregroundStyle(
+                            Color("TextSecondary")
+                        )
+                        .opacity(DiStatus.shared.connected ? 1 : 0)
+                        .padding(.bottom, 40)
                 }
+                .animation(.smooth(duration: 1), value: DiStatus.shared.connected)
                 
                 Spacer()
+                    .frame(maxHeight: 70)
+                
                 ZStack{
                     ZStack{
                         Toggle(isOn: $statusModel.isEnabled){
                             EmptyView()
                         }
-                        .toggleStyle(SwitchToggleStyle(tint: Color("Accent")))
+                        .toggleStyle(ToggleDraw())
                         .labelsHidden()
-                        .shadow(radius: 3)
                         .contentShape(Rectangle())
                         .onChange(of: statusModel.isEnabled) { newValue in
                             statusModel.isEnabled ? viewModel.startVPN() : viewModel.stopVPN()
@@ -47,7 +59,6 @@ struct HomeView: View {
                     .onTapGesture {
                         statusModel.isEnabled = !statusModel.isEnabled
                     }
-                    .scaleEffect(1.8)
                 }
                 .padding(.leading, -2)
                 .disabled(!tariffManager.isActiveTariff || statusModel.loading && statusModel.connected)
@@ -62,14 +73,24 @@ struct HomeView: View {
                     .shimmer(statusModel.loading, color: Color("TextSecondary"))
             }
             .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.top,60)
-            .padding(.bottom, 10)
+            .padding(.top,120)
+            .padding(.bottom, 20)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .ignoresSafeArea()
         .navigationBarHidden(true)
         .onAppear(){
             viewModel.checkConnection()
+        }
+        .background {
+            Image("Background")
+                .resizable()
+                .scaledToFill()
+                .foregroundStyle(
+                    Color(statusModel.connected ? "ActiveBackground" : "Background")
+                )
+                .ignoresSafeArea()
+                .animation(.smooth(duration: 0.5), value: statusModel.connected)
         }
     }
 }

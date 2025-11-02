@@ -263,6 +263,15 @@ struct OptionsView: View {
             .padding(40)
             .padding(.bottom, 0)
             .onAppear { haptic.prepare() }
+            .background {
+                Image("Background")
+                    .resizable()
+                    .scaledToFill()
+                    .foregroundStyle(
+                        Color("Background")
+                    )
+                    .ignoresSafeArea()
+            }
         }
     }
 }
