@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0207DA581B56EA530066E2B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0207DA571B56EA530066E2B4 /* Assets.xcassets */; };
 		1CE7466BA73B4CCB838EBE21 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 941052A220F54953928FF2E2 /* libz.tbd */; };
 		5260B05F2C4F0A4E00CDF289 /* VpnExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5260B05C2C4F09FB00CDF289 /* VpnExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		52CE53E7295B6A310064D03D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 52CE53E6295B6A310064D03D /* Sentry */; };
@@ -91,16 +90,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0207DA571B56EA530066E2B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Outline/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		1D6058910D05DD3D006BFB54 /* DiVPN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiVPN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3047A50F1AB8059700498E2A /* build-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "build-debug.xcconfig"; path = "cordova/build-debug.xcconfig"; sourceTree = SOURCE_ROOT; };
 		3047A5101AB8059700498E2A /* build-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "build-release.xcconfig"; path = "cordova/build-release.xcconfig"; sourceTree = SOURCE_ROOT; };
 		3047A5111AB8059700498E2A /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = build.xcconfig; path = cordova/build.xcconfig; sourceTree = SOURCE_ROOT; };
-		32CA4F630368D1EE00C91783 /* Outline-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Outline-Prefix.pch"; sourceTree = "<group>"; };
-		3B0347431F212E6500C8EF1F /* Outline.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Outline.entitlements; path = Outline/Outline.entitlements; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* DiVPN-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DiVPN-Prefix.pch"; sourceTree = "<group>"; };
+		3B0347431F212E6500C8EF1F /* DiVPN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = DiVPN.entitlements; path = DiVPN/DiVPN.entitlements; sourceTree = "<group>"; };
 		5260B0572C4F09FB00CDF289 /* OutlineLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OutlineLib.xcodeproj; path = ../../src/cordova/apple/OutlineLib/OutlineLib.xcodeproj; sourceTree = "<group>"; };
 		8B49E61C2E45B2AD00D366ED /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* Outline-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Outline-Info.plist"; path = "Outline/Outline-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = SOURCE_ROOT; };
+		8D1107310486CEB800E47090 /* DiVPN-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "DiVPN-Info.plist"; path = "DiVPN/DiVPN-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = SOURCE_ROOT; };
 		941052A220F54953928FF2E2 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		A246B7DD2B07AACF00ECACD5 /* AppKitIntegration.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKitIntegration.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A272490D2B0D20530018A598 /* AppKitIntegration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKitIntegration.h; sourceTree = "<group>"; };
@@ -217,7 +215,7 @@
 				A2C58D0B2B069CC8008222FC /* AppKitBridge */,
 			);
 			name = Classes;
-			path = Outline/Classes;
+			path = DiVPN/Classes;
 			sourceTree = SOURCE_ROOT;
 		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
@@ -235,7 +233,7 @@
 				8B49E5D32E44803A00D366ED /* Main */,
 				5260B0572C4F09FB00CDF289 /* OutlineLib.xcodeproj */,
 				F6D33648296CF46200AFD613 /* Packages */,
-				3B0347431F212E6500C8EF1F /* Outline.entitlements */,
+				3B0347431F212E6500C8EF1F /* DiVPN.entitlements */,
 				EB87FDF41871DAF40020F90C /* config.xml */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -250,21 +248,20 @@
 			isa = PBXGroup;
 			children = (
 				8B49E61C2E45B2AD00D366ED /* Bridging-Header.h */,
-				32CA4F630368D1EE00C91783 /* Outline-Prefix.pch */,
+				32CA4F630368D1EE00C91783 /* DiVPN-Prefix.pch */,
 			);
 			name = "Other Sources";
-			path = Outline;
+			path = DiVPN;
 			sourceTree = "<group>";
 		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0207DA571B56EA530066E2B4 /* Assets.xcassets */,
 				3047A50E1AB8057F00498E2A /* config */,
-				8D1107310486CEB800E47090 /* Outline-Info.plist */,
+				8D1107310486CEB800E47090 /* DiVPN-Info.plist */,
 			);
 			name = Resources;
-			path = Outline/Resources;
+			path = DiVPN;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
@@ -345,9 +342,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* Outline */ = {
+		1D6058900D05DD3D006BFB54 /* DiVPN */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Outline" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "DiVPN" */;
 			buildPhases = (
 				A27F43A929F6EC1C002C3678 /* Copy Files */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
@@ -366,7 +363,7 @@
 			fileSystemSynchronizedGroups = (
 				8B49E5D32E44803A00D366ED /* Main */,
 			);
-			name = Outline;
+			name = DiVPN;
 			packageProductDependencies = (
 				52CE53E6295B6A310064D03D /* Sentry */,
 				A271D4332A70829D009981B2 /* OutlineAppleLib */,
@@ -423,7 +420,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Outline" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "DiVPN" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 1;
@@ -512,7 +509,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* Outline */,
+				1D6058900D05DD3D006BFB54 /* DiVPN */,
 				A246B7DC2B07AACF00ECACD5 /* AppKitIntegration */,
 			);
 		};
@@ -540,7 +537,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0207DA581B56EA530066E2B4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,28 +687,28 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = Outline/Outline.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DiVPN/DiVPN.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 24UW464AUL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"Outline/Plugins/cordova-plugin-outline",
-					"Outline/Plugins/cordova-plugin-outline",
-					"Outline/Plugins/cordova-plugin-outline",
-					"$(PROJECT_DIR)/Outline/Plugins/cordova-plugin-outline",
-					"\"Outline/Plugins/cordova-plugin-outline\"",
-					"\"Outline/Plugins/cordova-plugin-outline\"",
-					"\"Outline/Plugins/cordova-plugin-outline\"",
+					"DiVPN/Plugins/cordova-plugin-outline",
+					"DiVPN/Plugins/cordova-plugin-outline",
+					"DiVPN/Plugins/cordova-plugin-outline",
+					"$(PROJECT_DIR)/DiVPN/Plugins/cordova-plugin-outline",
+					"\"DiVPN/Plugins/cordova-plugin-outline\"",
+					"\"DiVPN/Plugins/cordova-plugin-outline\"",
+					"\"DiVPN/Plugins/cordova-plugin-outline\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 1;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Outline/Outline-Prefix.pch";
+				GCC_PREFIX_HEADER = "DiVPN/DiVPN-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
-				INFOPLIST_FILE = "Outline/Outline-Info.plist";
+				INFOPLIST_FILE = "DiVPN/DiVPN-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = DiVPN;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
@@ -744,7 +740,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = Outline/Outline.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DiVPN/DiVPN.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
@@ -752,19 +748,19 @@
 				DEVELOPMENT_TEAM = 24UW464AUL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"Outline/Plugins/cordova-plugin-outline",
-					"Outline/Plugins/cordova-plugin-outline",
-					"Outline/Plugins/cordova-plugin-outline",
-					"$(PROJECT_DIR)/Outline/Plugins/cordova-plugin-outline",
-					"\"Outline/Plugins/cordova-plugin-outline\"",
-					"\"Outline/Plugins/cordova-plugin-outline\"",
-					"\"Outline/Plugins/cordova-plugin-outline\"",
+					"DiVPN/Plugins/cordova-plugin-outline",
+					"DiVPN/Plugins/cordova-plugin-outline",
+					"DiVPN/Plugins/cordova-plugin-outline",
+					"$(PROJECT_DIR)/DiVPN/Plugins/cordova-plugin-outline",
+					"\"DiVPN/Plugins/cordova-plugin-outline\"",
+					"\"DiVPN/Plugins/cordova-plugin-outline\"",
+					"\"DiVPN/Plugins/cordova-plugin-outline\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Outline/Outline-Prefix.pch";
+				GCC_PREFIX_HEADER = "DiVPN/DiVPN-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
-				INFOPLIST_FILE = "Outline/Outline-Info.plist";
+				INFOPLIST_FILE = "DiVPN/DiVPN-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = DiVPN;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
@@ -1013,7 +1009,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Outline" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "DiVPN" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -1031,7 +1027,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Outline" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "DiVPN" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
