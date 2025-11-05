@@ -23,8 +23,16 @@ struct EmailView: View {
     var body: some View {
         ZStack{
             VStack{
-                DiHeader(title: "Sign in", subtitle: "Email", isAnimated: viewModel.loading)
-                    .frame(alignment: .top)
+                HStack{
+                    Image("MailIcon")
+                        .resizable()
+                        .frame(width: 80, height: 100)
+                        .foregroundColor(Color("TextPrimary"))
+                    Image("Mail")
+                        .resizable()
+                        .frame(width: 130, height: 100)
+                        .foregroundColor(Color("TextPrimary"))
+                }
                 Spacer()
                 ZStack{
                     TextField("", text: $viewModel.email, prompt: Text(exampleEmail).foregroundColor(Color("TextSecondary")))
@@ -38,7 +46,7 @@ struct EmailView: View {
                         .focused($isFocused)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(isFocused ? Color("Active") : Color("Border"), lineWidth: 2)
+                                .stroke(isFocused ? Color("Active") : Color("TextPrimary"), lineWidth: 2)
                         )
                         .animation(.easeInOut(duration: 0.18), value: isFocused)
                         .foregroundColor(Color("TextPrimary"))
@@ -105,44 +113,15 @@ struct EmailView: View {
                 Spacer()
                     .frame(maxHeight: 15)
                 
-                Button(action: {
+                DrawButton(title: "Continue", bgColor: Color(!viewModel.loading && agreementManager.isPrivacyPolicyAccept ? viewModel.errMessage == nil ? "Accent" : "Error" : "Surface"), textColor: Color("TextPrimaryFixed"), isLoading: viewModel.loading){
                     viewModel.onButtonClick(){ success in
                         if success {
                             onNext()
                         }
                     }
-                }) {
-                    HStack(spacing: 2){
-                        Text(viewModel.loading ? "Waiting for server response" : "Continue")
-                            .font(.body).bold()
-                            .foregroundColor(Color("TextPrimaryFixed"))
-                        
-                        if(!viewModel.loading){
-                            Image("double_arrow")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(Color("TextPrimaryFixed"))
-                        }
-                    }
-                    .opacity(colorScheme == .dark ? 1 : viewModel.loading ? 0.3 : isValid ? 1 : 0.3)
-                    .frame(maxWidth: .infinity, maxHeight: 55)
-                    .disabled(viewModel.loading || !isValid)
-                    .background(
-                        Color(!viewModel.loading && agreementManager.isPrivacyPolicyAccept ? viewModel.errMessage == nil ? "Accent" : "Error" : "Surface")
-                            .cornerRadius(12)
-                            .shadow(  // Переносим тень в background
-                                color: .black.opacity(viewModel.loading || !agreementManager.isPrivacyPolicyAccept ? 0 : isValid ? 0.15 : 0),
-                                radius: 5,
-                                x: 0,
-                                y: 5
-                                   )
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color("Border"), lineWidth: 2)
-                    )
                 }
+                .opacity(colorScheme == .dark ? 1 : viewModel.loading ? 0.3 : isValid ? 1 : 0.3)
                 .disabled(viewModel.loading || !isValid || viewModel.errMessage != nil || !agreementManager.isPrivacyPolicyAccept)
-                .contentShape(Rectangle())
                 .animation(.easeInOut(duration: 0.2), value: isFocused)
             }
             .frame(alignment: .top)
@@ -152,12 +131,21 @@ struct EmailView: View {
         .padding(.top, 60)
         .padding(.bottom, isFocused ? 5 : 50)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("Background"))
         .animation(.easeInOut(duration: 0.2), value: isFocused)
         .onAppear(){
             viewModel.checkExistUser()
         }
         .navigationTitle("EmailView")
+        .background {
+            Image("Background")
+                .resizable()
+                .scaledToFill()
+                .foregroundStyle(
+                    Color("Background")
+                )
+                .ignoresSafeArea()
+                .background(Color("DarkBackground"))
+        }
     }
 }
 

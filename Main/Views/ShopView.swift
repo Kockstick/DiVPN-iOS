@@ -20,8 +20,10 @@ struct ShopView : View {
     
     var body: some View {
         VStack(spacing: 0){
-            Image("paid")
+            Image("Paid")
+                .resizable()
                 .font(.system(size: 180, weight: .light))
+                .frame(width: 180, height: 180)
                 .foregroundColor(Color("TextPrimary"))
             
             Spacer()
@@ -49,8 +51,10 @@ struct ShopView : View {
             Spacer()
                 .frame(maxHeight: 30)
             
-            Rectangle()
-                .frame(height: 2)
+            Image("Divider")
+                .resizable()
+                .frame(maxWidth: .infinity)
+                .frame(height: 6)
                 .foregroundColor(Color("TextSecondary"))
             
             Spacer()
@@ -69,16 +73,18 @@ struct ShopView : View {
             PurchasePanel(showPrice: false)
         }
         .padding(.horizontal, 40)
-        .padding(.top, 70)
-        .padding(.bottom, 50)
+        .padding(.vertical, 70)
         .background {
-            Image("Background")
-                .resizable()
-                .scaledToFill()
-                .foregroundStyle(
-                    Color("Background")
-                )
-                .ignoresSafeArea()
+            ZStack{
+                Image("Background")
+                    .resizable()
+                    .scaledToFill()
+                    .foregroundStyle(
+                        Color("Background")
+                    )
+                    .ignoresSafeArea()
+            }
+            .background(Color("DarkBackground"))
         }
     }
 }

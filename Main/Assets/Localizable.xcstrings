@@ -630,6 +630,9 @@
         }
       }
     },
+    "Loading" : {
+
+    },
     "Log file" : {
       "localizations" : {
         "ru" : {
@@ -1218,6 +1221,7 @@
       }
     },
     "Waiting for server response" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {

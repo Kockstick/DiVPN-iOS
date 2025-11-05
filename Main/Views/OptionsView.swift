@@ -21,6 +21,8 @@ struct OptionsView: View {
     @State private var showSupportView = false
     @State private var bugReportSent = false
     
+    @State private var verticalPaddingBtn: CGFloat = 10
+    
     var body: some View {
         ZStack{
             ZStack{
@@ -28,9 +30,9 @@ struct OptionsView: View {
                     Spacer()
                     
                     HStack(spacing: 15){
-                        Rectangle()
-                            .frame(maxHeight: .infinity)
-                            .frame(width: 3)
+                        Image("VerticalDivider")
+                            .resizable()
+                            .frame(width: 6, height: 70)
                             .foregroundColor(Color("TextSecondary"))
                             
                         VStack{
@@ -63,9 +65,9 @@ struct OptionsView: View {
                         referralModel.showReferralInviteInMain = true
                     }) {
                         HStack(spacing: 20){
-                            Image("diversity")
-                                .font(.system(size: 45, weight: .thin))
-                                .frame(width: 45, height: 35)
+                            Image("Friends")
+                                .resizable()
+                                .frame(width: 45, height: 45)
                                 .foregroundColor(Color("TextPrimary"))
                             Text("Referral")
                                 .font(.body).bold()
@@ -73,7 +75,7 @@ struct OptionsView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding(.horizontal, 12)
-                        .padding(.vertical, 15)
+                        .padding(.vertical, verticalPaddingBtn)
                         .frame(maxWidth: .infinity)
                     }
                     .frame(maxWidth: .infinity)
@@ -88,9 +90,9 @@ struct OptionsView: View {
                         showPromoView = true
                     }) {
                         HStack(spacing: 20){
-                            Image("local_activity")
-                                .font(.system(size: 45, weight: .thin))
-                                .frame(width: 45, height: 35)
+                            Image("Promo")
+                                .resizable()
+                                .frame(width: 45, height: 45)
                                 .foregroundColor(Color("TextPrimary"))
                             Text("Promocode")
                                 .font(.body).bold()
@@ -98,7 +100,7 @@ struct OptionsView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding(.horizontal, 12)
-                        .padding(.vertical, 15)
+                        .padding(.vertical, verticalPaddingBtn)
                         .frame(maxWidth: .infinity)
                     }
                     .frame(maxWidth: .infinity)
@@ -116,9 +118,9 @@ struct OptionsView: View {
                         showSupportView = true
                     }) {
                         HStack(spacing: 20){
-                            Image("support")
-                                .font(.system(size: 45, weight: .thin))
-                                .frame(width: 45, height: 35)
+                            Image("SupportBold")
+                                .resizable()
+                                .frame(width: 45, height: 45)
                                 .foregroundColor(Color("TextPrimary"))
                             Text("Support")
                                 .font(.body).bold()
@@ -126,7 +128,7 @@ struct OptionsView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding(.horizontal, 12)
-                        .padding(.vertical, 15)
+                        .padding(.vertical, verticalPaddingBtn)
                         .frame(maxWidth: .infinity)
                     }
                     .frame(maxWidth: .infinity)
@@ -145,18 +147,18 @@ struct OptionsView: View {
                     }) {
                         HStack(spacing: 20){
                             if bugReportSent{
-                                Image("check")
-                                    .font(.system(size: 45, weight: .thin))
-                                    .frame(width: 45, height: 35)
+                                Image("Check")
+                                    .resizable()
+                                    .frame(width: 45, height: 45)
                                     .foregroundColor(Color("Active"))
                                 Text("Report sent successfully")
                                     .font(.body).bold()
                                     .foregroundColor(Color("TextPrimary"))
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             } else {
-                                Image("bug")
-                                    .font(.system(size: 45, weight: .thin))
-                                    .frame(width: 45, height: 35)
+                                Image("Bug")
+                                    .resizable()
+                                    .frame(width: 45, height: 45)
                                     .foregroundColor(Color("TextPrimary"))
                                 Text("Report a problem")
                                     .font(.body).bold()
@@ -165,7 +167,7 @@ struct OptionsView: View {
                             }
                         }
                         .padding(.horizontal, 12)
-                        .padding(.vertical, 15)
+                        .padding(.vertical, verticalPaddingBtn)
                         .frame(maxWidth: .infinity)
                     }
                     .frame(maxWidth: .infinity)
@@ -196,9 +198,9 @@ struct OptionsView: View {
                     }) {
                         HStack(spacing: 20){
                             ZStack{
-                                Image("swap_horiz")
-                                    .font(.system(size: 45, weight: .thin))
-                                    .frame(width: 45, height: 35)
+                                Image("Swap")
+                                    .resizable()
+                                    .frame(width: 45, height: 45)
                                     .foregroundColor(Color("TextPrimary"))
                                     .opacity(ssManager.isWaitSsKey ? 0 : 1)
                                 CircleLoader(color: Color("TextPrimary"))
@@ -211,7 +213,7 @@ struct OptionsView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding(.horizontal, 12)
-                        .padding(.vertical, 15)
+                        .padding(.vertical, verticalPaddingBtn)
                         .frame(maxWidth: .infinity)
                     }
                     .disabled(ssManager.isWaitSsKey)
@@ -227,9 +229,9 @@ struct OptionsView: View {
                         showConfirmLogout = true
                     }) {
                         HStack(spacing: 20){
-                            Image("logout")
-                                .font(.system(size: 45, weight: .thin))
-                                .frame(width: 45, height: 35)
+                            Image("Logout")
+                                .resizable()
+                                .frame(width: 45, height: 45)
                                 .foregroundColor(Color("TextPrimary"))
                             Text("Logout")
                                 .font(.body).bold()
@@ -237,7 +239,7 @@ struct OptionsView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding(.horizontal, 12)
-                        .padding(.vertical, 15)
+                        .padding(.vertical, verticalPaddingBtn)
                         .frame(maxWidth: .infinity)
                     }
                     .frame(maxWidth: .infinity)
@@ -271,6 +273,7 @@ struct OptionsView: View {
                         Color("Background")
                     )
                     .ignoresSafeArea()
+                    .background(Color("DarkBackground"))
             }
         }
     }

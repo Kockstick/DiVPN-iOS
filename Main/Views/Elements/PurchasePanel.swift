@@ -69,28 +69,10 @@ struct PurchasePanel: View {
                 
                 Spacer().frame(maxHeight: 15)
                 
-                Button(action: purchaseTapped) {
-                    if openPaymentPage {
-                        CircleLoader(color: Color("TextPrimaryFixed"))
-                            .frame(maxWidth: .infinity, maxHeight: 55)
-                    } else {
-                        Text("Purchase subscription")
-                            .font(.body).bold()
-                            .foregroundColor(Color("TextPrimaryFixed"))
-                            .frame(maxWidth: .infinity, maxHeight: 55)
-                    }
+                DrawButton(title: "Purchase subscription", bgColor: Color("Accent"), textColor: Color("TextPrimaryFixed"), isLoading: openPaymentPage){
+                    purchaseTapped()
                 }
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color("Accent"))
-                        .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color("Border"), lineWidth: 2)
-                )
                 .opacity(showErrorLine ? 0.4 : 1)
-                .compositingGroup()
             }
             .sheet(item: $paymentUrl) { url in
                 SafariView(url: url)

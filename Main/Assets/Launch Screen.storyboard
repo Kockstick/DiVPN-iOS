@@ -24,26 +24,37 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="136.66666666666666" y="366" width="119.99999999999997" height="120"/>
-                                <color key="tintColor" name="Transparent"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
+                                <rect key="frame" x="-254.97744360905494" y="-122.57142857134181" width="900" height="1099.9999999997772"/>
+                                <color key="backgroundColor" name="DarkBackground"/>
+                                <color key="tintColor" name="Background"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="heightConstraint"/>
-                                    <constraint firstAttribute="width" constant="120" id="widthConstraint"/>
+                                    <constraint firstAttribute="height" constant="1099.9999999997772" id="heightConstraint"/>
+                                    <constraint firstAttribute="width" constant="900" id="widthConstraint"/>
+                                </constraints>
+                                <imageReference key="image" image="Background"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HPJ-Nc-il9">
+                                <rect key="frame" x="136.66666666666666" y="366" width="119.99999999999997" height="120"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="3dJ-GY-OtH"/>
+                                    <constraint firstAttribute="height" constant="120" id="lKy-ug-s0b"/>
                                 </constraints>
                                 <imageReference key="image" image="logo-light"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
-                        <color key="backgroundColor" name="Background"/>
+                        <color key="backgroundColor" name="DarkBackground"/>
                         <color key="tintColor" name="TextPrimary"/>
                         <constraints>
+                            <constraint firstItem="HPJ-Nc-il9" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="44m-24-d8V"/>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="5cz-MP-9tL"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="GJd-Yh-RWb" secondAttribute="centerX" id="Q3B-4B-g5h"/>
+                            <constraint firstItem="HPJ-Nc-il9" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="AkN-SF-GeI"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="GJd-Yh-RWb" secondAttribute="centerX" constant="1.4774436090549443" id="Q3B-4B-g5h"/>
                             <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="SfN-ll-jLj"/>
                             <constraint firstAttribute="bottom" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="20" id="Y44-ml-fuU"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="bottom" multiplier="1/3" constant="142" id="moa-c2-u7t"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="x7j-FC-K8j"/>
+                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="bottom" multiplier="1/3" constant="143.42857142854677" id="moa-c2-u7t"/>
+                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" constant="-1.4774436090549443" id="x7j-FC-K8j"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -54,15 +65,16 @@
     </scenes>
     <color key="tintColor" name="TextPrimary"/>
     <resources>
+        <image name="Background" width="1206" height="2622"/>
         <image name="logo-light" width="83" height="109"/>
         <namedColor name="Background">
             <color red="0.99215686274509807" green="0.96470588235294119" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="DarkBackground">
+            <color red="0.9882352941176471" green="0.92549019607843142" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="TextPrimary">
             <color red="0.22745098039215686" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Transparent">
-            <color red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

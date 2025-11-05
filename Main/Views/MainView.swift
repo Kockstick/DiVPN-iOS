@@ -15,9 +15,10 @@ struct MainView: View {
     @StateObject var viewModel = MainViewModel()
     @StateObject var statusModel = DiStatus.shared
     
-    @State private var selection = 1
+    @State private var showLeft = false
+    @State private var showRight = false
+    
     @State private var greenBackground: Bool = true
-    @State private var isKeyboardShown = false
     @State private var showUpdateBanner = false
     
     var body: some View {
@@ -27,55 +28,24 @@ struct MainView: View {
                     .opacity(DiNotification.shared.showRow ? 1 : 0)
                 
                 VStack(spacing: 0){
-                    TabView(selection: $selection) {
-                        OptionsView()
-                            .tag(0)
-                        HomeView(selectedTab: $selection)
-                            .tag(1)
-                        SubscribeView()
-                            .tag(2)
-                    }
-                    .background(Color("DarkBackground"))
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-                    .highPriorityGesture(
-                        DragGesture(),
-                        including: .none
-                    )
-                    .onAppear {
-                        UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(Color("TextPrimary"))
-                        UIPageControl.appearance().pageIndicatorTintColor = UIColor(Color("TextSecondary"))
-                    }
-                    .ignoresSafeArea()
-                    //.clipShape(RoundedCorner(radius: 40, corners: [.bottomLeft, .bottomRight]))
-                    .onChange(of: selection) { newValue in
-                        greenBackground = newValue == 1
-                    }
-                    
-                    ZStack{
-                        VStack{
-                            HStack{
-                                Rectangle()
-                                    .frame(width: 2)
-                                    .foregroundColor(DiNotification.shared.rowType.textColor)
-                                Text(DiNotification.shared.rowText)
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(DiNotification.shared.rowType.textColor)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                    SwipePanels(
+                                showLeft: $showLeft,
+                                showRight: $showRight
+                            ) {
+                                HomeView()
+                            } left: {
+                                OptionsView()
+                            } right: {
+                                SubscribeView()
                             }
-                            .padding(.horizontal, 40)
-                            .padding(.top, 15)
-                        }
-                        .opacity(DiNotification.shared.showRow ? 1 : 0)
-                    }
-                    .clipped()
-                    .background(DiNotification.shared.rowType.color.opacity(DiNotification.shared.showRow ? 1 : 0))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(height: DiNotification.shared.showRow ? nil : 0)
-                    .zIndex(-1)
+                    
+
                 }
                 .sheet(isPresented: $referralModel.showReferralPromo) {
                     ReferralPromoView()
                 }
+                
+                PageSelector(showLeft: $showLeft, showRight: $showRight)
                 
                 DiNotificationBanner(show: showUpdateBanner)
             }
@@ -105,26 +75,9 @@ struct MainView: View {
                 }
             }
             .navigationTitle("MainView")
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
-                isKeyboardShown = true
-            }
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                isKeyboardShown = false
-            }
             .sheet(isPresented: $referralModel.showReferralInviteInMain){
                 ReferralInviteView()
             }
-            .background {
-                ZStack{
-                    Image("Background")
-                        .resizable()
-                        .scaledToFill()
-                        .colorMultiply(Color("Background"))
-                        .ignoresSafeArea()
-                }
-                .background(Color(greenBackground
-                                   ? (statusModel.connected ? "ActiveBackground" : "DarkBackground")
-                                   : "DarkBackground"))
-            }
+            .background(Color("DarkBackground"))
     }
 }

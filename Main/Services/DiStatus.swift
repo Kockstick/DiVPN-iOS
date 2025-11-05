@@ -18,7 +18,18 @@ final class DiStatus: ObservableObject {
     
     @Published var connected: Bool = false
     
-    @Published public var loading: Bool = false
+    private var _loading: Bool = false
+    public var loading: Bool {
+        get{
+            return _loading
+        }
+        set{
+            if !newValue{
+                isEnabled = connected
+            }
+            _loading = newValue
+        }
+    }
     
     public var statusText: String {
         if connected {

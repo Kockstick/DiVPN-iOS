@@ -11,6 +11,9 @@ struct ReferralInviteView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var isShareSheetPresented = false
+    @State private var loading: Bool = false
+    
+    private let horizontalSpacing: CGFloat = 30
     
     private var inviteMessage: String {
         let code = (DiStorage.loadRefCode() ?? "").unquoted
@@ -26,9 +29,10 @@ struct ReferralInviteView: View {
                 Spacer()
                     .frame(maxHeight: 50)
                 
-                HStack{
-                    Image("diversity")
-                        .font(.system(size: 100, weight: .thin))
+                HStack(spacing: horizontalSpacing){
+                    Image("AddFriend")
+                        .resizable()
+                        .frame(width: 100, height: 90)
                         .foregroundColor(Color("TextPrimary"))
                     
                     Text("Invite friends to DiVPN")
@@ -42,7 +46,7 @@ struct ReferralInviteView: View {
                 Spacer()
                     .frame(maxHeight: 20)
                 
-                HStack{
+                HStack(spacing: horizontalSpacing){
                     Text("Your friend uses your referral code")
                         .font(.title3).bold()
                         .foregroundColor(Color("TextPrimary"))
@@ -50,24 +54,28 @@ struct ReferralInviteView: View {
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                     
-                    Image("match_word")
-                        .font(.system(size: 100, weight: .thin))
+                    Image("Word")
+                        .resizable()
+                        .frame(width: 110, height: 95)
                         .foregroundColor(Color("TextPrimary"))
                 }
                 
                 Spacer()
                     .frame(maxHeight: 30)
                 
-                Rectangle()
-                    .frame(height: 2)
-                    .foregroundColor(Color("TextPrimary"))
+                Image("Divider")
+                    .resizable()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 6)
+                    .foregroundColor(Color("TextSecondary"))
                 
                 Spacer()
                     .frame(maxHeight: 30)
                 
-                HStack{
-                    Image("sentiment")
-                        .font(.system(size: 100, weight: .thin))
+                HStack(spacing: horizontalSpacing){
+                    Image("Smile")
+                        .resizable()
+                        .frame(width: 100, height: 95)
                         .foregroundColor(Color("TextPrimary"))
                     
                     Text("You get 1 month of subscription")
@@ -81,7 +89,7 @@ struct ReferralInviteView: View {
                 Spacer()
                     .frame(maxHeight: 20)
                 
-                HStack{
+                HStack(spacing: horizontalSpacing){
                     Text("Your friend gets 1 months of subscription")
                         .font(.title3).bold()
                         .foregroundColor(Color("TextPrimary"))
@@ -89,40 +97,40 @@ struct ReferralInviteView: View {
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                     
-                    Image("wine")
-                        .font(.system(size: 100, weight: .thin))
+                    Image("Vine")
+                        .resizable()
+                        .frame(width: 70, height: 120)
                         .foregroundColor(Color("TextPrimary"))
                 }
                 
                 Spacer()
                 
-                Button(action: {
+                DrawButton(title: "Invite", bgColor: Color("Accent"), textColor: Color("TextPrimaryFixed"), isLoading: loading){
+                    loading = true
                     logger.i("Invite tapped → open share sheet", tag: LOG_TAG)
                     isShareSheetPresented = true
-                }) {
-                    Text("Invite")
-                        .font(.body).bold()
-                        .foregroundColor(Color("TextPrimaryFixed"))
-                        .frame(maxWidth: .infinity, maxHeight: 55)
                 }
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color("Accent"))
-                        .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12).stroke(Color("Border"), lineWidth: 2)
-                )
-                .compositingGroup()
                 .sheet(isPresented: $isShareSheetPresented) {
                     ActivityViewController(activityItems: [inviteMessage])
+                        .onDisappear(){
+                            loading = false
+                        }
                 }
             }
             .padding(40)
             .padding(.bottom, 10)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("Background"))
+        .background {
+            Image("Background")
+                .resizable()
+                .scaledToFill()
+                .foregroundStyle(
+                    Color("Background")
+                )
+                .ignoresSafeArea()
+                .background(Color("DarkBackground"))
+        }
         .onAppear(perform: {
             ReferralManager.shared.isReferralPromoShowed = true
         })

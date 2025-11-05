@@ -23,8 +23,16 @@ struct CodeView: View {
     var body: some View {
         ZStack{
             VStack{
-                DiHeader(title: "Sign in", subtitle: "Code", isAnimated: viewModel.loading)
-                    .frame(alignment: .top)
+                HStack{
+                    Image("Lock")
+                        .resizable()
+                        .frame(width: 80, height: 100)
+                        .foregroundColor(Color("TextPrimary"))
+                    Image("Code")
+                        .resizable()
+                        .frame(width: 130, height: 80)
+                        .foregroundColor(Color("TextPrimary"))
+                }
                 Spacer()
                 ZStack{
                     TextField("", text: $code, prompt: Text("• • • • • •").foregroundColor(Color("TextSecondary")))
@@ -90,35 +98,10 @@ struct CodeView: View {
                     .font(.footnote)
                     .shimmer(viewModel.loadingTimeToNewCode || viewModel.loading)
                 
-                Button(action: {
+                DrawButton(title: "Send new code", bgColor: Color(viewModel.timeToNewCode != 0 ? "Surface" : "Accent"), textColor: Color(colorScheme == .light ? "TextPrimaryFixed" : viewModel.loading || viewModel.timeToNewCode != 0 ? "TextSecondary" : "TextPrimaryFixed"), isLoading: viewModel.loading){
                     logger.i("Send new code tapped", tag: LOG_TAG)
                     code = ""
                     viewModel.onButtonClick()
-                }) {
-                    HStack(spacing: 2){
-                        Text("Send new code")
-                            .font(.body).bold()
-                            .foregroundColor(Color(colorScheme == .light ? "TextPrimaryFixed" : viewModel.loading || viewModel.timeToNewCode != 0 ? "TextSecondary" : "TextPrimaryFixed"))
-                        Image("update")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(Color(colorScheme == .light ? "TextPrimaryFixed" : viewModel.loading || viewModel.timeToNewCode != 0 ? "TextSecondary" : "TextPrimaryFixed"))
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: 55)
-                    .disabled(viewModel.timeToNewCode != 0)
-                    .background(
-                        Color(viewModel.timeToNewCode != 0 ? "Surface" : "Accent")
-                            .cornerRadius(12)
-                            .shadow(  // Переносим тень в background
-                                color: .black.opacity(viewModel.loading || viewModel.timeToNewCode != 0 ? 0 : 0.15),
-                                radius: 5,
-                                x: 0,
-                                y: 5
-                                   )
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color("Border"), lineWidth: 2)
-                    )
                 }
                 .disabled(viewModel.timeToNewCode != 0)
                 .contentShape(Rectangle())
@@ -131,7 +114,16 @@ struct CodeView: View {
         .padding(.top, 60)
         .padding(.bottom, isFocused ? 5 : 50)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("Background"))
+        .background {
+            Image("Background")
+                .resizable()
+                .scaledToFill()
+                .foregroundStyle(
+                    Color("Background")
+                )
+                .ignoresSafeArea()
+                .background(Color("DarkBackground"))
+        }
         .animation(.easeInOut(duration: 0.2), value: isFocused)
         .navigationTitle("CodeView")
         .onAppear(){

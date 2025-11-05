@@ -8,39 +8,21 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Binding var selectedTab: Int
-    
     @StateObject var viewModel = HomeViewModel()
     @StateObject var statusModel = DiStatus.shared
     @EnvironmentObject var tariffManager: TariffManager
     
+    @StateObject var animator = ArrowLoader(22)
+    
     var body: some View {
         ZStack {
             VStack{
-                Spacer()
-                    .frame(maxHeight: 30)
-                ZStack{
-                    Image("ClickHere")
+                if let img = animator.uiImage {
+                    Image(uiImage: img)
                         .resizable()
-                        .frame(maxWidth: 230, maxHeight: 230)
-                        .foregroundStyle(
-                            Color("TextSecondary")
-                        )
-                        .opacity(DiStatus.shared.connected ? 0 : 1)
-                    
-                    Image("YouAreProtected")
-                        .resizable()
-                        .frame(maxWidth: 180, maxHeight: 180)
-                        .foregroundStyle(
-                            Color("TextSecondary")
-                        )
-                        .opacity(DiStatus.shared.connected ? 1 : 0)
-                        .padding(.bottom, 40)
+                        .frame(width: 250, height: 355)
+                        .foregroundColor(Color("TextPrimary"))
                 }
-                .animation(.smooth(duration: 1), value: DiStatus.shared.connected)
-                
-                Spacer()
-                    .frame(maxHeight: 70)
                 
                 ZStack{
                     ZStack{
@@ -52,9 +34,11 @@ struct HomeView: View {
                         .contentShape(Rectangle())
                         .onChange(of: statusModel.isEnabled) { newValue in
                             statusModel.isEnabled ? viewModel.startVPN() : viewModel.stopVPN()
+                            statusModel.isEnabled ? animator.play() : animator.stop()
                         }
                     }
-                    .padding(10)
+                    .padding(.top, -20)
+                    .padding(.horizontal, 10)
                     .padding(.trailing, 2)
                     .onTapGesture {
                         statusModel.isEnabled = !statusModel.isEnabled
@@ -67,10 +51,28 @@ struct HomeView: View {
                 
                 Spacer()
                 
-                Text(statusModel.statusText)
-                    .font(.system(size: 16, weight: .bold))
-                    .padding(.bottom, 50)
-                    .shimmer(statusModel.loading, color: Color("TextSecondary"))
+                ZStack{
+                    VStack{
+                        HStack{
+                            Rectangle()
+                                .frame(width: 2)
+                                .foregroundColor(DiNotification.shared.rowType.textColor)
+                            Text(DiNotification.shared.rowText)
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(DiNotification.shared.rowType.textColor)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .padding(.horizontal, 40)
+                        .padding(.vertical, 15)
+                    }
+                    .opacity(DiNotification.shared.showRow ? 1 : 0)
+                    .background(DiNotification.shared.rowType.color.opacity(DiNotification.shared.showRow ? 1 : 0))
+                }
+                .padding(.bottom, 120)
+                .clipped()
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(height: DiNotification.shared.showRow ? nil : 0)
+                .zIndex(-1)
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .padding(.top,120)
@@ -91,6 +93,7 @@ struct HomeView: View {
                 )
                 .ignoresSafeArea()
                 .animation(.smooth(duration: 0.5), value: statusModel.connected)
+                .background(Color("DarkBackground"))
         }
     }
 }
