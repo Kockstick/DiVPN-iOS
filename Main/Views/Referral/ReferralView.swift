@@ -101,48 +101,18 @@ struct ReferralView: View {
                 
                 Spacer()
                 
-                Button(action: {
+                DrawButton(title: "Skip", bgColor: Color("Surface"), textColor: Color("TextPrimary"), isLoading: false){
                     logger.i("Skip tapped", tag: LOG_TAG)
                     onSuccess()
-                }) {
-                    Text("Skip")
-                        .font(.body).bold()
-                        .foregroundColor(Color("TextPrimary"))
-                        .frame(maxWidth: .infinity, maxHeight: 55)
                 }
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color("Surface"))
-                        .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color("Border"), lineWidth: 2)
-                )
-                .compositingGroup()
                 
                 Spacer()
                     .frame(maxHeight: 10)
                 
-                Button(action: {
+                DrawButton(title: "What is it?", bgColor: Color("Accent"), textColor: Color("TextPrimaryFixed"), isLoading: false){
                     logger.i("What is it? tapped", tag: LOG_TAG)
                     referralModel.showReferralInviteInAuth = true
-                }) {
-                    Text("What is it?")
-                        .font(.body).bold()
-                        .foregroundColor(Color("TextPrimaryFixed"))
-                        .frame(maxWidth: .infinity, maxHeight: 55)
                 }
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color("Accent"))
-                        .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color("Border"), lineWidth: 2)
-                )
-                .compositingGroup()
             }
             .frame(alignment: .top)
             .padding([.leading, .trailing], 25)
@@ -151,7 +121,16 @@ struct ReferralView: View {
         .padding(.top, 60)
         .padding(.bottom, isFocused ? 5 : 50)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("Background"))
+        .background {
+            Image("Background")
+                .resizable()
+                .scaledToFill()
+                .foregroundStyle(
+                    Color("Background")
+                )
+                .ignoresSafeArea()
+                .background(Color("DarkBackground"))
+        }
         .animation(.easeInOut(duration: 0.2), value: isFocused)
         .animation(.easeInOut(duration: 0.2), value: showError)
         .navigationTitle("ReferralView")

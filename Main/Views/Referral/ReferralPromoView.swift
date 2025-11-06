@@ -19,12 +19,13 @@ struct ReferralPromoView: View {
                 Spacer()
                     .frame(maxHeight: 50)
                 
-                Image("group_add")
-                    .font(.system(size: 230, weight: .thin))
+                Image("AddFriend")
+                    .resizable()
+                    .frame(width: 200, height: 200)
                     .foregroundColor(Color("TextPrimary"))
                 
                 Spacer()
-                    .frame(maxHeight: 30)
+                    .frame(maxHeight: 40)
                 
                 Text("Invite friends and get free subscription months")
                     .font(.system(size: 24, weight: .bold))
@@ -35,35 +36,30 @@ struct ReferralPromoView: View {
                 
                 Spacer()
                 
-                Button(action: {
+                DrawButton(title: "Learn more", bgColor: Color("Accent"), textColor: Color("TextPrimaryFixed"), isLoading: false){
                     logger.i("Learn more tapped", tag: LOG_TAG)
                     ReferralManager.shared.showReferralInviteInMain = true
                     DispatchQueue.main.async {
                         logger.i("Dismissing ReferralPromoView after Learn more", tag: LOG_TAG)
                         dismiss()
                     }
-                }) {
-                    Text("Learn more")
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(Color("TextPrimaryFixed"))
-                        .frame(maxWidth: .infinity, maxHeight: 55)
                 }
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color("Accent"))
-                        .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12).stroke(Color("Border"), lineWidth: 2)
-                )
-                .compositingGroup()
             }
             .padding(40)
             .padding(.bottom, 10)
             .padding(.top, 60)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("Background"))
+        .background {
+            Image("Background")
+                .resizable()
+                .scaledToFill()
+                .foregroundStyle(
+                    Color("Background")
+                )
+                .ignoresSafeArea()
+                .background(Color("DarkBackground"))
+        }
         .onAppear(perform: {
             ReferralManager.shared.isReferralPromoShowed = true
             logger.i("ReferralPromoView appeared", tag: LOG_TAG)
