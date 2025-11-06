@@ -22,8 +22,9 @@ struct DiNotificationBanner: View{
                     Spacer()
                         .frame(maxHeight: 25)
                     
-                    Image("update")
-                        .font(.system(size: 180, weight: .light))
+                    Image("Update")
+                        .resizable()
+                        .frame(width: 180, height: 180)
                         .foregroundColor(Color("TextPrimary"))
                     
                     Spacer()
@@ -36,9 +37,10 @@ struct DiNotificationBanner: View{
                     Spacer()
                         .frame(maxHeight: 40)
                     
-                    Rectangle()
+                    Image("Divider")
+                        .resizable()
                         .frame(maxWidth: .infinity)
-                        .frame(height: 2)
+                        .frame(height: 6)
                         .foregroundColor(Color("TextSecondary"))
                     
                     Spacer()
@@ -53,31 +55,25 @@ struct DiNotificationBanner: View{
                     
                     Spacer()
                     
-                    Button(action: {
+                    DrawButton(title: "Open App Store", bgColor: Color("Accent"), textColor: Color("TextPrimaryFixed"), isLoading: false){
                         logger.i("Open App Store tapped", tag: LOG_TAG)
-                    }) {
-                        Text("Open App Store")
-                            .font(.body).bold()
-                            .foregroundColor(Color("TextPrimaryFixed"))
-                            .frame(maxWidth: .infinity, maxHeight: 55)
+                        openDiVPNInAppStore()
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color("Accent"))
-                            .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color("Border"), lineWidth: 2)
-                    )
-                    .compositingGroup()
                 }
-                .background(Color("Surface"))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .padding(40)
         }
-        .background(Color("Surface"))
+        .background {
+            Image("Background")
+                .resizable()
+                .scaledToFill()
+                .foregroundStyle(
+                    Color("Background")
+                )
+                .ignoresSafeArea()
+                .background(Color("DarkBackground"))
+        }
         .frame(maxWidth: show ? .infinity : nil, maxHeight: show ? .infinity : nil)
         .opacity(show ? 1 : 0)
         .animation(.easeInOut(duration: 0.2), value: show)
@@ -85,6 +81,19 @@ struct DiNotificationBanner: View{
         .onDisappear { logger.i("Banner disappeared", tag: LOG_TAG) }
         .onChange(of: show) { newValue in
             logger.i("Banner visibility changed: \(newValue)", tag: LOG_TAG)
+        }
+    }
+    
+    private func openDiVPNInAppStore() {
+        let appID = "6754507149"
+        let itmsURL = URL(string: "itms-apps://itunes.apple.com/app/id\(appID)")!
+        let webURL  = URL(string: "https://apps.apple.com/app/id\(appID)")!
+
+        // itms-apps открывает сразу App Store; если вдруг не получится — падаем на https
+        if UIApplication.shared.canOpenURL(itmsURL) {
+            UIApplication.shared.open(itmsURL, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.open(webURL, options: [:], completionHandler: nil)
         }
     }
 }
