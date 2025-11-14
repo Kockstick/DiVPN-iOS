@@ -45,7 +45,7 @@ struct PromocodeView: View {
                         .focused($isFocused)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(isFocused ? Color(!viewModel.loading ? "Active" : "Surface") : Color("Border"), lineWidth: 2)
+                                .stroke(isFocused ? Color(!viewModel.loading ? "Active" : "Surface") : Color("TextSecondary"), lineWidth: 2)
                         )
                         .foregroundColor(Color("TextPrimary"))
                         .font(.title3).bold()

@@ -46,7 +46,7 @@ struct ReferralView: View {
                         .focused($isFocused)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(isFocused ? Color(!viewModel.loading ? "Active" : "Surface") : Color("Border"), lineWidth: 2)
+                                .stroke(isFocused ? Color(!viewModel.loading ? "Active" : "Surface") : Color("TextSecondary"), lineWidth: 2)
                         )
                         .animation(.easeInOut(duration: 0.18), value: isFocused)
                         .foregroundColor(Color("TextPrimary"))

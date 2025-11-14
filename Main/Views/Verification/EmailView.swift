@@ -46,7 +46,7 @@ struct EmailView: View {
                         .focused($isFocused)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(isFocused ? Color("Active") : Color("TextPrimary"), lineWidth: 2)
+                                .stroke(isFocused ? Color("Active") : Color("TextSecondary"), lineWidth: 2)
                         )
                         .animation(.easeInOut(duration: 0.18), value: isFocused)
                         .foregroundColor(Color("TextPrimary"))
@@ -69,7 +69,7 @@ struct EmailView: View {
                 .onTapGesture {
                     isFocused = true
                 }
-                HStack(spacing: 1){
+                HStack(spacing: 2){
                     if(viewModel.isIncorrectEmail){
                         Image("error")
                             .frame(alignment: .center)
