@@ -399,23 +399,6 @@
         }
       }
     },
-    "create_account_hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "If you don’t have an account, we’ll create one for you"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Если у вас нет аккаунта, мы создадим его для вас"
-          }
-        }
-      }
-    },
     "Date last change: %@" : {
       "localizations" : {
         "ru" : {
@@ -559,6 +542,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Есть промокод?\nПора им блеснуть!"
+          }
+        }
+      }
+    },
+    "If you don’t have an account, we’ll create one for you" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если у вас нет аккаунта, мы создадим его для вас"
+          }
+        }
+      }
+    },
+    "Incorrect email format" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неверный формат почты"
           }
         }
       }

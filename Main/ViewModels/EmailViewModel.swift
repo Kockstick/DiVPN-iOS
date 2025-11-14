@@ -9,7 +9,7 @@ import SwiftUI
 class EmailViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var loading: Bool = false
-    @Published var errMessage: String?
+    @Published var isIncorrectEmail: Bool = false
     
     private let LOG_TAG: String = "EmailViewModel"
     private let logger = DiLogger.shared
@@ -20,11 +20,11 @@ class EmailViewModel: ObservableObject {
         var isValidEmail: Bool = validateEmail(email)
         if !isValidEmail {
             logger.w("Invalid email format", tag: LOG_TAG)
-            errMessage = "Неверный формат email"
+            isIncorrectEmail = true
             completion(false)
             return
         } else{
-            errMessage = nil
+            isIncorrectEmail = false
         }
         
         loading = true

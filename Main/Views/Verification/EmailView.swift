@@ -55,10 +55,10 @@ struct EmailView: View {
                         .contentShape(Rectangle())
                         .opacity(viewModel.loading ? 0.5 : 2)
                         .onChange(of: viewModel.email) { newValue in
-                            if viewModel.errMessage != nil {
+                            if viewModel.isIncorrectEmail {
                                 let isValidEmail: Bool = viewModel.validateEmail(newValue)
                                 if isValidEmail {
-                                    viewModel.errMessage = nil
+                                    viewModel.isIncorrectEmail = false
                                 }
                             }
                             
@@ -70,16 +70,17 @@ struct EmailView: View {
                     isFocused = true
                 }
                 HStack(spacing: 1){
-                    if(viewModel.errMessage != nil){
+                    if(viewModel.isIncorrectEmail){
                         Image("error")
+                            .frame(alignment: .center)
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(Color("Error"))
                     }
-                    Text(viewModel.errMessage == nil ? NSLocalizedString("create_account_hint", comment: "") : viewModel.errMessage!)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 15)
+                    Text(viewModel.isIncorrectEmail ? "Incorrect email format" : "If you don’t have an account, we’ll create one for you")
+                        .frame(maxWidth: viewModel.isIncorrectEmail ? nil : .infinity, alignment: viewModel.isIncorrectEmail ? .center : .leading)
                         .font(.footnote)
                 }
+                .padding(.horizontal, 15)
                 .shimmer(viewModel.loading)
                 
                 Spacer()
@@ -113,7 +114,7 @@ struct EmailView: View {
                 Spacer()
                     .frame(maxHeight: 15)
                 
-                DrawButton(title: "Continue", bgColor: Color(!viewModel.loading && agreementManager.isPrivacyPolicyAccept ? viewModel.errMessage == nil ? "Accent" : "Error" : "Surface"), textColor: Color("TextPrimaryFixed"), isLoading: viewModel.loading){
+                DrawButton(title: "Continue", bgColor: Color(!viewModel.loading && agreementManager.isPrivacyPolicyAccept ? !viewModel.isIncorrectEmail ? "Accent" : "Error" : "Surface"), textColor: Color("TextPrimaryFixed"), isLoading: viewModel.loading){
                     viewModel.onButtonClick(){ success in
                         if success {
                             onNext()
@@ -121,7 +122,7 @@ struct EmailView: View {
                     }
                 }
                 .opacity(colorScheme == .dark ? 1 : viewModel.loading ? 0.3 : isValid ? 1 : 0.3)
-                .disabled(viewModel.loading || !isValid || viewModel.errMessage != nil || !agreementManager.isPrivacyPolicyAccept)
+                .disabled(viewModel.loading || !isValid || viewModel.isIncorrectEmail || !agreementManager.isPrivacyPolicyAccept)
                 .animation(.easeInOut(duration: 0.2), value: isFocused)
             }
             .frame(alignment: .top)
