@@ -140,8 +140,24 @@ internal class DiStorage{
         }
     }
     
-    internal static func loadDevice() -> Device? {
-        if let data = UserDefaults.standard.data(forKey: DEVICE_KEY),
+    internal static func loadDevice() throws -> Device? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: DEVICE_KEY,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        if status == errSecItemNotFound {
+            return nil
+        }
+        guard status == errSecSuccess else {
+            logger.e("Error load device from storage with status - \(status)", tag: LOG_TAG)
+            throw NSError(domain: NSOSStatusErrorDomain, code: Int(status))
+        }
+        
+        if let data = item as? Data,
            let device = try? JSONDecoder().decode(Device.self, from: data) {
             logger.i("Device loaded from storage", tag: LOG_TAG)
             return device
@@ -184,7 +200,7 @@ internal class DiStorage{
             return nil
         }
         guard status == errSecSuccess else {
-            logger.e("Error save token to storage with status - \(status)", tag: LOG_TAG)
+            logger.e("Error load token from storage with status - \(status)", tag: LOG_TAG)
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(status))
         }
         
