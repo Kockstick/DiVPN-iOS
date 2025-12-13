@@ -19,9 +19,13 @@ class DeviceManager{
     }
     
     public static func GetDevice() -> Device?{
-        if let device = DiStorage.loadDevice(){
-            logger.i("Device loaded from storage", tag: LOG_TAG)
-            return device;
+        do{
+            if let device = try DiStorage.loadDevice(){
+                logger.i("Device loaded from storage", tag: LOG_TAG)
+                return device;
+            }
+        }catch {
+            logger.e("Error loading device from storage: \(error.localizedDescription)", tag: LOG_TAG)
         }
         logger.i("Device is empty, creating new", tag: LOG_TAG)
         
@@ -31,13 +35,17 @@ class DeviceManager{
     }
     
     public static func UpdateDevice(_ device: Device){
-        DiStorage.saveDevice(device)
+        do{
+            try DiStorage.saveDevice(device)
+        } catch {
+            logger.e("Error update device to storage: \(error.localizedDescription)", tag: LOG_TAG)
+        }
         
         let deviceApi = DeviceApi()
         deviceApi.updateDevice(){ result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let body):
+                case .success(_):
                     self.logger.i("Update device success", tag: self.LOG_TAG)
                     break
                 case .failure(let error):
@@ -62,7 +70,11 @@ class DeviceManager{
                                  aPNsToken: DiStorage.loadApnsToken())
         logger.i("Device created", tag: LOG_TAG)
         
-        DiStorage.saveDevice(device!)
+        do{
+            try DiStorage.saveDevice(device!)
+        } catch {
+            logger.e("Error save device to storage: \(error.localizedDescription)", tag: LOG_TAG)
+        }
         logger.i("Device saved to storage", tag: LOG_TAG)
         return device
     }
