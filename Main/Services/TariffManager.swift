@@ -75,8 +75,12 @@ class TariffManager: ObservableObject {
         
         if let tariff = DiStorage.loadTariff() {
             self.tariff = tariff
-            isFreeTrial = tariff.name == "Trial"
             logger.i("Tariff loaded from storage", tag: LOG_TAG)
+        }
+        
+        if self.subscribtionStatus != nil {
+            self.isFreeTrial = self.subscribtionStatus == .trial
+            self.logger.i("Is free trial: \(self.isFreeTrial)", tag: LOG_TAG)
         }
         
         let invoiceApi = InvoiceApi()
@@ -86,7 +90,7 @@ class TariffManager: ObservableObject {
                 case .success(let statusModel):
                     self.subscribtionStatus = statusModel
                     self.isFreeTrial = self.subscribtionStatus == .trial
-                    self.logger.i("Subscribtion status: \(self.subscribtionStatus)")
+                    self.logger.i("Subscribtion loaded status: \(String(describing: self.subscribtionStatus))", tag: self.LOG_TAG)
                     break
                 case .failure(let error):
                     self.logger.w("Get subscribtion status failed: \(error.localizedDescription)", tag: self.LOG_TAG)
