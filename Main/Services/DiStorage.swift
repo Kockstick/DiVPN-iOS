@@ -137,11 +137,6 @@ internal class DiStorage{
         return nil
     }
     
-    internal static func clearDevice() {
-        UserDefaults.standard.removeObject(forKey: DEVICE_KEY)
-        logger.i("Device cleared from storage", tag: LOG_TAG)
-    }
-    
     internal static func saveToken(token: TokenResult) throws {
         if let data = try? JSONEncoder().encode(token) {
             let query: [String: Any] = [
