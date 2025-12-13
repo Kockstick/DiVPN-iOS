@@ -26,6 +26,9 @@ struct OutlineApp: App {
                         .environmentObject(auth)
                         .environmentObject(referralModel)
                 }
+                .onAppear(){
+                    appDelegate.clearBadgeAndNotifications()
+                }
         }
     }
 }
