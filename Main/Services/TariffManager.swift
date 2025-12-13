@@ -85,6 +85,7 @@ class TariffManager: ObservableObject {
                 switch res{
                 case .success(let statusModel):
                     self.subscribtionStatus = statusModel
+                    self.isFreeTrial = self.subscribtionStatus == .trial
                     self.logger.i("Subscribtion status: \(self.subscribtionStatus)")
                     break
                 case .failure(let error):
@@ -100,7 +101,6 @@ class TariffManager: ObservableObject {
                 switch result{
                 case .success(let tariff):
                     self.tariff = tariff
-                    self.isFreeTrial = tariff.name == "Trial"
                     DiStorage.saveTariff(tariff: tariff)
                     self.notifyTariffEnd(self.daysToEntTariff)
                     self.logger.i("Tariff loaded from API and saved", tag: self.LOG_TAG)
