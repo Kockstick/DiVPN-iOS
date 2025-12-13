@@ -118,10 +118,23 @@ internal class DiStorage{
         logger.i("Server model cleared from storage", tag: LOG_TAG)
     }
     
-    internal static func saveDevice(_ device: Device) {
+    internal static func saveDevice(_ device: Device) throws {
         if let data = try? JSONEncoder().encode(device) {
-            UserDefaults.standard.set(data, forKey: DEVICE_KEY)
-            logger.i("Device saved to storage", tag: LOG_TAG)
+            let query: [String: Any] = [
+                kSecClass as String: kSecClassGenericPassword,
+                kSecAttrAccount as String: DEVICE_KEY,
+                kSecValueData as String: data,
+                kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+                kSecAttrSynchronizable as String: kCFBooleanFalse!
+            ]
+            
+            SecItemDelete(query as CFDictionary)
+            let status = SecItemAdd(query as CFDictionary, nil)
+            guard status == errSecSuccess else {
+                logger.e("Error save device to storage with status - \(status)", tag: LOG_TAG)
+                throw NSError(domain: NSOSStatusErrorDomain, code: Int(status))
+            }
+            logger.i("Device saved to storage with status - \(status)", tag: LOG_TAG)
         } else {
             logger.e("Failed to encode Device", tag: LOG_TAG)
         }
