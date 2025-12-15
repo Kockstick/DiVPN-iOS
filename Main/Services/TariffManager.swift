@@ -130,25 +130,18 @@ class TariffManager: ObservableObject {
             return
         }
         
-        if(tariff?.name == "Trial"){
-            if days! <= 0 {
+        if days! <= 0 {
+            if(isFreeTrial){
                 logger.i("Trial ended -> show continue notice", tag: LOG_TAG)
                 DiNotification.shared.showRow(NSLocalizedString("continue_requires_subscription", comment: ""))
-                return
             } else {
-                DiNotification.shared.hideRow(NSLocalizedString("continue_requires_subscription", comment: ""))
-                logger.i("Trial active", tag: LOG_TAG)
-                return
+                logger.i("Tariff expired -> show renew notice", tag: LOG_TAG)
+                DiNotification.shared.showRow(NSLocalizedString("renew_subscription_notice", comment: ""))
             }
-        }
-        
-        if days! <= 0 {
-            logger.i("Tariff expired -> show renew notice", tag: LOG_TAG)
-            DiNotification.shared.showRow(NSLocalizedString("renew_subscription_notice", comment: ""))
-            return
         } else {
             logger.i("Tariff active", tag: LOG_TAG)
             DiNotification.shared.hideRow(NSLocalizedString("renew_subscription_notice", comment: ""))
+            DiNotification.shared.hideRow(NSLocalizedString("continue_requires_subscription", comment: ""))
         }
     }
     
