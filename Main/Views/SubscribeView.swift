@@ -132,6 +132,7 @@ struct SubscribeView: View {
                     .padding(.top, 10)
                     .padding(.trailing, 30)
                     .accessibilityLabel("Change Card")
+                    .disabled(loading || showUnsubscribeView || showChangeCardView)
                 }
             }
             .sheet(isPresented: $showChangeCardView){
