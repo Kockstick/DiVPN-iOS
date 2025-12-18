@@ -71,11 +71,18 @@ struct SubscribeView: View {
                             
                             EndSubscriptionPanel(tariffManager: tariffManager)
                         } else {
-                            if tariffManager.subscribtionStatus == StatusSubscribtion.active{
-                                Text("Subscribtions renews in \(tariffManager.daysToEntTariffText) days")
+                            if tariffManager.subscribtionStatus == .active{
+                                Text("Subscriptions renews in \(tariffManager.daysToEntTariffText) days")
                                     .font(.title2).bold()
                                     .frame(maxWidth: .infinity, alignment: tariffManager.isActiveTariff ? .center : .leading)
                                     .multilineTextAlignment(tariffManager.isActiveTariff ? .center : .leading)
+                                    .lineSpacing(12)
+                                    .shimmer(tariffManager.tariff == nil, color: Color("TextSecondary"))
+                            } else if tariffManager.subscribtionStatus == .pastDue{
+                                Text("Subscription renewal")
+                                    .font(.title2).bold()
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    .multilineTextAlignment(.center)
                                     .lineSpacing(12)
                                     .shimmer(tariffManager.tariff == nil, color: Color("TextSecondary"))
                             } else{
@@ -85,7 +92,7 @@ struct SubscribeView: View {
                         
                         Spacer()
                         
-                        if tariffManager.subscribtionStatus == StatusSubscribtion.active {
+                        if tariffManager.subscribtionStatus == .active || tariffManager.subscribtionStatus == .pastDue {
                             DrawButton(title: "Do not renew", bgColor: Color("Surface"), textColor: Color("TextPrimary"), isLoading: loading){
                                 showUnsubscribeView = true;
                             }

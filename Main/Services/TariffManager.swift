@@ -42,7 +42,11 @@ class TariffManager: ObservableObject {
         let now = Date()
         let end = Calendar.current.date(byAdding: .day, value: 1, to: tariff.dateEnd) ?? tariff.dateEnd
         
-        return Calendar.current.dateComponents([.day], from: now, to: end).day
+        if let days = Calendar.current.dateComponents([.day], from: now, to: end).day{
+            return max(0, days)
+        }
+        
+        return 0
     }
     
     var daysToEntTariffText: String {

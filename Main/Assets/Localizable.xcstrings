@@ -1122,6 +1122,27 @@
       }
     },
     "Subscribtions renews in %@ days" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продление подписки через %@ дней"
+          }
+        }
+      }
+    },
+    "Subscription renewal" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продление подписки"
+          }
+        }
+      }
+    },
+    "Subscriptions renews in %@ days" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
