@@ -36,7 +36,7 @@ struct SubscribeView: View {
                             .foregroundColor(Color("TextPrimary"))
                         
                         Spacer()
-                            .frame(maxHeight: 20)
+                            .frame(maxHeight: 30)
                         
                         Text("\(String(describing: tariffManager.tariffName)) is active")
                             .font(.largeTitle).bold()

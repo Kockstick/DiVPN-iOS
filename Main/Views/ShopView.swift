@@ -27,7 +27,7 @@ struct ShopView : View {
                 .foregroundColor(Color("TextPrimary"))
             
             Spacer()
-                .frame(maxHeight: 15)
+                .frame(maxHeight: 30)
             
             VStack{
                 Text("Subscribe")
