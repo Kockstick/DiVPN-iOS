@@ -484,6 +484,7 @@
       }
     },
     "Email for support:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
