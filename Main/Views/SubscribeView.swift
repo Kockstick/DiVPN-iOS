@@ -92,7 +92,7 @@ struct SubscribeView: View {
                             .sheet(isPresented: $showUnsubscribeView){
                                 UnsubscribeView(loading: $loading)
                             }
-                        } else if tariffManager.subscribtionStatus == StatusSubscribtion.trial {
+                        } else if tariffManager.subscribtionStatus == StatusSubscribtion.trialActive {
                             PurchasePanel(showPrice: true)
                         } else{
                             DrawButton(title: "Resume subscription", bgColor: Color("Accent"), textColor: Color("TextPrimaryFixed"), isLoading: loading){

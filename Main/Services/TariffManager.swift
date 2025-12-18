@@ -32,8 +32,8 @@ class TariffManager: ObservableObject {
     private let logger = DiLogger.shared
     
     var isActiveTariff: Bool {
-        if daysToEntTariff == nil { return false }
-        return daysToEntTariff! > 0
+        if subscribtionStatus == nil { return false }
+        return subscribtionStatus != StatusSubscribtion.trialExpired && subscribtionStatus != StatusSubscribtion.expired
     }
     
     var daysToEntTariff: Int? {
@@ -79,7 +79,7 @@ class TariffManager: ObservableObject {
         }
         
         if self.subscribtionStatus != nil {
-            self.isFreeTrial = self.subscribtionStatus == .trial
+            self.isFreeTrial = self.subscribtionStatus == .trial || self.subscribtionStatus == .trialExpired
             self.logger.i("Is free trial: \(self.isFreeTrial)", tag: LOG_TAG)
         }
         
@@ -89,7 +89,8 @@ class TariffManager: ObservableObject {
                 switch res{
                 case .success(let statusModel):
                     self.subscribtionStatus = statusModel
-                    self.isFreeTrial = self.subscribtionStatus == .trial
+                    self.isFreeTrial = self.subscribtionStatus == .trial || self.subscribtionStatus == .trialExpired
+                    self.notifyTariffEnd(statusModel)
                     self.logger.i("Subscribtion loaded status: \(String(describing: self.subscribtionStatus))", tag: self.LOG_TAG)
                     break
                 case .failure(let error):
@@ -106,7 +107,6 @@ class TariffManager: ObservableObject {
                 case .success(let tariff):
                     self.tariff = tariff
                     DiStorage.saveTariff(tariff: tariff)
-                    self.notifyTariffEnd(self.daysToEntTariff)
                     self.logger.i("Tariff loaded from API and saved", tag: self.LOG_TAG)
                     completion(.success(tariff))
                     break
@@ -124,13 +124,9 @@ class TariffManager: ObservableObject {
         loadTariff { _ in }
     }
     
-    private func notifyTariffEnd(_ days: Int?){
-        if days == nil{
-            logger.w("Tariff end date not found", tag: LOG_TAG)
-            return
-        }
-        
-        if days! <= 0 {
+    private func notifyTariffEnd(_ status: StatusSubscribtion){
+        if !self.isActiveTariff {
+            DiVpnService.stopVpn(){ _ in }
             if(isFreeTrial){
                 logger.i("Trial ended -> show continue notice", tag: LOG_TAG)
                 DiNotification.shared.showRow(NSLocalizedString("continue_requires_subscription", comment: ""))

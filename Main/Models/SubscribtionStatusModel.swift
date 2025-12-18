@@ -15,4 +15,6 @@ public enum StatusSubscribtion: Int, Codable {
     case pastDue = 2
     case cancelled = 3
     case expired = 4
+    case trialExpired = 5
+    case trialActive = 6
 }
