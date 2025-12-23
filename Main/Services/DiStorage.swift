@@ -16,6 +16,7 @@ internal class DiStorage{
     private static let SERVER_KEY = "server_model_key"
     private static let DEVICE_KEY = "device_key"
     private static let APNS_TOKEN_KEY = "applucation_push_notification_token_key"
+    private static let CHANGE_DATE_KEY = "change_payment_method_date"
     
     private static let LOG_TAG: String = "DiStorage"
     private static let logger = DiLogger.shared
@@ -25,6 +26,7 @@ internal class DiStorage{
         clearToken()
         clearTariff()
         clearRefCode()
+        clearChangeDate()
     }
     
     internal static func saveUser(user: User) {
@@ -240,5 +242,17 @@ internal class DiStorage{
     internal static func clearApnsToken() {
         UserDefaults.standard.removeObject(forKey: APNS_TOKEN_KEY)
         logger.i("Apns token cleared from storage", tag: LOG_TAG)
+    }
+    
+    internal static func saveChangeDate(date: Date) {
+        UserDefaults.standard.set(date, forKey: CHANGE_DATE_KEY)
+    }
+    
+    internal static func loadChangeDate() -> Date? {
+        return UserDefaults.standard.object(forKey: CHANGE_DATE_KEY) as? Date
+    }
+    
+    internal static func clearChangeDate() {
+        UserDefaults.standard.removeObject(forKey: CHANGE_DATE_KEY)
     }
 }

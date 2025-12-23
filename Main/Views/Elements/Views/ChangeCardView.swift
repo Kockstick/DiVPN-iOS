@@ -15,12 +15,7 @@ struct ChangeCardView: View{
     @State var showSafariView: Bool = false
     @State var isLoadingDate: Bool = false
     
-    private let CHANGE_DATE_KEY = "change_payment_method_date"
-    @State var changePaymentDate: Date? {
-        didSet{
-            saveChangeDate()
-        }
-    }
+    @State var changePaymentDate: Date?
     var changePaymentDateText: String{
         guard let dt = changePaymentDate else {
             return "••.••.••••"
@@ -172,18 +167,10 @@ struct ChangeCardView: View{
         }
     }
     
-    private func saveChangeDate() {
-        if let date = changePaymentDate {
-            UserDefaults.standard.set(date, forKey: CHANGE_DATE_KEY) // сохраняем Date
-        } else {
-            UserDefaults.standard.removeObject(forKey: CHANGE_DATE_KEY)
-        }
-    }
-    
     private func loadChangeDate() {
         DispatchQueue.main.async { self.isLoadingDate = true }
 
-        if let date = UserDefaults.standard.object(forKey: CHANGE_DATE_KEY) as? Date {
+        if let date = DiStorage.loadChangeDate() {
             self.changePaymentDate = date
         } else {
             self.changePaymentDate = nil
@@ -196,6 +183,7 @@ struct ChangeCardView: View{
                 DispatchQueue.main.async {
                     self.changePaymentDate = date.dateChange
                     self.isLoadingDate = false
+                    DiStorage.saveChangeDate(date: date.dateChange)
                 }
             case .failure:
                 DispatchQueue.main.async {
