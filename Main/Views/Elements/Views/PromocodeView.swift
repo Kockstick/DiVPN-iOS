@@ -60,13 +60,14 @@ struct PromocodeView: View {
                         
                         userApi.usePromo(text: text) { result in
                             switch result {
-                            case .success(let data):
+                            case .success(_):
                                 haptic.notificationOccurred(.success)
                                 DispatchQueue.main.async {
                                     viewModel.loading = false
+                                    TariffManager.shared.loadTariff() { _ in }
                                 }
                                 dismiss()
-                            case .failure(let error):
+                            case .failure(_):
                                 haptic.notificationOccurred(.error)
                                 DispatchQueue.main.async {
                                     viewModel.loading = false

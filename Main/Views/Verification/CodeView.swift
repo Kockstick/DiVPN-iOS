@@ -83,6 +83,8 @@ struct CodeView: View {
                         Image("error")
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(Color("Error"))
+                        Spacer()
+                            .frame(maxWidth: 5)
                     }
                     
                     Text(viewModel.verifErrorText ?? NSLocalizedString("code_valid", comment: ""))
