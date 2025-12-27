@@ -109,6 +109,7 @@ class TariffManager: ObservableObject {
             DispatchQueue.main.async {
                 switch result{
                 case .success(let tariff):
+                    self.objectWillChange.send()
                     self.tariff = tariff
                     DiStorage.saveTariff(tariff: tariff)
                     self.logger.i("Tariff loaded from API and saved", tag: self.LOG_TAG)
