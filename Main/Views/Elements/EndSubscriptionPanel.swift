@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EndSubscriptionPanel: View{
-    let tariffManager: TariffManager
+    @StateObject var tariffManager: TariffManager
     
     var body: some View{
         HStack{
