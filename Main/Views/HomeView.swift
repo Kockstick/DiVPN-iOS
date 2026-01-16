@@ -8,47 +8,99 @@
 import SwiftUI
 
 struct HomeView: View {
+    private let haptic = UINotificationFeedbackGenerator()
     @StateObject var viewModel = HomeViewModel()
     @StateObject var statusModel = DiStatus.shared
     @EnvironmentObject var tariffManager: TariffManager
-    
-    @StateObject var animator = ArrowLoader(22)
+    @StateObject var ssManager = ShadowsocksManager.shared
     
     var body: some View {
         ZStack {
             VStack{
-                if let img = animator.uiImage {
-                    Image(uiImage: img)
-                        .resizable()
-                        .frame(width: 250, height: 355)
-                        .foregroundColor(Color("TextPrimary"))
-                }
-                
                 ZStack{
                     ZStack{
-                        Toggle(isOn: $statusModel.isEnabled){
-                            EmptyView()
-                        }
-                        .toggleStyle(ToggleDraw())
-                        .labelsHidden()
-                        .contentShape(Rectangle())
-                        .onChange(of: statusModel.isEnabled) { newValue in
-                            statusModel.isEnabled ? viewModel.startVPN() : viewModel.stopVPN()
-                            statusModel.isEnabled ? animator.play() : animator.stop()
-                        }
+                        MetalViewRepresentable()
+                            .frame(maxWidth: 450, maxHeight: 450)
+                            .padding(.bottom, 0)
+                        Image("pug_sad")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: 200, maxHeight: 250)
+                        Image(statusModel.isEnabled ? "pug_smile" : "pug_sad")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: 200, maxHeight: 250)
+                            .onTapGesture {
+                                statusModel.isEnabled = !statusModel.isEnabled
+                                statusModel.isEnabled ? viewModel.startVPN() : viewModel.stopVPN()
+                            }
                     }
-                    .padding(.top, -20)
                     .padding(.horizontal, 10)
-                    .padding(.trailing, 2)
                     .onTapGesture {
                         statusModel.isEnabled = !statusModel.isEnabled
                     }
                 }
-                .padding(.leading, -2)
+                .padding(.top, 5)
+                .padding(.bottom, -50)
                 .disabled(!tariffManager.isActiveTariff || statusModel.loading && statusModel.connected)
                 .opacity(tariffManager.isActiveTariff ? 1 : 0.5)
                 
-                
+                VStack{
+                    Text(statusModel.connected ? statusModel.connectedTimeText : statusModel.statusText)
+                        .font(.body).bold()
+                        .foregroundStyle(Color("TextSecondary"))
+                    
+                    Rectangle()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                        .foregroundColor(Color("TextSecondary"))
+                        .opacity(0.2)
+                    
+                    Button (action: {
+                        ssManager.changeKey() {result in
+                            switch result{
+                            case .success(let res):
+                                if res{
+                                    haptic.notificationOccurred(.success)
+                                } else{
+                                    haptic.notificationOccurred(.warning)
+                                }
+                            case .failure(_):
+                                haptic.notificationOccurred(.error)
+                            }
+                        }
+                    }) {
+                        HStack(spacing: 20){
+                            ZStack{
+                                Image("Swap")
+                                    .resizable()
+                                    .frame(width: 45, height: 45)
+                                    .foregroundColor(Color("TextPrimary"))
+                                    .opacity(ssManager.isWaitSsKey ? 0 : 1)
+                                CircleLoader(color: Color("TextPrimary"))
+                                    .opacity(ssManager.isWaitSsKey ? 1 : 0)
+                            }
+                            
+                            Text(ssManager.serverLocation ?? "• • • • • •")
+                                .font(.title).bold()
+                                .shimmer(ssManager.serverLocation == nil, color: Color("TextPrimary"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .frame(maxWidth: .infinity)
+                    }
+                    .disabled(ssManager.isWaitSsKey)
+                    .frame(maxWidth: .infinity)
+                    
+                    Rectangle()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 1)
+                        .foregroundColor(Color("TextSecondary"))
+                        .opacity(0.2)
+                }
+                .padding(.horizontal, 40)
+                  
                 Spacer()
                 
                 ZStack{
@@ -95,5 +147,6 @@ struct HomeView: View {
                 .animation(.smooth(duration: 0.5), value: statusModel.connected)
                 .background(Color("DarkBackground"))
         }
+        .onAppear { haptic.prepare() }
     }
 }
