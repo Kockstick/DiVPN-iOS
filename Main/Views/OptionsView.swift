@@ -23,6 +23,7 @@ struct OptionsView: View {
     
     @State private var verticalPaddingBtn: CGFloat = 10
     @State private var user: User?
+    @Binding var showLeft: Bool
     
     var body: some View {
         ZStack{
@@ -268,6 +269,14 @@ struct OptionsView: View {
             .onAppear {
                 user = DiStorage.loadUser()
                 haptic.prepare()
+            }
+            .onChange(of: showLeft) { newValue in
+                if newValue {
+                    user = DiStorage.loadUser()
+                }
+            }
+            .onChange(of: auth.isAuthorized) { newValue in
+                    user = DiStorage.loadUser()
             }
             .background {
                 Image("Background")
