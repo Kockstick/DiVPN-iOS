@@ -22,6 +22,7 @@ struct OptionsView: View {
     @State private var bugReportSent = false
     
     @State private var verticalPaddingBtn: CGFloat = 10
+    @State private var user: User?
     
     var body: some View {
         ZStack{
@@ -36,7 +37,7 @@ struct OptionsView: View {
                             .foregroundColor(Color("TextSecondary"))
                             
                         VStack{
-                            Text(DiStorage.loadUser()?.email ?? "user")
+                            Text(user?.email ?? "user")
                                 .foregroundColor(Color("TextSecondary"))
                                 .font(.body).bold()
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -264,7 +265,10 @@ struct OptionsView: View {
             }
             .padding(40)
             .padding(.bottom, 0)
-            .onAppear { haptic.prepare() }
+            .onAppear {
+                user = DiStorage.loadUser()
+                haptic.prepare()
+            }
             .background {
                 Image("Background")
                     .resizable()

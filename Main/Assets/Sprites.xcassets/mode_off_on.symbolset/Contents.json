@@ -1,0 +1,12 @@
+{
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "symbols" : [
+    {
+      "filename" : "mode_off_on.svg",
+      "idiom" : "universal"
+    }
+  ]
+}
