@@ -12,10 +12,6 @@ struct SubscribeView: View {
     @StateObject var statusModel = DiStatus.shared
     @StateObject var agreementManager = AgreementManager.shared
     
-    private let haptic = UINotificationFeedbackGenerator()
-    
-    private let invoiceApi = InvoiceApi()
-    
     @State var showUnsubscribeView = false
     @State var showChangeCardView = false
     @State var loading: Bool = false
@@ -32,8 +28,10 @@ struct SubscribeView: View {
                         
                         Image("Check")
                             .resizable()
+                            .interpolation(.low)
                             .frame(width: 190, height: 180)
                             .foregroundColor(Color("TextPrimary"))
+                            .drawingGroup()
                         
                         Spacer()
                             .frame(maxHeight: 30)
@@ -51,73 +49,21 @@ struct SubscribeView: View {
                             .frame(maxWidth: .infinity)
                             .frame(height: 6)
                             .foregroundColor(Color("TextSecondary"))
+                            .drawingGroup()
                         
                         Spacer()
                             .frame(maxHeight: 30)
                         
-                        if tariffManager.subscribtionStatus == StatusSubscribtion.cancelled{
-                            HStack{
-                                Text(tariffManager.subscribtionPriceText)
-                                    .font(.largeTitle).bold()
-                                    .frame(alignment: .leading)
-                                    .shimmer(tariffManager.subscribtionPrice == nil)
-                                Text("for 1 month")
-                                    .font(.title).bold()
-                                    .foregroundColor(Color("TextPrimary"))
-                                    .frame(alignment: .leading)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.bottom, 10)
-                            
-                            EndSubscriptionPanel(tariffManager: tariffManager)
-                        } else {
-                            if tariffManager.subscribtionStatus == .active{
-                                Text("Subscriptions renews in \(tariffManager.daysToEntTariffText) days")
-                                    .font(.title2).bold()
-                                    .frame(maxWidth: .infinity, alignment: tariffManager.isActiveTariff ? .center : .leading)
-                                    .multilineTextAlignment(tariffManager.isActiveTariff ? .center : .leading)
-                                    .lineSpacing(12)
-                                    .shimmer(tariffManager.tariff == nil, color: Color("TextSecondary"))
-                            } else if tariffManager.subscribtionStatus == .pastDue{
-                                Text("Subscription renewal")
-                                    .font(.title2).bold()
-                                    .frame(maxWidth: .infinity, alignment: .center)
-                                    .multilineTextAlignment(.center)
-                                    .lineSpacing(12)
-                                    .shimmer(tariffManager.tariff == nil, color: Color("TextSecondary"))
-                            } else{
-                                EndSubscriptionPanel(tariffManager: tariffManager)
-                            }
-                        }
+                        SubscriptionInfo()
                         
                         Spacer()
                         
-                        if tariffManager.subscribtionStatus == .active || tariffManager.subscribtionStatus == .pastDue {
-                            DrawButton(title: "Do not renew", bgColor: Color("Surface"), textColor: Color("TextPrimary"), isLoading: loading){
-                                showUnsubscribeView = true;
-                            }
-                            .sheet(isPresented: $showUnsubscribeView){
-                                UnsubscribeView(loading: $loading)
-                            }
-                        } else if tariffManager.subscribtionStatus == StatusSubscribtion.trialActive {
-                            PurchasePanel(showPrice: true)
-                        } else{
-                            DrawButton(title: "Resume subscription", bgColor: Color("Accent"), textColor: Color("TextPrimaryFixed"), isLoading: loading){
-                                loading = true
-                                invoiceApi.resumeSubscribtion() { res in
-                                    TariffManager.shared.loadTariff() {_ in
-                                        loading = false
-                                    }
-                                }
-                                haptic.notificationOccurred(.warning)
-                            }
-                        }
+                        SubscriptionOptions(showUnsubscribeView: $showUnsubscribeView, loading: $loading)
                     }
                 }
             }
             .padding(.horizontal, 40)
             .padding(.vertical, 70)
-            .onAppear { haptic.prepare() }
             .overlay(alignment: .topTrailing) {
                 if tariffManager.subscribtionStatus == StatusSubscribtion.active {
                     Button(action: {
