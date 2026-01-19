@@ -28,10 +28,9 @@ struct SubscribeView: View {
                         
                         Image("Check")
                             .resizable()
-                            .interpolation(.low)
-                            .frame(width: 190, height: 180)
+                            .renderingMode(.template)
                             .foregroundColor(Color("TextPrimary"))
-                            .drawingGroup()
+                            .frame(width: 190, height: 180)
                         
                         Spacer()
                             .frame(maxHeight: 30)
