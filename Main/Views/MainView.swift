@@ -34,7 +34,7 @@ struct MainView: View {
                             ) {
                                 HomeView()
                             } left: {
-                                OptionsView()
+                                OptionsView(showLeft: $showLeft)
                             } right: {
                                 SubscribeView()
                             }

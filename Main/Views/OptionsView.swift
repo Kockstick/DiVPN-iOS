@@ -23,6 +23,7 @@ struct OptionsView: View {
     
     @State private var verticalPaddingBtn: CGFloat = 10
     @State private var user: User?
+    @Binding var showLeft: Bool
     
     var body: some View {
         ZStack{
@@ -30,28 +31,7 @@ struct OptionsView: View {
                 VStack{
                     Spacer()
                     
-                    HStack(spacing: 15){
-                        Image("VerticalDivider")
-                            .resizable()
-                            .frame(width: 6, height: 70)
-                            .foregroundColor(Color("TextSecondary"))
-                            
-                        VStack{
-                            Text(user?.email ?? "user")
-                                .foregroundColor(Color("TextSecondary"))
-                                .font(.body).bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .multilineTextAlignment(.leading)
-                            
-                            Text(ssManager.serverLocation ?? "• • • • • •")
-                                .font(.largeTitle).bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .multilineTextAlignment(.leading)
-                                .shimmer(ssManager.serverLocation == nil, color: Color("TextSecondary"))
-                        }
-                        .padding(.vertical, 5)
-                    }
-                    .fixedSize(horizontal: false, vertical: true)
+                    OptionsInfo(ssManager: ssManager, user: $user)
                     
                     Spacer()
                         .frame(maxHeight: 40)
@@ -268,6 +248,14 @@ struct OptionsView: View {
             .onAppear {
                 user = DiStorage.loadUser()
                 haptic.prepare()
+            }
+            .onChange(of: showLeft) { newValue in
+                if newValue {
+                    user = DiStorage.loadUser()
+                }
+            }
+            .onChange(of: auth.isAuthorized) { newValue in
+                    user = DiStorage.loadUser()
             }
             .background {
                 Image("Background")

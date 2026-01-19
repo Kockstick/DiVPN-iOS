@@ -22,31 +22,14 @@ struct ShopView : View {
         VStack(spacing: 0){
             Image("Paid")
                 .resizable()
-                .font(.system(size: 180, weight: .light))
-                .frame(width: 180, height: 180)
+                .renderingMode(.template)
                 .foregroundColor(Color("TextPrimary"))
+                .frame(width: 190, height: 180)
             
             Spacer()
                 .frame(maxHeight: 30)
             
-            VStack{
-                Text("Subscribe")
-                    .font(.largeTitle).bold()
-                    .foregroundColor(Color("TextPrimary"))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                HStack{
-                    Text(tariffManager.subscribtionPriceText)
-                        .font(.system(size: 48, weight: .bold))
-                        .frame(alignment: .leading)
-                        .shimmer(tariffManager.subscribtionPrice == nil)
-                    Text("for 1 month")
-                        .font(.largeTitle).bold()
-                        .foregroundColor(Color("TextPrimary"))
-                        .frame(alignment: .leading)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            TrialPrice(tariffManager: tariffManager)
             
             Spacer()
                 .frame(maxHeight: 30)
@@ -56,17 +39,12 @@ struct ShopView : View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 6)
                 .foregroundColor(Color("TextSecondary"))
+                .drawingGroup()
             
             Spacer()
                 .frame(maxHeight: 30)
             
-            Text(tariffManager.daysToEntTariff ?? 1 > 0 ?
-                 "Free trial ends in \(tariffManager.daysToEntTariffText) days" :
-                    tariffManager.isFreeTrial ? "Free trial has ended" : "Subscribtion has ended")
-            .font(.title2).bold()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .lineSpacing(6)
-            .shimmer(tariffManager.tariff == nil)
+            TrialStatus(tariffManager: tariffManager)
             
             Spacer()
             
