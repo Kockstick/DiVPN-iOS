@@ -40,9 +40,9 @@ struct ChangeCardView: View{
             
             Image("Paid")
                 .resizable()
-                .font(.system(size: 180, weight: .light))
-                .frame(width: 180, height: 180)
+                .renderingMode(.template)
                 .foregroundColor(Color("TextPrimary"))
+                .frame(width: 190, height: 180)
             
             Spacer()
                 .frame(maxHeight: 15)
