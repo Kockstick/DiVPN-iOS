@@ -15,11 +15,10 @@ struct MainView: View {
     @StateObject var viewModel = MainViewModel()
     @StateObject var statusModel = DiStatus.shared
     
-    @State private var showLeft = false
-    @State private var showRight = false
-    
     @State private var greenBackground: Bool = true
     @State private var showUpdateBanner = false
+    
+    @State var index: Int = 1
     
     var body: some View {
             ZStack {
@@ -28,24 +27,20 @@ struct MainView: View {
                     .opacity(DiNotification.shared.showRow ? 1 : 0)
                 
                 VStack(spacing: 0){
-                    SwipePanels(
-                                showLeft: $showLeft,
-                                showRight: $showRight
-                            ) {
-                                HomeView()
-                            } left: {
-                                OptionsView(showLeft: $showLeft)
-                            } right: {
-                                SubscribeView()
-                            }
-                    
+                    TabView(selection: $index) {
+                        OptionsView(pageIndex: $index).tag(0)
+                        HomeView().tag(1)
+                        SubscribeView().tag(2)
+                    }
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                    .ignoresSafeArea()
 
                 }
                 .sheet(isPresented: $referralModel.showReferralPromo) {
                     ReferralPromoView()
                 }
                 
-                PageSelector(showLeft: $showLeft, showRight: $showRight)
+                PageSelector(index: $index)
                 
                 DiNotificationBanner(show: showUpdateBanner)
             }

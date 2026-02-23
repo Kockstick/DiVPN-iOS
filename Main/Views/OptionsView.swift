@@ -23,7 +23,7 @@ struct OptionsView: View {
     
     @State private var verticalPaddingBtn: CGFloat = 10
     @State private var user: User?
-    @Binding var showLeft: Bool
+    @Binding var pageIndex: Int
     
     var body: some View {
         ZStack{
@@ -249,8 +249,8 @@ struct OptionsView: View {
                 user = DiStorage.loadUser()
                 haptic.prepare()
             }
-            .onChange(of: showLeft) { newValue in
-                if newValue {
+            .onChange(of: pageIndex) { newValue in
+                if newValue == 0 {
                     user = DiStorage.loadUser()
                 }
             }

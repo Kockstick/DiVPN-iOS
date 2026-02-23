@@ -141,7 +141,7 @@ struct HomeView: View {
                 .resizable()
                 .scaledToFill()
                 .foregroundStyle(
-                    Color(statusModel.connected ? "ActiveBackground" : "Background")
+                    Color("Background")
                 )
                 .ignoresSafeArea()
                 .animation(.smooth(duration: 0.5), value: statusModel.connected)
