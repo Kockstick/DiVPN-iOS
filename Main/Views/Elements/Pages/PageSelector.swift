@@ -9,8 +9,7 @@ import SwiftUI
 
 struct PageSelector: View {
     
-    @Binding var showLeft: Bool
-    @Binding var showRight: Bool
+    @Binding var index: Int
     var SelectedSize: CGFloat = 30
     var DefaultSize: CGFloat = 25
     
@@ -19,32 +18,29 @@ struct PageSelector: View {
             Spacer()
             HStack(spacing: 40){
                 Button(action: {
-                    showRight = false
-                    showLeft = true
+                    index = 0
                 }){
                     Image("Build")
                         .resizable()
-                        .foregroundColor(Color(showLeft ? "TextPrimary" : "TextSecondary"))
+                        .foregroundColor(Color(index == 0 ? "TextPrimary" : "TextSecondary"))
                         .frame(width: SelectedSize, height: SelectedSize, alignment: .center)
                 }
                 
                 Button(action: {
-                    showLeft = false
-                    showRight = false
+                    index = 1
                 }){
                     Image("Home")
                         .resizable()
-                        .foregroundColor(Color(!showLeft && !showRight ? "TextPrimary" : "TextSecondary"))
+                        .foregroundColor(Color(index == 1 ? "TextPrimary" : "TextSecondary"))
                         .frame(width: SelectedSize, height: SelectedSize, alignment: .center)
                 }
                 
                 Button(action: {
-                    showLeft = false
-                    showRight = true
+                    index = 2
                 }){
                     Image("PaidBold")
                         .resizable()
-                        .foregroundColor(Color(showRight ? "TextPrimary" : "TextSecondary"))
+                        .foregroundColor(Color(index == 2 ? "TextPrimary" : "TextSecondary"))
                         .frame(width: SelectedSize, height: SelectedSize, alignment: .center)
                 }
             }
