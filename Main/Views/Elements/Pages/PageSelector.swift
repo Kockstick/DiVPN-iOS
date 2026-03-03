@@ -38,9 +38,18 @@ struct PageSelector: View {
                 Button(action: {
                     index = 2
                 }){
-                    Image("PaidBold")
+                    Image("ManageBold")
                         .resizable()
                         .foregroundColor(Color(index == 2 ? "TextPrimary" : "TextSecondary"))
+                        .frame(width: SelectedSize, height: SelectedSize, alignment: .center)
+                }
+                
+                Button(action: {
+                    index = 3
+                }){
+                    Image("PaidBold")
+                        .resizable()
+                        .foregroundColor(Color(index == 3 ? "TextPrimary" : "TextSecondary"))
                         .frame(width: SelectedSize, height: SelectedSize, alignment: .center)
                 }
             }

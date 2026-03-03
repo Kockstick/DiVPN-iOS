@@ -30,7 +30,8 @@ struct MainView: View {
                     TabView(selection: $index) {
                         OptionsView(pageIndex: $index).tag(0)
                         HomeView().tag(1)
-                        SubscribeView().tag(2)
+                        ManagerView().tag(2)
+                        SubscribeView().tag(3)
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .ignoresSafeArea()
@@ -44,6 +45,7 @@ struct MainView: View {
                 
                 DiNotificationBanner(show: showUpdateBanner)
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             .animation(.smooth(duration: 0.5), value: greenBackground)
             .animation(.smooth(duration: 0.5), value: statusModel.connected)
             .animation(.spring(duration: 0.2), value: DiNotification.shared.showRow)

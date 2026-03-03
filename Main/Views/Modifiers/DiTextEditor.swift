@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DiTextEditor: UIViewRepresentable {
     @Binding var text: String
+    var breakword: Bool = false
     
     func makeUIView(context: Context) -> UITextView {
         let tv = UITextView()
@@ -30,6 +31,7 @@ struct DiTextEditor: UIViewRepresentable {
     
     func updateUIView(_ uiView: UITextView, context: Context) {
         if uiView.text != text { uiView.text = text }
+        uiView.textContainer.lineBreakMode = breakword ? .byCharWrapping : .byWordWrapping
     }
     
     func makeCoordinator() -> Coordinator { Coordinator(self) }

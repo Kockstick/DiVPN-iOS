@@ -43,6 +43,36 @@
         }
       }
     },
+    "Add and manage your Outline server" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавляйте и управляйте своим сервером Outline"
+          }
+        }
+      }
+    },
+    "Add key" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить ключ"
+          }
+        }
+      }
+    },
+    "Add server" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить сервер"
+          }
+        }
+      }
+    },
     "agree_privacy_policy" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -56,6 +86,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Я соглашаюсь с\nПолитикой конфиденциальности"
+          }
+        }
+      }
+    },
+    "API key" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API ключ"
           }
         }
       }
@@ -399,12 +439,32 @@
         }
       }
     },
+    "custom key" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "пользовательский ключ"
+          }
+        }
+      }
+    },
     "Date last change: %@" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Дата изменения: %@"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить"
           }
         }
       }
@@ -547,6 +607,9 @@
         }
       }
     },
+    "https://xxx.xxx.xxx.xxx:xxxxx/xxxxxxxxxxxxxxxxxxxxxx" : {
+
+    },
     "If you don’t have an account, we’ll create one for you" : {
       "localizations" : {
         "ru" : {
@@ -624,6 +687,19 @@
         }
       }
     },
+    "Key %@" : {
+
+    },
+    "Keys" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ключи"
+          }
+        }
+      }
+    },
     "Learn more" : {
       "localizations" : {
         "ru" : {
@@ -635,7 +711,14 @@
       }
     },
     "Loading" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Загрузка"
+          }
+        }
+      }
     },
     "Log file" : {
       "localizations" : {
@@ -666,6 +749,19 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Возможно, вам кто-нибудь ответит."
+          }
+        }
+      }
+    },
+    "My favorite server" : {
+
+    },
+    "Name" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Имя"
           }
         }
       }
@@ -772,6 +868,16 @@
         }
       }
     },
+    "Options" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настройки"
+          }
+        }
+      }
+    },
     "other" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -796,6 +902,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Другое"
+          }
+        }
+      }
+    },
+    "Outline key" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outline ключ"
           }
         }
       }
@@ -981,6 +1097,16 @@
     "ReferralView" : {
 
     },
+    "Remove" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить"
+          }
+        }
+      }
+    },
     "renew_subscription_notice" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1068,6 +1194,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Подписка возобновлена"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить"
+          }
+        }
+      }
+    },
+    "Select" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать"
           }
         }
       }
