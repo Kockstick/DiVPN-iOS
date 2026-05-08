@@ -1,11 +1,11 @@
 import Foundation
-import OutlineTunnel
 import SwiftUI
 
 public class DiVpnService {
     private static let tunnelId = Bundle.main.tunnelId
     private static let LOG_TAG = "DiVpnService"
     private static let logger = DiLogger.shared
+    private static let xray = Xray.shared
     
     // MARK: - Public API (completion-based)
     public static func startVpn(ssKey: String, completion: @escaping (Bool) -> Void) {
@@ -24,24 +24,19 @@ public class DiVpnService {
     public static func stopVpn(completion: @escaping (Bool) -> Void) {
         logger.i("stopVpn called", tag: LOG_TAG)
         Task {
-            do {
-                await setLoading(true)
-                try await OutlineVpn.shared.stop(tunnelId)
-                logger.i("VPN Stopped", tag: LOG_TAG)
-                if !DiStatus.shared.connected {
-                    checkNetwork()
-                }
-                await setConnected(false)
-                completion(true)
-            } catch {
-                logger.e("VPN stop failed: \(error.localizedDescription)", tag: LOG_TAG)
-                await setConnected(true)
-                completion(false)
+            await setLoading(true)
+            xray.stop()
+            logger.i("VPN Stopped", tag: LOG_TAG)
+            if !DiStatus.shared.connected {
+                checkNetwork()
             }
+            await setConnected(false)
+            completion(true)
         }
     }
     
     // MARK: - Public API (async/await)
+    
     static func startVpnAwaitable(ssKey: String) async throws {
         logger.i("startVpnAwaitable called", tag: LOG_TAG)
         do {
@@ -55,9 +50,9 @@ public class DiVpnService {
     static func restartVpnAwaitable(ssKey: String) async throws {
         logger.i("restartVpnAwaitable called", tag: LOG_TAG)
         do {
-            if try await OutlineVpn.shared.isActive(tunnelId) {
+            if xray.isActive {
                 logger.i("Stopping existing VPN with tunnel ID: \(tunnelId)", tag: LOG_TAG)
-                try await OutlineVpn.shared.stop(tunnelId)
+                xray.stop()
                 await setConnected(false)
                 logger.i("VPN Stopped", tag: LOG_TAG)
             }
@@ -76,41 +71,27 @@ public class DiVpnService {
     public static func checkConnection(completion: @escaping (Bool) -> Void) {
         logger.i("checkConnection called", tag: LOG_TAG)
         Task {
-            do {
-                let isConnected = try await OutlineVpn.shared.isActive(tunnelId)
-                logger.i("checkConnection result: \(isConnected)", tag: LOG_TAG)
-                await setConnected(isConnected)
-                completion(isConnected)
-            } catch {
-                logger.e("checkConnection failed: \(error.localizedDescription)", tag: LOG_TAG)
-                completion(false)
-            }
+            let isConnected = xray.isActive
+            logger.i("checkConnection result: \(isConnected)", tag: LOG_TAG)
+            await setConnected(isConnected)
+            completion(isConnected)
         }
     }
     
     // MARK: - Core start logic (single source of truth)
-    @discardableResult
+    
     private static func performStart(ssKey: String) async throws -> Void {
-        if try await OutlineVpn.shared.isActive(tunnelId) {
+        if xray.isActive {
             logger.i("VPN already active", tag: LOG_TAG)
             return
         }
         
         await setLoading(true)
-        OutlineVpn.initialize()
-        
-        let serverName = Bundle.main.serverName
-        
-        let ssConfig = """
-        {
-          "transport": "\(ssKey)"
-        }
-        """
         
         logger.i("Starting VPN", tag: LOG_TAG)
         let started = Date()
         do{
-            try await OutlineVpn.shared.start(tunnelId, named: serverName, withTransport: ssConfig)
+            try xray.start(with: ssKey)
             let ms = (Float)(Date().timeIntervalSince(started) * 1000)
             
             logger.i("VPN started in \(ms) ms", tag: LOG_TAG)
@@ -120,12 +101,12 @@ public class DiVpnService {
             
             Task{
                 let serverApi = ServerApi()
-                try? await serverApi.logConnection(ms)
+                _ = try? await serverApi.logConnection(ms)
             }
         } catch{
             Task{
                 let serverApi = ServerApi()
-                try? await serverApi.logConnection(0, message: error.localizedDescription)
+                _ = try? await serverApi.logConnection(0, message: error.localizedDescription)
             }
             logger.e("VPN not started: \(error.localizedDescription)", tag: LOG_TAG)
         }
@@ -141,7 +122,7 @@ public class DiVpnService {
     
     private static func handleStartError(_ error: Error) {
         Task { @MainActor in
-            await UINotificationFeedbackGenerator().notificationOccurred(.error)
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
             checkNetwork()
             logger.e("VPN start failed: \(error.localizedDescription)", tag: LOG_TAG)
             DiStatus.shared.setConnected(value: false)
