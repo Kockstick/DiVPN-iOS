@@ -8,16 +8,17 @@ The backend is built with ASP.NET and PostgreSQL, providing authentication, subs
 # Tech Stack
 
 ## iOS Client
-SwiftUI
-MVVM
-Metal Shaders
-NetworkExtension
-Combine
+- SwiftUI
+- MVVM
+- Metal Shaders
+- NetworkExtension
+- Combine
 
 ## Backend
-ASP.NET
-PostgreSQL
-REST API
+- ASP.NET
+- Ef Core
+- PostgreSQL
+- REST API
 
 **Site: https://divpn.ru/**
 
